@@ -1,0 +1,40 @@
+{
+  "metaTitle": "About the studio",
+  "metaDescription": "Who runs Reef Notes, how the studio works, what we take on and what we turn down, and why the working notes are published instead of filed away.",
+  "eyebrow": "About",
+  "title": "A three-person studio that writes things down",
+  "accent": "writes",
+  "lede": "We design and build websites for small teams. Reef Notes is where the working notes end up, because the useful part of a project is almost never the screenshot.",
+  "crumb": "About the studio",
+  "storyTitle": "How the notebook started",
+  "storyAccent": "notebook",
+  "storyParagraphs": [
+    "The studio opened in 2019 with one laptop and a spreadsheet of leads. The first year taught us that a website is rarely a design problem: it is a decision problem with a design attached. Which font loads first, which section gets cut, what happens on a four-year-old Android phone on hotel wifi.",
+    "For three years the answers lived in a private repository. Every time a client asked why a page felt slow, or why we refused to add a fifth typeface, the reasoning was already written down somewhere. Publishing those notes cost us nothing and saved the same explanation twice a month.",
+    "Reef Notes is that repository, cleaned up. Some entries are build logs with numbers in them, some are arguments about type, some cover the unglamorous half of freelancing: scoping, quoting, being paid on time. All of them come out of work we actually did."
+  ],
+  "valuesTitle": "How we work",
+  "valuesAccent": "work",
+  "valuesLede": "Three rules we have not yet found a good reason to break.",
+  "values": [
+    {
+      "title": "Measure before arguing",
+      "text": "Taste settles nothing about performance. We publish the before and after numbers, including the times a change made things worse."
+    },
+    {
+      "title": "Ship the boring version",
+      "text": "The boring version launches on time, survives a redesign and still works with JavaScript off. Cleverness is what we add once the boring version is live."
+    },
+    {
+      "title": "Write it down once",
+      "text": "If an answer takes more than five minutes to explain, it becomes a post. Clients get the link, we get our afternoon back."
+    }
+  ],
+  "writersTitle": "The three of us",
+  "writersAccent": "three",
+  "writersLede": "Short bios, honest job titles, and every post each of us has signed.",
+  "writersCta": "All authors",
+  "contactTitle": "Working together",
+  "contactLede": "We take on three or four projects a year, mostly redesigns for teams of under twenty people. If the timing lines up, tell us what is in the way.",
+  "contactCta": "Get in touch"
+}

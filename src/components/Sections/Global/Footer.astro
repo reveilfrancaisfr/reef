@@ -17,6 +17,7 @@ import siteData from "@config/siteData.json";
 import { fmt, getLocale, localePrefix, useTranslations } from "@i18n";
 import { annotationsDe, enEdition, styleDuBloc } from "@moteur/annotations";
 import { blocVisible, marqueCadre, marqueInterface, menuDe } from "@moteur/cadre";
+import { liensKeystatic, lireSite, surcharger } from "@moteur/contenu-keystatic";
 import Pastilles from "@moteur/Pastilles.astro";
 import { envoiDeLaLettre } from "@moteur/courriels";
 import { COLONNES_DU_PIED, identiteDuSite } from "@moteur/theme";
@@ -34,8 +35,11 @@ type Props = {
 // La lettre peut etre masquee dans le back office (champ "hidden" de l'entree "lettre").
 const newsletter = (Astro.props as Props).newsletter !== false && blocVisible(Astro, "lettre");
 
+// Les textes et liens saisis dans Keystatic (src/keystatic/pages.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+const ks = await lireSite(locale);
+const t = surcharger(useTranslations(Astro), { footer: ks?.footer, newsletter: ks?.newsletter });
 // Moteur allume, en mode edition : les sections "pied-de-page" et "lettre" de la base.
 const pied = annotationsDe(Astro, "pied-de-page");
 const lettre = annotationsDe(Astro, "lettre");
@@ -58,6 +62,12 @@ const columns = getFooterData(locale).map((repli, rang) => {
       ? menu.items.map((item): { text: string; href: string; target?: string } => ({ text: item.label, href: item.url, target: item.target }))
       : repli.links.map((lien): { text: string; href: string; target?: string } => lien),
   };
+}).map((colonne, rang) => {
+  // Une colonne saisie dans Keystatic : son titre et ses liens remplacent ceux du theme, s'ils sont remplis.
+  const saisie = ks?.colonnes[rang];
+  if (!saisie) return colonne;
+  const liens = liensKeystatic(saisie.liens);
+  return { ...colonne, title: saisie.titre.trim() || colonne.title, links: liens.length > 0 ? liens : colonne.links };
 });
 const cible = (target?: string) => (target ? { target, rel: target === "_blank" ? "noopener" : undefined } : {});
 // L'adresse du service qui recoit les inscriptions (entree "site") : vide, le

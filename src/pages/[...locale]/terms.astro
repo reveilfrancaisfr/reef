@@ -14,6 +14,7 @@ import { breadcrumbList } from "@js/schema";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { annotationsDe } from "@moteur/annotations";
 import { argumentDe, imageDePartage } from "@moteur/cadre";
+import { lireConditions, surcharger } from "@moteur/contenu-keystatic";
 import { propsDeLaPage } from "@moteur/chemins";
 import { textesDeLaPage } from "@moteur/textes";
 
@@ -27,7 +28,10 @@ if (demande instanceof Response) return demande;
 const locale = getLocale(Astro);
 // Les textes rediges de la page : ceux de la base moteur allume (docs/moteur.md),
 // poses sur la requete pour ses composants.
-const t = await textesDeLaPage(Astro);
+// Le texte saisi dans Keystatic (src/keystatic/pages.ts) passe devant celui du theme ;
+// vide, tout retombe sur le theme.
+const ks = await lireConditions(locale);
+const t = surcharger(await textesDeLaPage(Astro), { legalData: { terms: ks } });
 const doc = t.legalData.terms;
 const ed = annotationsDe(Astro, "conditions");
 // L'ancre de chaque clause : celle que l'editeur a donnee, sinon celle du titre.

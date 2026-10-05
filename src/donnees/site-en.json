@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "principal": [
+      {
+        "texte": "Posts",
+        "lien": "/blog/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "Topics",
+        "lien": "/topics/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "About",
+        "lien": "/about/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "Contact",
+        "lien": "/contact/",
+        "nouvelOnglet": false
+      }
+    ],
+    "tiroir": [
+      {
+        "texte": "Authors",
+        "lien": "/authors/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "Search",
+        "lien": "/search/",
+        "nouvelOnglet": false
+      }
+    ],
+    "boutonTexte": "Subscribe",
+    "lienBouton": "#newsletter"
+  },
+  "colonnes": [
+    {
+      "titre": "Read",
+      "liens": [
+        {
+          "texte": "Posts",
+          "lien": "/blog/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Topics",
+          "lien": "/topics/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Authors",
+          "lien": "/authors/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "RSS feed",
+          "lien": "/rss.xml",
+          "nouvelOnglet": false
+        }
+      ]
+    },
+    {
+      "titre": "The studio",
+      "liens": [
+        {
+          "texte": "About",
+          "lien": "/about/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Contact",
+          "lien": "/contact/",
+          "nouvelOnglet": false
+        }
+      ]
+    },
+    {
+      "titre": "Legal",
+      "liens": [
+        {
+          "texte": "Legal notice",
+          "lien": "/legal/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Privacy",
+          "lien": "/privacy/",
+          "nouvelOnglet": false
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "tagline": "Reef Notes is the working notebook of a three-person web studio. Build logs, load times, type specimens, and the parts of freelancing nobody puts on a landing page.",
+    "rights": "All rights reserved.",
+    "builtWith": "Built with Astro, set in Space Grotesk and Instrument Sans.",
+    "themeBy": "Reef theme by",
+    "backToTop": "Back to top"
+  },
+  "newsletter": {
+    "title": "One email, once a month",
+    "accent": "once",
+    "lede": "A short digest of what we published and what we got wrong. No tracking pixel, no drip sequence, one click to leave for good.",
+    "placeholder": "you@example.com",
+    "submit": "Subscribe",
+    "note": "One email a month. Unsubscribe from any of them."
+  }
+}

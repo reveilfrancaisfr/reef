@@ -29,6 +29,14 @@ const variables = `:root{${Object.entries(VARIABLES_D_EDITION)
   .map(([nom, valeur]) => `${nom}:${valeur}`)
   .join(";")}}`;
 
+// Les balises sont coupees a dessein : le scan de dependances de Vite prend
+// toute balise script ecrite en toutes lettres pour un vrai script a analyser.
+const OUVRE = "<" + "script>";
+const FERME = "<" + "/script>";
+const habillage = actif
+  ? `<style>${variables}${FEUILLE_D_EDITION}</style>${OUVRE}${CORRECTIF_DE_LA_BARRE}${scriptDesAdresses(adresseDuLien.toString(), { adresseCorrigee: mots.adresseCorrigee, adresseRefusee: mots.adresseRefusee })}${langue === "fr" ? traductionDeLaBarre() : ""}${FERME}`
+  : "";
+
 /** Le libelle d'un menu tel que le back office le montre : celui de la base, sinon celui de la graine dans la langue du back office, sinon son nom (les colonnes du pied). */
 const libelleDuMenu = (nom: string): string =>
   menuDe(Astro, nom, locale)?.label ?? MENUS.find((m) => m.nom === nom)?.nomDansLeBackOffice ?? LIBELLES_DES_MENUS[nom] ?? nom;
@@ -48,13 +56,7 @@ function adresseDeLEntree(cle: string, collection = "sections"): string {
 {/* Un Fragment et non une balise style : le compilateur d'Astro range toute
     balise style, meme en ligne, dans les feuilles de la page, ce qui decalait
     l'ordre de leurs regles dans le HTML anonyme (mesure). */}
-{
-  actif && (
-    <Fragment
-      set:html={`<style>${variables}${FEUILLE_D_EDITION}</style><script>${CORRECTIF_DE_LA_BARRE}${scriptDesAdresses(adresseDuLien.toString(), { adresseCorrigee: mots.adresseCorrigee, adresseRefusee: mots.adresseRefusee })}${langue === "fr" ? traductionDeLaBarre() : ""}</script>`}
-    />
-  )
-}
+{actif && <Fragment set:html={habillage} />}
 {
   actif && (
     <details style={STYLES.panneau} data-aloha-cadre="panneau">

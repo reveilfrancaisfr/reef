@@ -16,6 +16,7 @@ import { breadcrumbList, organization } from "@js/schema";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { imageDe, imageDePartage } from "@moteur/cadre";
 import { annotationsDe, REF } from "@moteur/annotations";
+import { lireAPropos, surcharger } from "@moteur/contenu-keystatic";
 import { propsDeLaPage } from "@moteur/chemins";
 import { textesDeLaPage } from "@moteur/textes";
 import { identiteDuSite } from "@moteur/theme";
@@ -30,7 +31,10 @@ if (demande instanceof Response) return demande;
 const locale = getLocale(Astro);
 // Les textes rediges de la page : ceux de la base moteur allume (docs/moteur.md),
 // poses sur la requete pour ses composants.
-const t = await textesDeLaPage(Astro);
+// Les textes saisis dans Keystatic (src/keystatic/pages.ts) passent devant ceux du
+// theme ; vides, tout retombe sur le theme.
+const ks = await lireAPropos(locale);
+const t = surcharger(await textesDeLaPage(Astro), { about: ks });
 const histoire = annotationsDe(Astro, "a-propos-histoire");
 const regles = annotationsDe(Astro, "a-propos-regles");
 const signatures = annotationsDe(Astro, "a-propos-signatures");

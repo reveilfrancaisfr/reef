@@ -1,0 +1,18 @@
+{
+  "metaTitle": "Contact",
+  "metaDescription": "Project enquiries, a correction on a post, or a question about something we published. One inbox, read by a person, answered within two working days.",
+  "eyebrow": "Contact",
+  "title": "Write to us, we read all of it",
+  "accent": "all",
+  "lede": "A project, a correction, a question about a build: it lands in the same inbox and a person answers it. No ticket number, no autoresponder.",
+  "crumb": "Contact",
+  "directTitle": "Or skip the form",
+  "directLede": "Plain email works just as well, and a thread is easier to keep than a form.",
+  "directCta": "Email the studio",
+  "nextTitle": "What happens next",
+  "nextSteps": [
+    "A short reply within two working days, written by one of us.",
+    "If it is a project, three questions come back before any number does.",
+    "If it is a correction, the post is fixed and credited the same week."
+  ]
+}

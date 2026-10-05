@@ -22,12 +22,14 @@ import { getLocale, localePaths, locales, localizePath } from "@i18n";
 import { getResolvedPosts, getSortedTopics, getSortedAuthors } from "@js/posts";
 import { organization, website } from "@js/schema";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { lireOrdreDesBlocs, lireTextesAccueil } from "@moteur/accueil-keystatic";
 import { blocVisible, donneesDe, imageDePartage } from "@moteur/cadre";
 import { ordreDesBlocs } from "@moteur/ordre-des-blocs";
 import { propsDeLaPage } from "@moteur/chemins";
 import { adresseDePageLibre } from "@moteur/pages";
 import { textesDeLaPage } from "@moteur/textes";
 import { identiteDuSite } from "@moteur/theme";
+import type { BlocAccueil } from "../../keystatic/accueil";
 
 // Une seule page source, une sortie par langue : / et /fr/.
 export const getStaticPaths = localePaths;
@@ -49,6 +51,10 @@ const locale = getLocale(Astro);
 // Les textes rediges de la page : ceux de la base moteur allume (docs/moteur.md),
 // poses sur la requete pour ses composants.
 const t = await textesDeLaPage(Astro);
+// Les textes et l'ordre saisis dans Keystatic (src/keystatic/accueil.ts) ; vides,
+// tout retombe sur le theme.
+const ks = await lireTextesAccueil(locale);
+const ordreKeystatic = await lireOrdreDesBlocs();
 
 const posts = await getResolvedPosts(locale);
 
@@ -95,15 +101,18 @@ const voir = (slug: string): boolean => blocVisible(Astro, slug);
 // coupe deux grilles de cartes, ce qu'une pleine largeur doit faire. Un
 // editeur qui deplace un bloc passe outre en connaissance de cause : le guide
 // le dit.
-const blocs = ordreDesBlocs(
+const blocsDuTheme = ordreDesBlocs(
   ["hero", "bande-sujets", "a-la-une", "studio", "dernieres-notes", "sujets", "signatures", "lettre"] as const,
   (slug) => donneesDe(Astro, slug),
 );
+// L'ordre choisi dans Keystatic l'emporte sur celui du theme ; un bloc masque
+// ou retire de la liste n'est pas rendu.
+const blocs: readonly BlocAccueil[] = ordreKeystatic ?? blocsDuTheme;
 // Le premier bloc que le visiteur voit.
 const premier = blocs.find((bloc) => voir(bloc));
 
-const title = t.home.metaTitle;
-const description = t.home.metaDescription;
+const title = ks.metaTitre || t.home.metaTitle;
+const description = ks.metaDescription || t.home.metaDescription;
 
 // Le nom et les reseaux du site : les reglages du back office, sinon siteData.
 const marque = identiteDuSite(Astro, locale);
@@ -142,7 +151,7 @@ const schemas = [
     {
       blocs.map((bloc) =>
         bloc === "hero" ? (
-          voir("hero") && <Hero {ledger} />
+          voir("hero") && <Hero {ledger} textes={ks} />
         ) : bloc === "bande-sujets" ? (
           voir("bande-sujets") && <TopicMarquee {topics} counts={topicCounts} />
         ) : bloc === "a-la-une" ? (

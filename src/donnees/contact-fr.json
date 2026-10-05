@@ -1,0 +1,18 @@
+{
+  "metaTitle": "Contact",
+  "metaDescription": "Une demande de projet, une correction sur un article, une question sur ce que nous avons publié. Une seule boîte, lue par une personne, réponse sous deux jours ouvrés.",
+  "eyebrow": "Contact",
+  "title": "Écrivez-nous, nous lisons tout",
+  "accent": "tout",
+  "lede": "Un projet, une correction, une question sur un chantier : tout arrive dans la même boîte et une personne y répond. Pas de numéro de ticket, pas de réponse automatique.",
+  "crumb": "Contact",
+  "directTitle": "Ou passez-vous du formulaire",
+  "directLede": "Un simple email fait aussi bien l'affaire, et un fil de discussion se conserve mieux qu'un formulaire.",
+  "directCta": "Écrire au studio",
+  "nextTitle": "Ce qui se passe ensuite",
+  "nextSteps": [
+    "Une réponse courte sous deux jours ouvrés, écrite par l'un de nous trois.",
+    "S'il s'agit d'un projet, vous recevez trois questions avant le moindre chiffre.",
+    "S'il s'agit d'une correction, l'article est repris et crédité dans la semaine."
+  ]
+}

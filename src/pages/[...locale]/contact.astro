@@ -22,6 +22,7 @@ import { annotationsDe } from "@moteur/annotations";
 import { lienDe, imageDePartage } from "@moteur/cadre";
 import Pastilles from "@moteur/Pastilles.astro";
 import { identiteDuSite } from "@moteur/theme";
+import { lireContact, surcharger } from "@moteur/contenu-keystatic";
 import { propsDeLaPage } from "@moteur/chemins";
 import { textesDeLaPage } from "@moteur/textes";
 
@@ -35,7 +36,10 @@ if (demande instanceof Response) return demande;
 const locale = getLocale(Astro);
 // Les textes rediges de la page : ceux de la base moteur allume (docs/moteur.md),
 // poses sur la requete pour ses composants.
-const t = await textesDeLaPage(Astro);
+// Les textes saisis dans Keystatic (src/keystatic/pages.ts) passent devant ceux du
+// theme ; vides, tout retombe sur le theme.
+const ks = await lireContact(locale);
+const t = surcharger(await textesDeLaPage(Astro), { contact: ks });
 const direct = annotationsDe(Astro, "contact-direct");
 const suite = annotationsDe(Astro, "contact-suite");
 // L'adresse e-mail du site (entree "site", sinon siteData) ; le bouton du bloc

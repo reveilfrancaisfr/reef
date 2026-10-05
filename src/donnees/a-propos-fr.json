@@ -1,0 +1,40 @@
+{
+  "metaTitle": "À propos du studio",
+  "metaDescription": "Qui tient Reef Notes, comment le studio travaille, ce que nous acceptons et ce que nous refusons, et pourquoi les notes de chantier sont publiées plutôt que classées.",
+  "eyebrow": "À propos",
+  "title": "Un studio à trois qui note tout",
+  "accent": "note",
+  "lede": "Nous dessinons et construisons des sites pour de petites équipes. Reef Notes est l'endroit où atterrissent les notes de travail, parce que la partie utile d'un projet n'est presque jamais la capture d'écran.",
+  "crumb": "À propos du studio",
+  "storyTitle": "Comment le carnet a commencé",
+  "storyAccent": "carnet",
+  "storyParagraphs": [
+    "Le studio a ouvert en 2019 avec un portable et un tableur de prospects. La première année nous a appris qu'un site est rarement un problème de design : c'est un problème de décisions, avec un design posé par-dessus. Quelle police charge en premier, quelle section saute, ce qui se passe sur un Android de quatre ans connecté au wifi d'un hôtel.",
+    "Pendant trois ans, les réponses sont restées dans un dépôt privé. Chaque fois qu'un client demandait pourquoi une page semblait lente, ou pourquoi nous refusions une cinquième police, le raisonnement était déjà écrit quelque part. Publier ces notes ne nous a rien coûté et nous a évité la même explication deux fois par mois.",
+    "Reef Notes, c'est ce dépôt remis au propre. Certaines entrées sont des journaux de chantier avec des chiffres dedans, d'autres des prises de position sur la typographie, d'autres encore la moitié ingrate du métier : cadrer, chiffrer, être payé à l'heure. Toutes sortent de travaux réels."
+  ],
+  "valuesTitle": "Notre façon de travailler",
+  "valuesAccent": "façon",
+  "valuesLede": "Trois règles auxquelles nous n'avons pas encore trouvé de bonne raison de déroger.",
+  "values": [
+    {
+      "title": "Mesurer avant de discuter",
+      "text": "Le goût ne tranche rien en matière de performance. Nous publions les chiffres avant et après, y compris les fois où le changement a tout empiré."
+    },
+    {
+      "title": "Livrer la version ennuyeuse",
+      "text": "La version ennuyeuse sort dans les temps, survit à une refonte et fonctionne encore sans JavaScript. L'astuce vient ensuite, une fois la version ennuyeuse en ligne."
+    },
+    {
+      "title": "L'écrire une seule fois",
+      "text": "Si une réponse demande plus de cinq minutes d'explication, elle devient un article. Le client reçoit le lien, nous récupérons notre après-midi."
+    }
+  ],
+  "writersTitle": "Nous trois",
+  "writersAccent": "trois",
+  "writersLede": "Trois biographies courtes, des intitulés honnêtes, et tous les articles que chacun a signés.",
+  "writersCta": "Tous les auteurs",
+  "contactTitle": "Travailler ensemble",
+  "contactLede": "Nous prenons trois ou quatre projets par an, surtout des refontes pour des équipes de moins de vingt personnes. Si le calendrier s'y prête, dites-nous ce qui vous bloque.",
+  "contactCta": "Nous écrire"
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Legal notice",
+  "description": "Who publishes this site, who hosts it, and how to reach the publisher.",
+  "lastUpdated": "2026-09-24",
+  "sections": [
+    {
+      "title": "Publisher",
+      "body": "This site is published by [studio name], [legal form] registered at [full address], under number [registration number]. Publication director: [name]. Any question about the content published here can be sent through the contact page."
+    },
+    {
+      "title": "Hosting",
+      "body": "The site is served by [host name], [host address], reachable at [host contact]. Reading a page creates no account and no session: nothing about you is stored on our side."
+    },
+    {
+      "title": "Content and reuse",
+      "body": "The posts, illustrations and code samples published here belong to their authors. Quoting a passage with a link back is welcome and needs no permission. Republishing a whole post, translated or not, does."
+    },
+    {
+      "title": "Reporting a problem",
+      "body": "A factual error, a broken link, a copyright concern: write to the address on the contact page. Corrections are made within two working days and the post carries the date of its revision."
+    }
+  ]
+}

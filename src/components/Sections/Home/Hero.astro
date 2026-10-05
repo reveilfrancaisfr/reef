@@ -27,6 +27,7 @@ import { Icon } from "@components/svg/icons";
 import { Button } from "@components/ui/button";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
+import type { TextesAccueil } from "@moteur/accueil-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { imageDe, lienDe } from "@moteur/cadre";
 import Pastilles from "@moteur/Pastilles.astro";
@@ -36,9 +37,11 @@ import { Picture } from "astro:assets";
 interface Props {
   /** Trois nombres qui disent combien il y a a lire : notes, sujets, langues. */
   ledger?: readonly number[];
+  /** Les textes saisis dans Keystatic ; une valeur vide = texte du theme. */
+  textes?: TextesAccueil;
 }
 
-const { ledger = [] } = Astro.props;
+const { ledger = [], textes = {} } = Astro.props;
 
 const locale = getLocale(Astro);
 const t = useTranslations(Astro);
@@ -49,12 +52,12 @@ const routes = getSiteRoutes(locale);
 // fond (champ image) et l'adresse des deux boutons (cta_link,
 // cta_secondary_link). Moteur eteint, tout vaut le theme (src/moteur/cadre.ts).
 const photo = imageDe(Astro, "hero");
-const lienPrincipal = lienDe(Astro, "hero", "cta_link") ?? routes.posts;
-const lienSecondaire = lienDe(Astro, "hero", "cta_secondary_link") ?? routes.about;
+const lienPrincipal = textes.lienPrincipal || (lienDe(Astro, "hero", "cta_link") ?? routes.posts);
+const lienSecondaire = textes.lienSecondaire || (lienDe(Astro, "hero", "cta_secondary_link") ?? routes.about);
 
 // Decoupe du titre autour du mot accentue, insensible a la casse.
-const title = t.home.heroTitle;
-const accent = t.home.heroAccent;
+const title = textes.titre || t.home.heroTitle;
+const accent = textes.motAccentue || t.home.heroAccent;
 const at = title.toLowerCase().indexOf(accent.toLowerCase());
 const before = at >= 0 ? title.slice(0, at) : title;
 const word = at >= 0 ? title.slice(at, at + accent.length) : "";
@@ -207,7 +210,7 @@ const after = at >= 0 ? title.slice(at + accent.length) : "";
             {...ed.champ("eyebrow")}
           >
             <span class="bg-primary inline-block h-px w-8 shrink-0" aria-hidden="true"></span>
-            {t.home.eyebrow}
+            {textes.accroche || t.home.eyebrow}
           </p>
 
           <h1 id="hero-title" class="font-display text-display-lg lg:text-display-xl mt-6" {...ed.champ("title")}>
@@ -234,15 +237,15 @@ const after = at >= 0 ? title.slice(at + accent.length) : "";
             photographie qui bouge sous lui. */}
         <div class="flex min-w-0 flex-col items-start lg:justify-end lg:pb-2">
           <p class="measure-wide leading-relaxed text-white/85 md:text-lg lg:text-xl" {...ed.champ("lede")}>
-            {t.home.heroLede}
+            {textes.chapeau || t.home.heroLede}
           </p>
 
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <Button href={lienPrincipal} variant="primary" size="lg" {...ed.champ("cta")}>
-              {t.home.heroPrimary}
+              {textes.boutonPrincipal || t.home.heroPrimary}
               <Icon name="arrow-right" size={18} />
             </Button>
-            <Button href={lienSecondaire} variant="outline" size="lg" {...ed.champ("cta_secondary")}>{t.home.heroSecondary}</Button>
+            <Button href={lienSecondaire} variant="outline" size="lg" {...ed.champ("cta_secondary")}>{textes.boutonSecondaire || t.home.heroSecondary}</Button>
           </div>
         </div>
       </div>
@@ -262,7 +265,7 @@ const after = at >= 0 ? title.slice(at + accent.length) : "";
                 <dd class="font-display text-3xl leading-none font-bold tabular-nums md:text-4xl">
                   {ledger[i] ?? 0}
                 </dd>
-                <dt class="text-xs tracking-[0.14em] text-white/75 uppercase">{label}</dt>
+                <dt class="text-xs tracking-[0.14em] text-white/75 uppercase">{textes.compteurs?.[i] || label}</dt>
               </div>
             ))}
           </dl>

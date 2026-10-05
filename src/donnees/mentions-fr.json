@@ -1,0 +1,23 @@
+{
+  "title": "Mentions légales",
+  "description": "Qui publie ce site, qui l'héberge, et comment joindre l'éditeur.",
+  "lastUpdated": "2026-09-24",
+  "sections": [
+    {
+      "title": "Éditeur",
+      "body": "Ce site est édité par [nom du studio], [forme juridique] immatriculée à [adresse complète] sous le numéro [numéro d'immatriculation]. Directeur de la publication : [nom]. Toute question sur les contenus publiés ici peut nous être adressée depuis la page de contact."
+    },
+    {
+      "title": "Hébergement",
+      "body": "Le site est servi par [nom de l'hébergeur], [adresse de l'hébergeur], joignable au [contact de l'hébergeur]. Lire une page ne crée ni compte ni session : rien ne vous concernant n'est conservé de notre côté."
+    },
+    {
+      "title": "Contenus et réutilisation",
+      "body": "Les articles, les illustrations et les extraits de code publiés ici appartiennent à leurs auteurs. Citer un passage avec un lien de retour est bienvenu et ne demande aucune autorisation. Republier un article entier, traduit ou non, en demande une."
+    },
+    {
+      "title": "Signaler un problème",
+      "body": "Une erreur factuelle, un lien mort, une question de droits : écrivez à l'adresse indiquée sur la page de contact. Les corrections sont faites sous deux jours ouvrés, et l'article porte alors la date de sa révision."
+    }
+  ]
+}

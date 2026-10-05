@@ -1,0 +1,12 @@
+{
+  "blocs": [
+    { "bloc": "hero", "visible": true },
+    { "bloc": "bande-sujets", "visible": true },
+    { "bloc": "a-la-une", "visible": true },
+    { "bloc": "studio", "visible": true },
+    { "bloc": "dernieres-notes", "visible": true },
+    { "bloc": "sujets", "visible": true },
+    { "bloc": "signatures", "visible": true },
+    { "bloc": "lettre", "visible": true }
+  ]
+}

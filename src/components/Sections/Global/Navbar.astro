@@ -18,15 +18,19 @@ import { getNavData, getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
 import { enEdition } from "@moteur/annotations";
 import { liensDuMenu, marqueCadre } from "@moteur/cadre";
+import { liensKeystatic, lireSite, surcharger } from "@moteur/contenu-keystatic";
 import { ACTIONS, PRINCIPAL, TIROIR } from "@moteur/menus";
 import { identiteDuSite } from "@moteur/theme";
 
+// Les textes et liens saisis dans Keystatic (src/keystatic/pages.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+const ks = await lireSite(locale);
+const t = surcharger(useTranslations(Astro), { nav: { subscribe: ks?.navigation.boutonTexte } });
 const routes = getSiteRoutes(locale);
 // L'inscription vit dans le pied de page, present sur toutes les pages : une
 // ancre suffit et ne depend d'aucune langue.
-const subscribeHref = "#newsletter";
+const subscribeHref = ks?.navigation.lienBouton.trim() || "#newsletter";
 // Moteur allume, les liens viennent des menus du back office (un par langue)
 // et le nom et le logo des reglages du site ; un menu absent, vide ou d'une
 // autre langue rend les liens des fichiers, et moteur eteint rien ne change
@@ -36,11 +40,14 @@ const subscribeHref = "#newsletter";
 // data-aloha-cadre dit seulement d'ou vient chaque lien ; le panneau "Cadre du
 // site" mene a l'ecran qui le change.
 const marque = identiteDuSite(Astro, locale);
-const navData = liensDuMenu(Astro, PRINCIPAL, locale, getNavData(locale));
-const tiroir = liensDuMenu(Astro, TIROIR, locale, [
+const navDuHaut = liensKeystatic(ks?.navigation.principal);
+const navData = navDuHaut.length > 0 ? navDuHaut : liensDuMenu(Astro, PRINCIPAL, locale, getNavData(locale));
+const tiroirDuTheme = liensDuMenu(Astro, TIROIR, locale, [
   { text: t.nav.authors, href: routes.authors },
   { text: t.nav.search, href: routes.search },
 ]);
+const tiroirKs = liensKeystatic(ks?.navigation.tiroir);
+const tiroir = tiroirKs.length > 0 ? tiroirKs : tiroirDuTheme;
 const actions = liensDuMenu(Astro, ACTIONS, locale, [{ text: t.nav.subscribe, href: subscribeHref, bouton: true }]);
 const cible = (target?: string) => (target ? { target, rel: target === "_blank" ? "noopener" : undefined } : {});
 

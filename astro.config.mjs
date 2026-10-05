@@ -1,7 +1,9 @@
 // @ts-check
+import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import keystatic from "@keystatic/astro";
 import { defineConfig } from "astro/config";
 import { moteur, MOTEUR_ACTIF } from "./moteur.config.mjs";
 import { existsSync, readdirSync, readFileSync, renameSync, rmdirSync } from "node:fs";
@@ -67,7 +69,7 @@ export default defineConfig({
 
   // Une seule forme d'URL canonique : le build en repertoires emet un slash final, et
   // canonical + OG s'accordent sur cette forme.
-  trailingSlash: "always",
+  trailingSlash: "ignore",
 
   // Pas d'adapter PAR DEFAUT, volontairement : le theme compile en HTML 100%
   // statique et n'impose aucun hebergeur a son utilisateur. Le moteur de
@@ -88,10 +90,9 @@ export default defineConfig({
   integrations: [
     pagesIntrouvables(),
     ...moteur.integrations,
-    // Pas de React ici, volontairement : Reef n'a pas un seul ilot. Tout le
-    // theme est du .astro, et la page d'article part a zero kilo-octet de
-    // JavaScript. C'est le principal argument d'un theme de blog.
     mdx(),
+    react(),
+    keystatic(),
     sitemap({
       // Moteur allume, les pages gerees ont leur propre plan, rendu a la
       // demande : l'index le declare. Moteur eteint, la liste est vide.
@@ -116,54 +117,32 @@ export default defineConfig({
 
   markdown: {
     shikiConfig: {
-      // Deux themes, commutes par la classe .dark : un bloc de code qui reste
-      // clair sur une page sombre est la premiere chose qu'on remarque, et la
-      // derniere qu'on pardonne a un theme de blog.
-      //
-      // La variante "high-contrast" en clair n'est pas un gout : "github-light"
-      // pose ses commentaires et ses noms de propriete a 3,49 pour 1 sur le
-      // fond du bloc, quand WCAG AA en demande 4,5 pour du texte courant. Un
-      // billet technique dont le code est le contenu principal ne peut pas se
-      // permettre de le rendre a la limite du lisible.
-      //
-      // Le banc de rendu mesure aussi le mode sombre : "github-dark-dimmed"
-      // pose ses commentaires (#768390) a 3,88 pour 1 sur son propre fond
-      // (#22272e), sur dix billets. "github-dark-default" les pose a 6,15 et
-      // aucun de ses jetons ne descend sous ce chiffre ; il reste dans la meme
-      // famille GitHub, donc les memes teintes de mot-cle et de chaine.
       themes: { light: "github-light-high-contrast", dark: "github-dark-default" },
       wrap: true,
     },
   },
 
-  // LA FEUILLE DE STYLE VOYAGE DANS LE HTML, ET C'EST MESURE.
-  //
-  // Astro n'inline par defaut que les feuilles de moins de 4 ko et laisse les
-  // autres en fichiers. Sur la demonstration de ce theme, cela faisait TROIS
-  // requetes bloquantes avant le premier pixel, et Lighthouse chiffrait le
-  // blocage a 730 ms sur un telephone.
-  //
-  // "always" les pose toutes dans le <head>. Le prix est connu et assume : la
-  // feuille repart avec chaque page au lieu d'etre mise en cache une fois pour
-  // tout le site, soit une vingtaine de kilo-octets compresses par page au lieu
-  // d'un seul telechargement. Sur un site de contenu ou l'immense majorite des
-  // visites arrive d'un moteur sur UNE page, la premiere vue gagne plus que la
-  // navigation interne ne perd. Qui sert un site ou le visiteur enchaine dix
-  // pages remet "auto" ici, et rien d'autre ne bouge.
   build: { inlineStylesheets: "always" },
 
   vite: {
     plugins: [tailwindcss()],
-    // La capture du telephone dessine (public/reef-iphone-poster.webp, faite
-    // par `pnpm poster`) existe-t-elle ? Repondu ICI, au build, et fige dans
-    // le code : a la demande, la page tourne dans un Worker sans disque (voir
-    // PhoneShot.astro).
+optimizeDeps: {
+  include: [
+  '@keystatic/core',
+  '@keystatic/astro/ui',
+  'lodash/debounce',
+  'lodash/throttle',
+  'direction',
+  'use-sync-external-store/shim/index.js',
+  'is-hotkey',
+  'slate-react > is-hotkey',
+  'graphql',
+  '@keystatic/core > cookie',
+],
+},
     define: { __REEF_CAPTURE_DU_TELEPHONE__: JSON.stringify(existsSync(new URL("./public/reef-iphone-poster.webp", import.meta.url))) },
-    // Deux sources de billets, une seule forme : l'alias choisit les fichiers
-    // ou la base, et aucune page ne sait d'ou vient un billet.
     resolve: { alias: moteur.alias },
     build: {
-      // N'inline pas les petits scripts, pour qu'ils survivent aux view transitions.
       assetsInlineLimit: 0,
     },
   },

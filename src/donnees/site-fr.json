@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "principal": [
+      {
+        "texte": "Articles",
+        "lien": "/fr/blog/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "Sujets",
+        "lien": "/fr/topics/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "À propos",
+        "lien": "/fr/about/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "Contact",
+        "lien": "/fr/contact/",
+        "nouvelOnglet": false
+      }
+    ],
+    "tiroir": [
+      {
+        "texte": "Auteurs",
+        "lien": "/fr/authors/",
+        "nouvelOnglet": false
+      },
+      {
+        "texte": "Rechercher",
+        "lien": "/fr/search/",
+        "nouvelOnglet": false
+      }
+    ],
+    "boutonTexte": "S'abonner",
+    "lienBouton": "#newsletter"
+  },
+  "colonnes": [
+    {
+      "titre": "Lire",
+      "liens": [
+        {
+          "texte": "Articles",
+          "lien": "/fr/blog/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Sujets",
+          "lien": "/fr/topics/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Auteurs",
+          "lien": "/fr/authors/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Flux RSS",
+          "lien": "/fr/rss.xml",
+          "nouvelOnglet": false
+        }
+      ]
+    },
+    {
+      "titre": "Le studio",
+      "liens": [
+        {
+          "texte": "À propos",
+          "lien": "/fr/about/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Contact",
+          "lien": "/fr/contact/",
+          "nouvelOnglet": false
+        }
+      ]
+    },
+    {
+      "titre": "Légal",
+      "liens": [
+        {
+          "texte": "Mentions légales",
+          "lien": "/fr/legal/",
+          "nouvelOnglet": false
+        },
+        {
+          "texte": "Confidentialité",
+          "lien": "/fr/privacy/",
+          "nouvelOnglet": false
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "tagline": "Reef Notes est le carnet de bord d'un studio web à trois. Journaux de chantier, temps de chargement, spécimens typographiques, et les côtés du métier d'indépendant dont personne ne fait une page d'accueil.",
+    "rights": "Tous droits réservés.",
+    "builtWith": "Fait avec Astro, composé en Space Grotesk et Instrument Sans.",
+    "themeBy": "Thème Reef par",
+    "backToTop": "Revenir en haut"
+  },
+  "newsletter": {
+    "title": "Un email, une fois par mois",
+    "accent": "mois",
+    "lede": "Un court résumé de ce que nous avons publié et de ce que nous avons raté. Pas de pixel espion, pas de séquence automatique, un clic pour partir définitivement.",
+    "placeholder": "vous@example.com",
+    "submit": "S'abonner",
+    "note": "Un email par mois. Désinscription depuis n'importe lequel."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "title": "Privacy policy",
+  "description": "What we collect, why we collect it, and the choices you have over your data.",
+  "lastUpdated": "2026-09-24",
+  "sections": [
+    {
+      "title": "Who we are",
+      "body": "This policy describes what this site collects when you read it, subscribe to its newsletter or write to us. If you have any question about it, you can reach us at any time through the contact page."
+    },
+    {
+      "title": "Information we collect",
+      "body": "Reading a page collects nothing about you. If you subscribe to the newsletter, we keep your email address; if you write to us, we keep your message and your address to answer it."
+    },
+    {
+      "title": "How we use your information",
+      "body": "Your email address is used to send you the newsletter you asked for, and nothing else; every issue includes a way to unsubscribe. Your message is used to answer you."
+    },
+    {
+      "title": "Legal bases for processing",
+      "body": "Where data protection law requires a legal basis, we rely on your consent for the newsletter, on our legitimate interest in answering the messages you send us, and on our legal obligations."
+    },
+    {
+      "title": "Cookies and analytics",
+      "body": "This site sets no advertising cookie and runs no analytics. Your browser keeps your light or dark theme preference and, if you switch language, a cookie that remembers that choice."
+    },
+    {
+      "title": "How we share information",
+      "body": "We never sell personal information. We share it only with the processors that help us run the site, such as the host and the email provider that sends the newsletter, each bound by a data processing agreement, and with authorities where the law requires it."
+    },
+    {
+      "title": "Data retention and deletion",
+      "body": "A newsletter address is deleted when you unsubscribe; a message is deleted once the conversation is over."
+    },
+    {
+      "title": "Your rights",
+      "body": "Depending on where you live, you may have the right to access, correct, export, restrict or delete the personal information we hold about you, and to object to certain processing. To exercise any of these rights, contact us through the contact page and we will respond within the legal deadline."
+    },
+    {
+      "title": "Changes to this policy",
+      "body": "We may update this policy as the site or the law evolves. The date at the top of this page always gives the latest version."
+    }
+  ]
+}

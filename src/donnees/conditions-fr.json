@@ -1,0 +1,27 @@
+{
+  "title": "Conditions d'utilisation",
+  "description": "Les conditions qui encadrent votre utilisation de ce site, écrites en langage clair.",
+  "lastUpdated": "2026-09-24",
+  "sections": [
+    {
+      "title": "Acceptation des présentes conditions",
+      "body": "En lisant ce site, vous acceptez les présentes conditions. Si vous ne les acceptez pas, ne l'utilisez pas."
+    },
+    {
+      "title": "Usage acceptable",
+      "body": "Vous vous engagez à utiliser le site dans le respect de la loi et d'autrui. Vous ne chercherez pas à contourner sa sécurité, à perturber son fonctionnement, à accéder à des données qui ne vous appartiennent pas, ni à vous servir de ses formulaires pour envoyer des contenus illicites ou nuisibles."
+    },
+    {
+      "title": "Garanties et limitation de responsabilité",
+      "body": "Le site et ses articles sont fournis en l'état, sans autre garantie que celles que la loi ne permet pas d'écarter. Un article reflète ce que son auteur savait à la date qu'il porte : vérifiez ce sur quoi vous vous appuyez. Dans la limite autorisée par le droit applicable, nous ne répondons pas des décisions prises sur la foi de ce que vous lisez ici."
+    },
+    {
+      "title": "Évolutions du site et des conditions",
+      "body": "Des articles s'ajoutent, se corrigent et parfois se retirent. Les présentes conditions peuvent également être mises à jour ; la date en haut de cette page donne toujours la dernière version."
+    },
+    {
+      "title": "Nous contacter",
+      "body": "Toute question sur ces conditions, ou sur un autre point de ce document, est la bienvenue via la page de contact. Pour les notifications à caractère juridique, utilisez l'adresse postale ou électronique qui y figure : nous en accusons réception dans les meilleurs délais."
+    }
+  ]
+}
