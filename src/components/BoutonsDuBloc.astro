@@ -1,0 +1,30 @@
+---
+// Un ou deux boutons saisis dans Keystatic ; un bouton sans texte ou sans adresse valide n'est pas rendu.
+import { Button } from "@components/ui/button";
+import { adresseSure } from "./apparence";
+
+interface Props {
+  boutons: (Record<string, any> | undefined)[];
+}
+
+const liste = (Astro.props.boutons ?? [])
+  .map((b) => (b && b.texte?.trim() && adresseSure(b.lien) ? { ...b, href: adresseSure(b.lien) as string } : undefined))
+  .filter((b): b is Record<string, any> => Boolean(b));
+---
+
+{
+  liste.length > 0 && (
+    <div class="bl-bouton">
+      {liste.map((b) => (
+        <Button
+          href={b.href}
+          variant={b.style}
+          size={b.taille}
+          {...(b.nouvelOnglet ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        >
+          {b.texte}
+        </Button>
+      ))}
+    </div>
+  )
+}

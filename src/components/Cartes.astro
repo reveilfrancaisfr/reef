@@ -1,0 +1,50 @@
+---
+// Bloc "Liste de cartes" : une grille de cartes (titre, texte, image et lien facultatifs), numerotables.
+import SectionHeader from "@components/Sections/Global/SectionHeader.astro";
+import Bloc from "./Bloc.astro";
+import { adresseSure, urlImage } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const centre = d.apparence?.alignement === "centre";
+const cartes: Record<string, any>[] = d.cartes ?? [];
+const colonnes = Number(d.colonnes) || 3;
+const numero = (rang: number) => String(rang + 1).padStart(2, "0");
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    d.titre && (
+      <div class="bl-entete-section">
+        <SectionHeader
+          title={d.titre}
+          accentWord={d.motAccentue || undefined}
+          eyebrow={d.surtitre || undefined}
+          lede={d.introduction || undefined}
+          align={centre ? "center" : "left"}
+        />
+      </div>
+    )
+  }
+  {
+    cartes.length > 0 && (
+      <ul class="bl-grille" style={`--bl-cols:${colonnes}`}>
+        {cartes.map((c, rang) => {
+          const lien = adresseSure(c.lien);
+          const image = urlImage(c.image);
+          return (
+            <li class="bl-carte" data-style={d.styleDesCartes ?? "contour"}>
+              {image && <img class="bl-carte__image" src={image} alt="" loading="lazy" decoding="async" />}
+              {d.numeroter && <span class="bl-carte__numero">{numero(rang)}</span>}
+              {c.titre && <h3 class="font-display">{lien ? <a href={lien}>{c.titre}</a> : c.titre}</h3>}
+              {c.texte && <p>{c.texte}</p>}
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+</Bloc>

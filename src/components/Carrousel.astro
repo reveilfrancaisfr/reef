@@ -1,0 +1,112 @@
+---
+// Bloc "Carrousel d'images" : des images qui defilent par glissement (CSS scroll-snap), avec fleches, points et defilement automatique facultatifs. Sans JavaScript, il reste un defilement tactile ou au clavier.
+import SectionHeader from "@components/Sections/Global/SectionHeader.astro";
+import { useTranslations } from "@i18n";
+import Bloc from "./Bloc.astro";
+import { adresseSure, urlImage } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const t = useTranslations(Astro);
+const centre = d.apparence?.alignement === "centre";
+const images = ((d.images ?? []) as Record<string, any>[]).map((i) => ({ ...i, src: urlImage(i.image), lien: adresseSure(i.lien) })).filter((i) => i.src);
+const visibles = Number(d.visibles) || 1;
+const ratio = d.ratio || "16 / 9";
+const auto = d.defilementAuto ? Number(d.duree) || 5 : 0;
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    d.titre && (
+      <div class="bl-entete-section">
+        <SectionHeader
+          title={d.titre}
+          accentWord={d.motAccentue || undefined}
+          eyebrow={d.surtitre || undefined}
+          lede={d.introduction || undefined}
+          align={centre ? "center" : "left"}
+        />
+      </div>
+    )
+  }
+  {
+    images.length > 0 && (
+      <div class="bl-carrousel" data-bl-carrousel data-auto={auto || undefined} style={`--bl-visibles:${visibles};--bl-ratio:${ratio}`}>
+        <div class="bl-piste" tabindex="0" role="group" aria-roledescription="carousel">
+          {images.map((i, rang) => (
+            <figure class="bl-slide" aria-label={`${rang + 1} / ${images.length}`}>
+              <img src={i.src} alt={i.description ?? ""} loading={rang === 0 ? "eager" : "lazy"} decoding="async" />
+              {i.legende && <figcaption>{i.legende}</figcaption>}
+              {i.lien && <a href={i.lien} aria-label={i.legende || i.description || i.lien} />}
+            </figure>
+          ))}
+        </div>
+        {d.fleches && images.length > visibles && (
+          <>
+            <button type="button" class="bl-fleche bl-fleche--prec" data-bl-prec aria-label={t.common.previous}>
+              ‹
+            </button>
+            <button type="button" class="bl-fleche bl-fleche--suiv" data-bl-suiv aria-label={t.common.next}>
+              ›
+            </button>
+          </>
+        )}
+        {d.points && images.length > visibles && (
+          <div class="bl-points">
+            {images.map((_, rang) => (
+              <button type="button" class="bl-point" data-bl-point={rang} aria-label={`${t.common.page} ${rang + 1}`} aria-current={rang === 0 ? "true" : "false"} />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+</Bloc>
+
+<script>
+  function demarrer() {
+    const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll<HTMLElement>("[data-bl-carrousel]:not([data-bl-pret])").forEach((racine) => {
+      racine.setAttribute("data-bl-pret", "");
+      const piste = racine.querySelector<HTMLElement>(".bl-piste");
+      if (!piste) return;
+      const slides = Array.from(piste.children) as HTMLElement[];
+      const points = Array.from(racine.querySelectorAll<HTMLElement>("[data-bl-point]"));
+      const pas = () => (slides[0]?.getBoundingClientRect().width ?? piste.clientWidth) + 16;
+      const rangActuel = () => Math.min(slides.length - 1, Math.max(0, Math.round(piste.scrollLeft / pas())));
+      const aller = (rang: number) => {
+        const cible = (rang + slides.length) % slides.length;
+        piste.scrollTo({ left: cible * pas(), behavior: reduit ? "auto" : "smooth" });
+      };
+      racine.querySelector("[data-bl-prec]")?.addEventListener("click", () => aller(rangActuel() - 1));
+      racine.querySelector("[data-bl-suiv]")?.addEventListener("click", () => aller(rangActuel() + 1));
+      points.forEach((point) => point.addEventListener("click", () => aller(Number(point.dataset.blPoint))));
+      piste.addEventListener(
+        "scroll",
+        () => {
+          const actuel = rangActuel();
+          points.forEach((point, rang) => point.setAttribute("aria-current", String(rang === actuel)));
+        },
+        { passive: true },
+      );
+
+      // Defilement automatique : jamais avec "reduire les animations", et en pause au survol ou au focus.
+      const secondes = Number(racine.dataset.auto);
+      if (secondes > 0 && !reduit) {
+        let pause = false;
+        racine.addEventListener("pointerenter", () => (pause = true));
+        racine.addEventListener("pointerleave", () => (pause = false));
+        racine.addEventListener("focusin", () => (pause = true));
+        racine.addEventListener("focusout", () => (pause = false));
+        window.setInterval(() => {
+          if (!pause && !document.hidden) aller(rangActuel() + 1);
+        }, secondes * 1000);
+      }
+    });
+  }
+  demarrer();
+  document.addEventListener("astro:page-load", demarrer);
+</script>

@@ -1,0 +1,47 @@
+---
+// Bloc "Texte et image" : le texte d'un cote, l'image de l'autre, sur une seule colonne en dessous de 52 rem.
+import SectionHeader from "@components/Sections/Global/SectionHeader.astro";
+import Bloc from "./Bloc.astro";
+import BoutonsDuBloc from "./BoutonsDuBloc.astro";
+import { enrichir, urlImage } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const centre = d.apparence?.alignement === "centre";
+const paragraphes: string[] = (d.paragraphes ?? []).filter((p: string) => p.trim());
+const image = urlImage(d.image);
+const forme = d.forme && d.forme !== "coins" ? d.forme : undefined;
+const ratio = d.ratio && d.ratio !== "auto" ? `aspect-ratio:${d.ratio}` : undefined;
+---
+
+<Bloc apparence={d.apparence}>
+  <div class:list={["bl-deux", d.position === "gauche" && "bl-deux--gauche"]}>
+    <div class="bl-deux__texte">
+      {
+        d.titre && (
+          <div class="bl-entete-section">
+            <SectionHeader
+              title={d.titre}
+              accentWord={d.motAccentue || undefined}
+              eyebrow={d.surtitre || undefined}
+              lede={d.introduction || undefined}
+              align={centre ? "center" : "left"}
+            />
+          </div>
+        )
+      }
+      {paragraphes.length > 0 && <div class="bl-prose">{paragraphes.map((p) => <p set:html={enrichir(p)} />)}</div>}
+      <BoutonsDuBloc boutons={[d.bouton]} />
+    </div>
+    {
+      image && (
+        <figure class="bl-deux__media">
+          <img class="bl-image" src={image} alt={d.description ?? ""} data-forme={forme} style={ratio} loading="lazy" decoding="async" />
+        </figure>
+      )
+    }
+  </div>
+</Bloc>

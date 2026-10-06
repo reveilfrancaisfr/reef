@@ -1,0 +1,39 @@
+---
+// src/components/Blocs/Blocs.astro - rend la liste de blocs d'une page libre : chaque type saisi dans Keystatic a son composant ici.
+// Ajouter un bloc : sa definition dans src/keystatic/pages-libres.ts, son composant dans ce dossier, et une ligne ci-dessous.
+import Appel from "./Appel.astro";
+import Carrousel from "./Carrousel.astro";
+import Cartes from "./Cartes.astro";
+import Citation from "./Citation.astro";
+import DerniersArticles from "./DerniersArticles.astro";
+import EnTete from "./EnTete.astro";
+import Espace from "./Espace.astro";
+import Texte from "./Texte.astro";
+import TexteImage from "./TexteImage.astro";
+
+interface Props {
+  blocs: { discriminant: string; value: Record<string, any> }[];
+  titrePage?: string;
+}
+
+const { blocs, titrePage = "" } = Astro.props;
+
+const COMPOSANTS: Record<string, any> = {
+  entete: EnTete,
+  texte: Texte,
+  texteImage: TexteImage,
+  cartes: Cartes,
+  appel: Appel,
+  citation: Citation,
+  articles: DerniersArticles,
+  carrousel: Carrousel,
+  espace: Espace,
+};
+---
+
+{
+  blocs.map((bloc) => {
+    const Composant = COMPOSANTS[bloc.discriminant];
+    return Composant ? <Composant donnees={bloc.value ?? {}} titrePage={titrePage} /> : null;
+  })
+}

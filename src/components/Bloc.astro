@@ -1,0 +1,79 @@
+---
+// src/components/Blocs/Bloc.astro - l'enveloppe commune des blocs : fond, couleurs, polices, formes des bords, largeur, espaces et animation, saisis dans "Apparence et animation".
+//
+// Les blocs n'ecrivent donc aucune de ces regles : ils placent leur contenu dans
+// <Bloc> et heritent du reste. `nu` retire l'espace et le conteneur pour les
+// composants du theme qui portent deja les leurs (l'en-tete de page, les derniers articles).
+import "./blocs.css";
+import { type ApparenceSaisie, calculerApparence } from "./apparence";
+
+interface Props {
+  apparence?: ApparenceSaisie | null;
+  nu?: boolean;
+  classe?: string;
+}
+
+const { apparence, nu = false, classe } = Astro.props;
+const a = calculerApparence(apparence);
+const carte = !nu && a.largeur === "carte";
+
+// En largeur "carte", le fond et les couleurs vont sur la boite arrondie et non sur la section.
+const styleSection = [a.variables, carte ? "" : a.couleurs, carte ? "" : a.decoupe].filter(Boolean).join(";");
+const styleBoite = carte ? a.couleurs : "";
+const attributs = { ...a.attributs, ...(nu ? { "data-nu": "" } : {}) };
+---
+
+<section class:list={["bloc", classe]} style={styleSection} {...attributs}>
+  {
+    nu ? (
+      <slot />
+    ) : a.largeur === "pleine" ? (
+      <div class="bl-pleine">
+        <slot />
+      </div>
+    ) : carte ? (
+      <div class="container-page">
+        <div class="bl-boite" style={styleBoite} data-police={a.attributs["data-police"]}>
+          <slot />
+        </div>
+      </div>
+    ) : (
+      <div class="container-page">
+        <div class:list={[a.largeur === "colonne" && "bl-colonne"]}>
+          <slot />
+        </div>
+      </div>
+    )
+  }
+</section>
+
+<script>
+  // Apparition animee : un seul observateur pour tous les blocs de la page.
+  function demarrer() {
+    const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cibles = document.querySelectorAll<HTMLElement>("[data-bl-anim]:not([data-bl-pret])");
+    if (reduit || !("IntersectionObserver" in window)) {
+      cibles.forEach((el) => el.setAttribute("data-bl-pret", ""));
+      return;
+    }
+    const observateur = new IntersectionObserver(
+      (entrees) => {
+        for (const entree of entrees) {
+          if (!entree.isIntersecting) continue;
+          const el = entree.target as HTMLElement;
+          el.classList.add("bl-visible");
+          el.removeAttribute("data-bl-cache");
+          observateur.unobserve(el);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    );
+    cibles.forEach((el) => {
+      el.setAttribute("data-bl-pret", "");
+      el.setAttribute("data-bl-cache", "");
+      observateur.observe(el);
+    });
+  }
+  demarrer();
+  document.addEventListener("astro:page-load", demarrer);
+</script>

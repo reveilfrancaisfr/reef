@@ -1,0 +1,16 @@
+---
+// Bloc "Espace ou separateur" : de la hauteur, avec ou sans motif.
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const HAUTEURS: Record<string, string> = {
+  s: "clamp(1rem, 3vw, 1.5rem)",
+  m: "clamp(2rem, 6vw, 3.5rem)",
+  l: "clamp(3.5rem, 10vw, 6rem)",
+  xl: "clamp(5rem, 16vw, 10rem)",
+};
+---
+
+<div class="bl-espace" data-motif={d.motif ?? "vide"} style={`height:${HAUTEURS[d.hauteur] ?? HAUTEURS.m}`} aria-hidden="true"></div>
