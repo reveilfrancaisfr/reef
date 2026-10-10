@@ -53,7 +53,7 @@ function hreflangDuHtml(/** @type {string} */ pathname) {
 
 // L'adresse publique du site, ecrite une fois : `site` la donne a Astro, et le
 // plan de site du moteur (moteur allume seulement) en tire son adresse absolue.
-const SITE = "https://reef.alohapixel.app";
+const SITE = "https://reveilfrancais.vercel.app";
 
 // LA PAGE INTROUVABLE DE CHAQUE LANGUE. src/pages/[locale]/404.astro sort en
 // fr/404/index.html, comme toute page ; un hebergeur statique (et Cloudflare,
