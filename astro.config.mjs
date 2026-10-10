@@ -22,6 +22,13 @@ const EN_DEVELOPPEMENT = process.argv.includes("dev");
 const AVEC_KEYSTATIC = EN_DEVELOPPEMENT || process.env.KEYSTATIC === "1";
 const KEYSTATIC_EN_LIGNE = !EN_DEVELOPPEMENT && process.env.KEYSTATIC === "1" && !MOTEUR_ACTIF;
 
+// L'adapter Vercel (11.0.13) importe "rolldown" dans le serveur alors qu'il ne s'en
+// sert qu'au build : sur Vercel, le fichier natif de Rolldown manque et la fonction
+// plante des son demarrage (500 FUNCTION_INVOCATION_FAILED sur /keystatic). Dans le
+// build serveur seulement, on le remplace par un fichier vide. Le build, lui, garde
+// le vrai Rolldown.
+const ROLLDOWN_VIDE = fileURLToPath(new URL("./scripts/rolldown-vide.mjs", import.meta.url));
+
 // Moteur allume ou Keystatic en ligne, l'adapter range les pages figees sous
 // dist/client/ ; sans ce detour, le plan de site ne retrouvait plus leur head
 // et perdait ses x-default.
@@ -164,7 +171,12 @@ export default defineConfig({
       ],
     },
     define: { __REEF_CAPTURE_DU_TELEPHONE__: JSON.stringify(existsSync(new URL("./public/reef-iphone-poster.webp", import.meta.url))) },
-    resolve: { alias: moteur.alias },
+    resolve: {
+      alias: [
+        ...moteur.alias,
+        ...(KEYSTATIC_EN_LIGNE ? [{ find: /^rolldown$/, replacement: ROLLDOWN_VIDE }] : []),
+      ],
+    },
     build: {
       assetsInlineLimit: 0,
     },
