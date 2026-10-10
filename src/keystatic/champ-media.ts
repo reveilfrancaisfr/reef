@@ -3,7 +3,8 @@
 // Il lit la mediatheque (scripts/mediatheque.mjs) : en developpement, il montre
 // toutes les images et videos de public/medias/ et en televerse de nouvelles.
 // Hors developpement (Keystatic en ligne), la mediatheque n'existe pas : le champ
-// reste un champ texte ou l'on colle l'adresse d'un fichier (/medias/photo.jpg).
+// n'appelle plus son API, reste un champ texte ou l'on colle l'adresse d'un
+// fichier (/medias/photo.jpg), et renvoie vers le depot GitHub pour ajouter le fichier.
 // La valeur enregistree est toujours cette adresse, en simple texte.
 //
 // Ecrit sans JSX (createElement) pour fonctionner quel que soit le reglage JSX du projet.
@@ -31,6 +32,9 @@ const BORD = "#3a3f44";
 const TEXTE = "#ececec";
 const ACCENT = "#4c8dff";
 const EXTENSIONS_VIDEO = /\.(mp4|webm|mov)(\?.*)?$/i;
+
+/** La page GitHub qui televerse un fichier dans public/medias (Keystatic en ligne, sans mediatheque). */
+const DEPOT_MEDIAS = "https://github.com/reveilfrancaisfr/reef/upload/main/public/medias";
 
 const estVideo = (adresse: string) => EXTENSIONS_VIDEO.test(adresse);
 
@@ -184,6 +188,8 @@ function Selecteur(props: { genre: GenreDeMedia; valeur: string; onChoisir(adres
 function Entree(props: FormFieldInputProps<string> & Options) {
   const { value, onChange, label, description, genre = "image" } = props;
   const [ouvert, setOuvert] = useState(false);
+  // La mediatheque n'existe qu'avec `pnpm dev` : en ligne, on ne l'appelle pas.
+  const enDeveloppement = import.meta.env.DEV;
   return h(
     "div",
     { style: { display: "grid", gap: 6, margin: "4px 0" } },
@@ -201,10 +207,21 @@ function Entree(props: FormFieldInputProps<string> & Options) {
         onChange: (e: { target: { value: string } }) => onChange(e.target.value),
         style: { flex: "1 1 14rem", background: "transparent", color: "inherit", border: `1px solid ${BORD}`, borderRadius: 8, padding: "6px 10px" },
       }),
-      h("button", { type: "button", onClick: () => setOuvert(true), style: bouton() }, value ? "Changer" : "Choisir dans la médiathèque"),
+      enDeveloppement
+        ? h("button", { type: "button", onClick: () => setOuvert(true), style: bouton() }, value ? "Changer" : "Choisir dans la médiathèque")
+        : null,
       value ? h("button", { type: "button", onClick: () => onChange(""), style: bouton({ color: "#ff8a8a" }) }, "Retirer") : null,
     ),
-    ouvert
+    enDeveloppement
+      ? null
+      : h(
+          "div",
+          { style: { opacity: 0.7, fontSize: 12 } },
+          "La médiathèque n'existe pas en ligne. Pour une nouvelle image ou vidéo : ",
+          h("a", { href: DEPOT_MEDIAS, target: "_blank", rel: "noopener", style: { color: ACCENT } }, "ajoutez le fichier dans public/medias sur GitHub"),
+          ", puis collez ici son adresse (/medias/nom-du-fichier.jpg).",
+        ),
+    ouvert && enDeveloppement
       ? h(Selecteur, {
           genre,
           valeur: value,
