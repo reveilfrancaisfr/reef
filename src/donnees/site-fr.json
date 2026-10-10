@@ -34,7 +34,7 @@
         "nouvelOnglet": false
       }
     ],
-    "boutonTexte": "S'abonner",
+    "boutonTexte": "Rejoindre notre combat",
     "lienBouton": "#newsletter"
   },
   "colonnes": [
@@ -95,19 +95,19 @@
     }
   ],
   "footer": {
-    "tagline": "Notre parti politique au service de la France.",
+    "tagline": "Réveil Français: Le seul parti politique au service de la France.",
     "rights": "Tous droits réservés.",
-    "builtWith": "Fait avec Astro, composé en Space Grotesk et Instrument Sans.",
+    "builtWith": "GitHub et Vercel",
     "themeBy": "Réveil Français",
     "backToTop": "Revenir en haut"
   },
   "newsletter": {
-    "title": "Un email, une fois par mois",
-    "accent": "mois",
-    "lede": "Un court résumé de ce que nous avons publié et de ce que nous avons raté. Pas de pixel espion, pas de séquence automatique, un clic pour partir définitivement.",
-    "placeholder": "vous@example.com",
+    "title": "Un email, une fois par semaine",
+    "accent": "semaine",
+    "lede": "Rejoignez notre combat et restez informé en suivant jour après jour notre actualité. ",
+    "placeholder": "reveil.francais.fr@gmail.com",
     "submit": "S'abonner",
-    "note": "Un email par mois. Désinscription depuis n'importe lequel.",
+    "note": "Un email par semaine. Désinscription depuis n'importe lequel.",
     "rssTitle": "Vous préférez un flux ?",
     "rssLede": "Tout le blog tient dans le flux RSS, en texte intégral, sans inscription.",
     "rssCta": "Flux RSS"
