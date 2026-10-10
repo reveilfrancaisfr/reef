@@ -1,0 +1,35 @@
+---
+// Bloc "Appel a l'action" : un titre, un texte et un ou deux boutons.
+import Bloc from "./Bloc.astro";
+import BoutonsDuBloc from "./BoutonsDuBloc.astro";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+
+// Le mot mis en valeur est colore en echappant le titre avant de le decouper : rien du texte saisi n'est du HTML.
+const titre: string = d.titre ?? "";
+const mot: string = (d.motAccentue ?? "").trim();
+const coupe = mot ? titre.toLowerCase().indexOf(mot.toLowerCase()) : -1;
+const avant = coupe >= 0 ? titre.slice(0, coupe) : titre;
+const accent = coupe >= 0 ? titre.slice(coupe, coupe + mot.length) : "";
+const apres = coupe >= 0 ? titre.slice(coupe + mot.length) : "";
+---
+
+<Bloc apparence={d.apparence}>
+  <div class="bl-appel">
+    {
+      titre && (
+        <h2 class="font-display text-display-md">
+          {avant}
+          {accent && <span style="color:var(--color-primary)">{accent}</span>}
+          {apres}
+        </h2>
+      )
+    }
+    {d.texte && <p>{d.texte}</p>}
+    <BoutonsDuBloc boutons={[d.principal, d.secondaire]} />
+  </div>
+</Bloc>

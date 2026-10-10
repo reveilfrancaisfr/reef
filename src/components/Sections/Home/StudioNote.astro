@@ -9,9 +9,12 @@ import { Icon } from "@components/svg/icons";
 import { Button } from "@components/ui/button";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
+import { accueilKeystatic, adresseDeLAccueil } from "@moteur/accueil-keystatic";
 
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+// Les textes, adresses et medias saisis dans Keystatic (src/keystatic/accueil.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
+const { t, ks } = await accueilKeystatic(useTranslations(Astro), locale);
 const routes = getSiteRoutes(locale);
 ---
 
@@ -20,7 +23,7 @@ const routes = getSiteRoutes(locale);
     <SectionHeader
       as="h2"
       headingId="studio-title"
-      eyebrow={t.about.eyebrow}
+      eyebrow={t.home.aboutEyebrow}
       title={t.home.aboutTitle}
       accentWord={t.home.aboutAccent}
       lede={t.home.aboutLede}
@@ -30,11 +33,11 @@ const routes = getSiteRoutes(locale);
       {/* Le turquoise est la seule couleur d'action du theme : un bouton blanc
           ici ferait un second point d'action, d'une autre couleur, sur un ecran
           qui n'en demande qu'un. */}
-      <Button href={routes.about} variant="primary" size="md">
+      <Button href={adresseDeLAccueil(ks.studio?.lien) ?? routes.about} variant="primary" size="md">
         {t.home.aboutCta}
         <Icon name="arrow-right" size={17} />
       </Button>
-      <Button href={routes.contact} variant="outline" size="md">{t.nav.contact}</Button>
+      <Button href={adresseDeLAccueil(ks.studio?.lienContact) ?? routes.contact} variant="outline" size="md">{t.home.aboutContact}</Button>
     </div>
   </div>
 </section>

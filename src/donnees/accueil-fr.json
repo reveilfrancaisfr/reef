@@ -1,5 +1,57 @@
 {
   "metaTitre": "Réveil Français",
-  "accroche": "La France d'Abord",
-  "compteurs": []
+  "metaDescription": "Journaux de chantier, temps de chargement, typographie et gestion d'un petit studio web. En français et en anglais, quelques notes par mois, écrites par les trois personnes qui font le travail.",
+  "accroche": "Réveil Français",
+  "titre": "Réveil Français : le parti de la France d'abord",
+  "motAccentue": "Réveil Français",
+  "chapeau": "Pour l'avenir de la France, pour le futur de la jeunesse et pour notre place dans le monde.",
+  "boutonPrincipal": "Découvrir notre parti",
+  "lienPrincipal": "/fr/blog/",
+  "boutonSecondaire": "Notre candidate",
+  "lienSecondaire": "/fr/about/",
+  "compteurs": [
+    "notes publiées",
+    "fils",
+    "langues"
+  ],
+  "bande": {
+    "label": "Tous les sujets"
+  },
+  "aLaUne": {
+    "eyebrow": "Article du jour"
+  },
+  "studio": {
+    "eyebrow": "Notre candidate",
+    "title": "Alix LACROIX, la seule à pouvoir relever la France ",
+    "accent": "France",
+    "lede": "S'engager en politique pour représenter la France des travailleurs et des surtaxés.",
+    "cta": "Son portrait",
+    "lien": "/fr/portrait/",
+    "contact": "Ses réseaux",
+    "lienContact": "/fr/reseaux/"
+  },
+  "dernieresNotes": {
+    "title": "Dernières notes",
+    "accent": "Dernières",
+    "lede": "Les entrées les plus récentes, de la plus fraîche à la plus ancienne. Le reste attend dans les archives.",
+    "cta": "Voir tous les articles",
+    "lien": "/fr/blog/"
+  },
+  "sujets": {
+    "title": "Cinq de nos convictions que nous allons appliquer dès les 50 premiers jours.",
+    "accent": "appliquer",
+    "lede": "Chaque article appartient à un seul sujet : un fil se lit donc d'un bout à l'autre.",
+    "cta": "Voir tous les sujets",
+    "lien": "/fr/topics/"
+  },
+  "signatures": {
+    "title": "Qui écrit ici",
+    "accent": "écrit",
+    "lede": "Ici, tout le monde livre encore des projets clients. Chaque signature mène à tout ce que son auteur a publié, première note comprise.",
+    "cta": "Voir les auteurs",
+    "lien": "/fr/authors/"
+  },
+  "lettre": {
+    "lienFlux": "/fr/rss.xml"
+  }
 }

@@ -27,7 +27,7 @@ import { Icon } from "@components/svg/icons";
 import { Button } from "@components/ui/button";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
-import type { TextesAccueil } from "@moteur/accueil-keystatic";
+import { adresseDeLAccueil, type TextesAccueil } from "@moteur/accueil-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { imageDe, lienDe } from "@moteur/cadre";
 import Pastilles from "@moteur/Pastilles.astro";
@@ -52,6 +52,8 @@ const routes = getSiteRoutes(locale);
 // fond (champ image) et l'adresse des deux boutons (cta_link,
 // cta_secondary_link). Moteur eteint, tout vaut le theme (src/moteur/cadre.ts).
 const photo = imageDe(Astro, "hero");
+// La photo choisie dans Keystatic (la mediatheque) passe devant celle du theme.
+const fondKeystatic = adresseDeLAccueil(textes.imageFond);
 const lienPrincipal = textes.lienPrincipal || (lienDe(Astro, "hero", "cta_link") ?? routes.posts);
 const lienSecondaire = textes.lienSecondaire || (lienDe(Astro, "hero", "cta_secondary_link") ?? routes.about);
 
@@ -111,7 +113,17 @@ const after = at >= 0 ? title.slice(at + accent.length) : "";
        qu'on voit, en grand. A 50 (le defaut de sharp en AVIF) la texture de la
        photo s'empate ; a 75 elle reste nette, pour environ 50 % de poids en plus. */}
     {
-      photo ? (
+      fondKeystatic ? (
+        <img
+          src={fondKeystatic}
+          alt=""
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-0 size-full object-cover object-[center_62%]"
+        />
+      ) : photo ? (
         <PhotoDuMoteur
           media={photo}
           widths={[720, 800, 1200, 1440, 1920, 2560]}

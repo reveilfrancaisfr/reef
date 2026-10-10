@@ -1,0 +1,32 @@
+---
+// Bloc "Image" : une image placee ou l'on veut, avec taille, forme, proportions, legende et lien facultatifs.
+import Bloc from "./Bloc.astro";
+import { adresseSure, urlImage } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const source = urlImage(d.image);
+const lien = adresseSure(d.lien);
+const ratio = d.ratio && d.ratio !== "auto" ? `aspect-ratio:${d.ratio}` : undefined;
+const forme = d.forme && d.forme !== "coins" ? d.forme : undefined;
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    source && (
+      <figure class="bl-figure" data-taille={d.taille ?? "large"}>
+        {lien ? (
+          <a href={lien}>
+            <img src={source} alt={d.description ?? ""} data-forme={forme} style={ratio} loading="lazy" decoding="async" />
+          </a>
+        ) : (
+          <img src={source} alt={d.description ?? ""} data-forme={forme} style={ratio} loading="lazy" decoding="async" />
+        )}
+        {d.legende && <figcaption>{d.legende}</figcaption>}
+      </figure>
+    )
+  }
+</Bloc>

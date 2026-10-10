@@ -80,8 +80,11 @@ const schemaDuSite = () => ({
       placeholder: texte("Texte d'exemple du champ e-mail"),
       submit: texte("Texte du bouton"),
       note: texte("Note sous le formulaire"),
+      rssTitle: texte("Encadré du flux RSS : titre"),
+      rssLede: paragraphe("Encadré du flux RSS : texte"),
+      rssCta: texte("Encadré du flux RSS : texte du bouton"),
     },
-    { label: "Lettre d'information (dans le pied de page)" },
+    { label: "Lettre d'information (pied de page et invitation de l'accueil)" },
   ),
 });
 

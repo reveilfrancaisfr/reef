@@ -1,0 +1,25 @@
+---
+// Bloc "Derniers articles du blog" : le composant LatestPosts de l'accueil, avec le nombre d'articles choisi.
+// Son titre et son introduction sont ceux du dictionnaire du theme (t.home.latest*).
+import LatestPosts from "@components/Sections/Home/LatestPosts.astro";
+import { getLocale } from "@i18n";
+import { getResolvedPosts } from "@js/posts";
+import Bloc from "./Bloc.astro";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const locale = getLocale(Astro);
+const nombre = Number(d.nombre) || 3;
+const posts = (await getResolvedPosts(locale)).slice(0, nombre);
+---
+
+{
+  posts.length > 0 && (
+    <Bloc apparence={d.apparence} nu>
+      <LatestPosts posts={posts} />
+    </Bloc>
+  )
+}

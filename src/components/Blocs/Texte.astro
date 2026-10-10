@@ -1,0 +1,31 @@
+---
+// Bloc "Texte" : un en-tete de section (facultatif) puis des paragraphes.
+import SectionHeader from "@components/Sections/Global/SectionHeader.astro";
+import Bloc from "./Bloc.astro";
+import { enrichir } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const centre = d.apparence?.alignement === "centre";
+const paragraphes: string[] = (d.paragraphes ?? []).filter((p: string) => p.trim());
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    d.titre && (
+      <div class="bl-entete-section">
+        <SectionHeader
+          title={d.titre}
+          accentWord={d.motAccentue || undefined}
+          eyebrow={d.surtitre || undefined}
+          lede={d.introduction || undefined}
+          align={centre ? "center" : "left"}
+        />
+      </div>
+    )
+  }
+  {paragraphes.length > 0 && <div class="bl-prose">{paragraphes.map((p) => <p set:html={enrichir(p)} />)}</div>}
+</Bloc>

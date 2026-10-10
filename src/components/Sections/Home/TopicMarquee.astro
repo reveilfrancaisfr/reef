@@ -15,6 +15,7 @@ import { Marquee } from "@components/ui/marquee";
 import { topicTone, type TopicAccent } from "@components/Cards/topicTone";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
+import { accueilKeystatic } from "@moteur/accueil-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { annotationsDeLaFiche } from "@moteur/listes";
 import Pastilles from "@moteur/Pastilles.astro";
@@ -29,7 +30,9 @@ interface Props {
 const { topics, counts } = Astro.props;
 
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+// Les textes, adresses et medias saisis dans Keystatic (src/keystatic/accueil.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
+const { t } = await accueilKeystatic(useTranslations(Astro), locale);
 // Moteur allume, en mode edition : l'entree "bande-sujets" (le bloc, masquable)
 // et, sur chaque nom, la fiche du sujet dans la collection "sujets".
 const ed = annotationsDe(Astro, "bande-sujets");

@@ -1,0 +1,63 @@
+---
+// Bloc "Video" : un fichier de la mediatheque, en lecteur avec commandes ou en ambiance (automatique, muet, en boucle, en pause hors ecran).
+import Bloc from "./Bloc.astro";
+import { typeDeVideo, urlImage } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const source = urlImage(d.fichier);
+const affiche = urlImage(d.affiche);
+const ambiance = d.mode === "ambiance";
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    source && (
+      <figure class="bl-figure" data-taille={d.taille ?? "large"}>
+        <video
+          style={`aspect-ratio:${d.ratio || "16 / 9"}`}
+          poster={affiche}
+          aria-label={d.description || undefined}
+          playsinline
+          preload={ambiance ? "auto" : "metadata"}
+          controls={!ambiance}
+          muted={ambiance}
+          loop={ambiance}
+          data-bl-ambiance={ambiance ? "" : undefined}
+        >
+          <source src={source} type={typeDeVideo(source)} />
+        </video>
+        {d.legende && <figcaption>{d.legende}</figcaption>}
+      </figure>
+    )
+  }
+</Bloc>
+
+<script>
+  // Mode "ambiance" : lecture automatique, sans son, en pause quand la video n'est pas a l'ecran.
+  // Avec "reduire les animations", elle ne demarre pas seule : les commandes apparaissent.
+  function demarrer() {
+    const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll<HTMLVideoElement>("video[data-bl-ambiance]:not([data-bl-pret])").forEach((video) => {
+      video.setAttribute("data-bl-pret", "");
+      if (reduit || !("IntersectionObserver" in window)) {
+        video.controls = true;
+        return;
+      }
+      new IntersectionObserver(
+        (entrees) => {
+          for (const entree of entrees) {
+            if (entree.isIntersecting) void video.play().catch(() => (video.controls = true));
+            else video.pause();
+          }
+        },
+        { threshold: 0.25 },
+      ).observe(video);
+    });
+  }
+  demarrer();
+  document.addEventListener("astro:page-load", demarrer);
+</script>

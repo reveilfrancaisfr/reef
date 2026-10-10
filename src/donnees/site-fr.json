@@ -7,13 +7,13 @@
         "nouvelOnglet": false
       },
       {
-        "texte": "Sujets",
+        "texte": "Présentation",
         "lien": "/fr/topics/",
         "nouvelOnglet": false
       },
       {
-        "texte": "À propos",
-        "lien": "/fr/about/",
+        "texte": "Notre candidate",
+        "lien": "/fr/presentation-candidate/",
         "nouvelOnglet": false
       },
       {
@@ -95,10 +95,10 @@
     }
   ],
   "footer": {
-    "tagline": "Reef Notes est le carnet de bord d'un studio web à trois. Journaux de chantier, temps de chargement, spécimens typographiques, et les côtés du métier d'indépendant dont personne ne fait une page d'accueil.",
+    "tagline": "Notre parti politique au service de la France.",
     "rights": "Tous droits réservés.",
     "builtWith": "Fait avec Astro, composé en Space Grotesk et Instrument Sans.",
-    "themeBy": "Thème Reef par",
+    "themeBy": "Réveil Français",
     "backToTop": "Revenir en haut"
   },
   "newsletter": {
@@ -107,6 +107,9 @@
     "lede": "Un court résumé de ce que nous avons publié et de ce que nous avons raté. Pas de pixel espion, pas de séquence automatique, un clic pour partir définitivement.",
     "placeholder": "vous@example.com",
     "submit": "S'abonner",
-    "note": "Un email par mois. Désinscription depuis n'importe lequel."
+    "note": "Un email par mois. Désinscription depuis n'importe lequel.",
+    "rssTitle": "Vous préférez un flux ?",
+    "rssLede": "Tout le blog tient dans le flux RSS, en texte intégral, sans inscription.",
+    "rssCta": "Flux RSS"
   }
 }

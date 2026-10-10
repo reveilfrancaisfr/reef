@@ -2,16 +2,32 @@
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import keystatic from "@keystatic/astro";
 import { defineConfig } from "astro/config";
 import { moteur, MOTEUR_ACTIF } from "./moteur.config.mjs";
 import { existsSync, readdirSync, readFileSync, renameSync, rmdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { mediatheque } from "./scripts/mediatheque.mjs";
+import { rechargementDuContenu } from "./scripts/rechargement-du-contenu.mjs";
 
-// Moteur allume, l'adapter range les pages figees sous dist/client/ ; sans ce
-// detour, le plan de site ne retrouvait plus leur head et perdait ses x-default.
-const DIST = fileURLToPath(new URL(MOTEUR_ACTIF ? "./dist/client/" : "./dist/", import.meta.url));
+// Les trois modes de Keystatic :
+//  - `pnpm dev`            : local, avec la mediatheque et le rechargement du contenu ;
+//  - build normal          : Keystatic absent, site 100% statique ;
+//  - build avec KEYSTATIC=1 : Keystatic en ligne (mode GitHub). Il faut alors un
+//    adapter pour servir /keystatic et /api/keystatic ; le reste du site
+//    demeure prerendu. C'est ce qu'on pose sur Vercel.
+const EN_DEVELOPPEMENT = process.argv.includes("dev");
+const AVEC_KEYSTATIC = EN_DEVELOPPEMENT || process.env.KEYSTATIC === "1";
+const KEYSTATIC_EN_LIGNE = !EN_DEVELOPPEMENT && process.env.KEYSTATIC === "1" && !MOTEUR_ACTIF;
+
+// Moteur allume ou Keystatic en ligne, l'adapter range les pages figees sous
+// dist/client/ ; sans ce detour, le plan de site ne retrouvait plus leur head
+// et perdait ses x-default.
+const DIST = fileURLToPath(
+  new URL(MOTEUR_ACTIF || KEYSTATIC_EN_LIGNE ? "./dist/client/" : "./dist/", import.meta.url),
+);
 
 // Lit les hreflang que la page construite porte deja : le head est la seule
 // source, le plan de site ne peut donc plus le contredire. L'integration
@@ -38,7 +54,6 @@ function hreflangDuHtml(/** @type {string} */ pathname) {
 // L'adresse publique du site, ecrite une fois : `site` la donne a Astro, et le
 // plan de site du moteur (moteur allume seulement) en tire son adresse absolue.
 const SITE = "https://reef.alohapixel.app";
-const AVEC_KEYSTATIC = process.argv.includes("dev") || process.env.KEYSTATIC === "1";
 
 // LA PAGE INTROUVABLE DE CHAQUE LANGUE. src/pages/[locale]/404.astro sort en
 // fr/404/index.html, comme toute page ; un hebergeur statique (et Cloudflare,
@@ -77,6 +92,9 @@ export default defineConfig({
   // publication (ALOHA_MOTEUR=emdash) pose l'adapter Cloudflare et ne rend a
   // la demande QUE les pages qu'il gere ; tout le reste demeure prerendu.
   ...moteur.config,
+  // Keystatic en ligne (KEYSTATIC=1) : l'adapter Vercel ne rend a la demande
+  // que /keystatic et /api/keystatic ; toutes les pages du site restent figees.
+  ...(KEYSTATIC_EN_LIGNE ? { adapter: vercel() } : {}),
   security: { checkOrigin: true },
 
   // Routage bilingue. L'anglais est servi a la racine (/, /about/), le francais
@@ -126,21 +144,25 @@ export default defineConfig({
   build: { inlineStylesheets: "always" },
 
   vite: {
-    plugins: [tailwindcss()],
-optimizeDeps: {
-  include: [
-  '@keystatic/core',
-  '@keystatic/astro/ui',
-  'lodash/debounce',
-  'lodash/throttle',
-  'direction',
-  'use-sync-external-store/shim/index.js',
-  'is-hotkey',
-  'slate-react > is-hotkey',
-  'graphql',
-  '@keystatic/core > cookie',
-],
-},
+    plugins: [
+      tailwindcss(),
+      // La mediatheque et le rechargement du contenu ne servent qu'avec `pnpm dev`.
+      ...(EN_DEVELOPPEMENT ? [mediatheque(), rechargementDuContenu()] : []),
+    ],
+    optimizeDeps: {
+      include: [
+        "@keystatic/core",
+        "@keystatic/astro/ui",
+        "lodash/debounce",
+        "lodash/throttle",
+        "direction",
+        "use-sync-external-store/shim/index.js",
+        "is-hotkey",
+        "slate-react > is-hotkey",
+        "graphql",
+        "@keystatic/core > cookie",
+      ],
+    },
     define: { __REEF_CAPTURE_DU_TELEPHONE__: JSON.stringify(existsSync(new URL("./public/reef-iphone-poster.webp", import.meta.url))) },
     resolve: { alias: moteur.alias },
     build: {

@@ -25,6 +25,8 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
+import { accueilKeystatic, adresseDeLAccueil } from "@moteur/accueil-keystatic";
+import { lireSite, surcharger } from "@moteur/contenu-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { imageDe, lienDe } from "@moteur/cadre";
 import Pastilles from "@moteur/Pastilles.astro";
@@ -35,7 +37,14 @@ import { Image } from "astro:assets";
 import heroVague from "../../../assets/reef-hero-vague.webp";
 
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+// Les textes, adresses et medias saisis dans Keystatic (src/keystatic/accueil.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
+// Les textes de la lettre sont ceux de "Navigation et pied de page" (la meme lettre, deux endroits) ;
+// la photo de fond et l'adresse du flux, ceux de "Accueil : textes".
+const { t: tAccueil, ks } = await accueilKeystatic(useTranslations(Astro), locale);
+const site = await lireSite(locale);
+const t = surcharger(tAccueil, { newsletter: site?.newsletter });
+const fondKeystatic = adresseDeLAccueil(ks.lettre?.image);
 // Moteur allume, en mode edition : les sections "lettre" et "lettre-flux" de la base.
 const ed = annotationsDe(Astro, "lettre");
 const flux = annotationsDe(Astro, "lettre-flux");
@@ -44,7 +53,7 @@ const routes = getSiteRoutes(locale);
 // l'adresse du bouton du flux (cta_link de "lettre-flux") et l'adresse du
 // service qui recoit les inscriptions (entree "site"). Vide, le theme.
 const photo = imageDe(Astro, "lettre");
-const lienDuFlux = lienDe(Astro, "lettre-flux", "cta_link") ?? routes.rss;
+const lienDuFlux = adresseDeLAccueil(ks.lettre?.lienFlux) ?? lienDe(Astro, "lettre-flux", "cta_link") ?? routes.rss;
 const envoi = identiteDuSite(Astro, locale).formulaires.newsletter;
 const envoiDeLettre = await envoiDeLaLettre(Astro);
 const attributsDuFormulaire = envoiDeLettre?.attributs ?? (envoi ? { action: envoi, method: "post" } : {});
@@ -90,7 +99,16 @@ const after = at >= 0 ? title.slice(at + accent.length) : "";
         alt vide et aria-hidden. Chargee paresseusement, c'est le bas de la
         page et personne ne l'attend. */}
     {
-      photo ? (
+      fondKeystatic ? (
+        <img
+          src={fondKeystatic}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-0 -z-30 size-full object-cover object-[center_78%]"
+        />
+      ) : photo ? (
         <PhotoDuMoteur
           media={photo}
           widths={[720, 1200, 1800]}

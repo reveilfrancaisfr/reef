@@ -6,6 +6,7 @@
 // page, seul endroit qui voit tous les billets a la fois.
 import FeaturedPostCard from "@components/Cards/FeaturedPostCard.astro";
 import { getLocale, useTranslations } from "@i18n";
+import { accueilKeystatic } from "@moteur/accueil-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import Pastilles from "@moteur/Pastilles.astro";
 import type { ResolvedPost } from "@js/posts";
@@ -16,7 +17,9 @@ type Props = {
 
 const { entry } = Astro.props;
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+// Les textes, adresses et medias saisis dans Keystatic (src/keystatic/accueil.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
+const { t } = await accueilKeystatic(useTranslations(Astro), locale);
 const ed = annotationsDe(Astro, "a-la-une");
 ---
 

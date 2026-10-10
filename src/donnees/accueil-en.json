@@ -1,5 +1,61 @@
 {
-  "metaTitre": "Réveil Français",
-  "accroche": "France First",
-  "compteurs": []
+  "metaTitre": "Reef Notes, a working notebook from an independent web studio",
+  "metaDescription": "Build logs, load times, typography and the business of running a small web studio. Written in English and French, a few notes a month, by the three people doing the work.",
+  "accroche": "Reef Notes",
+  "titre": "Notes from a small web studio",
+  "motAccentue": "small",
+  "chapeau": "What we learn building sites, written down as we go. The notebook, not the portfolio.",
+  "boutonPrincipal": "Start reading",
+  "lienPrincipal": "/blog/",
+  "boutonSecondaire": "About the studio",
+  "lienSecondaire": "/about/",
+  "compteurs": [
+    "notes published",
+    "threads",
+    "languages"
+  ],
+  "imageFond": "",
+  "bande": {
+    "label": "All topics"
+  },
+  "aLaUne": {
+    "eyebrow": "Pick of the month"
+  },
+  "studio": {
+    "eyebrow": "About",
+    "title": "The studio behind the notes",
+    "accent": "studio",
+    "lede": "One builds, one measures, one designs, and all three write. Three or four projects a year, and everything we learn on them ends up here.",
+    "cta": "How we work",
+    "lien": "/about/",
+    "contact": "Contact",
+    "lienContact": "/contact/",
+    "video": "",
+    "affiche": ""
+  },
+  "dernieresNotes": {
+    "title": "Latest notes",
+    "accent": "Latest",
+    "lede": "The most recent entries, newest first. Everything older waits in the archive.",
+    "cta": "Browse all posts",
+    "lien": "/blog/"
+  },
+  "sujets": {
+    "title": "Five threads we keep pulling",
+    "accent": "threads",
+    "lede": "Every post belongs to exactly one topic, so a thread can be read end to end without wading through the rest.",
+    "cta": "See all topics",
+    "lien": "/topics/"
+  },
+  "signatures": {
+    "title": "Who writes here",
+    "accent": "writes",
+    "lede": "Everyone here still ships client work. Each byline leads to everything that person has published, oldest note included.",
+    "cta": "Meet the writers",
+    "lien": "/authors/"
+  },
+  "lettre": {
+    "image": "",
+    "lienFlux": "/rss.xml"
+  }
 }

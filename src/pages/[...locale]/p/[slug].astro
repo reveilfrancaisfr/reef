@@ -1,0 +1,43 @@
+---
+// src/pages/[...locale]/p/[slug].astro - une page libre saisie dans Keystatic (collection "Pages libres") : /p/adresse/ en anglais, /fr/p/adresse/ en francais.
+//
+// Le prefixe /p/ evite la collision avec [...locale]/index.astro, qui attrape les
+// adresses a un segment. La page n'est qu'une liste de blocs : tout le rendu est
+// dans src/components/Blocs/.
+import Blocs from "@components/Blocs/Blocs.astro";
+import Footer from "@components/Sections/Global/Footer.astro";
+import Navbar from "@components/Sections/Global/Navbar.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { lirePagesLibres } from "@moteur/contenu-keystatic";
+
+type PageLibre = Awaited<ReturnType<typeof lirePagesLibres>>[number];
+
+export async function getStaticPaths() {
+  const pages = await lirePagesLibres();
+  return pages.map((page) => ({
+    // Anglais : pas de prefixe, le parametre [...locale] est alors absent.
+    params: { locale: page.langue === "fr" ? "fr" : undefined, slug: page.slug },
+    props: { page },
+  }));
+}
+
+interface Props {
+  page: PageLibre;
+}
+
+const { page } = Astro.props;
+
+// PageHero absorbe la barre flottante du haut ; une page qui ne commence pas par
+// le bloc "En-tete de page" doit donc ajouter sa propre marge.
+const commenceParEnTete = page.blocs[0]?.discriminant === "entete";
+---
+
+<BaseLayout title={page.titre} description={page.description}>
+  <Navbar />
+
+  <main id="content" class={commenceParEnTete ? undefined : "pt-28 md:pt-36"}>
+    <Blocs blocs={page.blocs} titrePage={page.titre} />
+  </main>
+
+  <Footer />
+</BaseLayout>

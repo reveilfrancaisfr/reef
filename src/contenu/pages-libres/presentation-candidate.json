@@ -1,0 +1,35 @@
+{
+  "titre": "Présentation Candidate",
+  "langue": "fr",
+  "publiee": true,
+  "blocs": [
+    {
+      "discriminant": "imageSeule",
+      "value": {
+        "taille": "large",
+        "forme": "coins",
+        "ratio": "auto",
+        "apparence": {
+          "fond": {
+            "discriminant": "theme"
+          },
+          "texte": {
+            "discriminant": "auto"
+          },
+          "accent": {
+            "discriminant": "theme"
+          },
+          "police": "theme",
+          "largeur": "large",
+          "coins": "arrondis",
+          "separateurHaut": "aucun",
+          "separateurBas": "aucun",
+          "espacement": "normal",
+          "alignement": "gauche",
+          "animation": "monter",
+          "delai": "0"
+        }
+      }
+    }
+  ]
+}

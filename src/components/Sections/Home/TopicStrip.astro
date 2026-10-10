@@ -11,6 +11,7 @@ import { Icon } from "@components/svg/icons";
 import { Button } from "@components/ui/button";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
+import { accueilKeystatic, adresseDeLAccueil } from "@moteur/accueil-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { lienDe } from "@moteur/cadre";
 import Pastilles from "@moteur/Pastilles.astro";
@@ -25,11 +26,13 @@ type Props = {
 
 const { topics, counts } = Astro.props;
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+// Les textes, adresses et medias saisis dans Keystatic (src/keystatic/accueil.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
+const { t, ks } = await accueilKeystatic(useTranslations(Astro), locale);
 const ed = annotationsDe(Astro, "sujets");
 const routes = getSiteRoutes(locale);
 // L'adresse du bouton : celle que l'editeur a saisie (entree "sujets"), sinon la page prevue par le theme.
-const lien = lienDe(Astro, "sujets", "cta_link") ?? routes.topics;
+const lien = adresseDeLAccueil(ks.sujets?.lien) ?? lienDe(Astro, "sujets", "cta_link") ?? routes.topics;
 
 const filled = topics.filter((topic) => (counts[entrySlug(topic.id)] ?? 0) > 0);
 

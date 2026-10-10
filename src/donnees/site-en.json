@@ -107,6 +107,9 @@
     "lede": "A short digest of what we published and what we got wrong. No tracking pixel, no drip sequence, one click to leave for good.",
     "placeholder": "you@example.com",
     "submit": "Subscribe",
-    "note": "One email a month. Unsubscribe from any of them."
+    "note": "One email a month. Unsubscribe from any of them.",
+    "rssTitle": "Prefer a feed?",
+    "rssLede": "The whole blog is in the RSS feed, full text, no signup.",
+    "rssCta": "RSS feed"
   }
 }

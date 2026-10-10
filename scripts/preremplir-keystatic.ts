@@ -1,16 +1,18 @@
 // scripts/preremplir-keystatic.ts - ecrit dans src/donnees/ les fichiers de contenu Keystatic, remplis avec les textes ACTUELS du theme.
 //
-//   npx tsx scripts/preremplir-keystatic.ts            cree les fichiers qui n'existent pas encore
-//   npx tsx scripts/preremplir-keystatic.ts --force    ecrase aussi ceux qui existent (perd vos modifications)
+//   npx tsx scripts/preremplir-keystatic.ts            cree les fichiers absents et COMPLETE les existants :
+//                                                      seuls les champs qui manquent sont ajoutes, jamais une
+//                                                      valeur deja saisie (ni modifiee, ni effacee)
+//   npx tsx scripts/preremplir-keystatic.ts --force    ecrase tout (perd vos modifications)
 //
 // Sans lui, chaque formulaire Keystatic demarre vide : il faudrait connaitre le
 // texte du theme pour le modifier. Avec lui, chaque champ affiche deja le texte
 // en place, et l'on n'a plus qu'a le changer. Les textes viennent des dictionnaires
 // du theme (src/i18n/ui/) et de src/config/legalData.json.ts, lus tels quels.
 //
-// Il ne remplace jamais un fichier existant sans --force : relancer ce script
-// apres avoir edite dans Keystatic est sans danger.
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+// Il ne remplace jamais une valeur existante sans --force : relancer ce script
+// apres avoir edite dans Keystatic, ou apres l'ajout de nouveaux champs au theme, est sans danger.
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLegalData } from "../src/config/legalData.json.ts";
@@ -50,6 +52,43 @@ for (const langue of Object.keys(dictionnaires) as Langue[]) {
       boutonSecondaire: d.home.heroSecondary,
       lienSecondaire: r("/about/"),
       compteurs: [...d.home.heroLedger],
+      imageFond: "",
+      bande: { label: d.home.marqueeLabel },
+      aLaUne: { eyebrow: d.home.featuredEyebrow },
+      studio: {
+        eyebrow: d.home.aboutEyebrow,
+        title: d.home.aboutTitle,
+        accent: d.home.aboutAccent,
+        lede: d.home.aboutLede,
+        cta: d.home.aboutCta,
+        lien: r("/about/"),
+        contact: d.home.aboutContact,
+        lienContact: r("/contact/"),
+        video: "",
+        affiche: "",
+      },
+      dernieresNotes: {
+        title: d.home.latestTitle,
+        accent: d.home.latestAccent,
+        lede: d.home.latestLede,
+        cta: d.home.latestCta,
+        lien: r("/blog/"),
+      },
+      sujets: {
+        title: d.home.topicsTitle,
+        accent: d.home.topicsAccent,
+        lede: d.home.topicsLede,
+        cta: d.home.topicsCta,
+        lien: r("/topics/"),
+      },
+      signatures: {
+        title: d.home.authorsTitle,
+        accent: d.home.authorsAccent,
+        lede: d.home.authorsLede,
+        cta: d.home.authorsCta,
+        lien: r("/authors/"),
+      },
+      lettre: { image: "", lienFlux: r("/rss.xml") },
     },
   });
 
@@ -95,6 +134,9 @@ for (const langue of Object.keys(dictionnaires) as Langue[]) {
         placeholder: d.newsletter.placeholder,
         submit: d.newsletter.submit,
         note: d.newsletter.note,
+        rssTitle: d.newsletter.rssTitle,
+        rssLede: d.newsletter.rssLede,
+        rssCta: d.newsletter.rssCta,
       },
     },
   });
@@ -162,19 +204,56 @@ for (const langue of Object.keys(dictionnaires) as Langue[]) {
   fichiers.push({ nom: `conditions-${langue}`, contenu: document(legal.terms) });
 }
 
+/** Ajoute a `existant` les cles qui lui manquent, sans toucher a aucune valeur deja la ; renvoie le nombre de champs ajoutes. */
+function completer(existant: Record<string, unknown>, voulu: Record<string, unknown>): number {
+  let ajoutes = 0;
+  for (const [cle, valeur] of Object.entries(voulu)) {
+    const actuel = existant[cle];
+    if (actuel === undefined) {
+      existant[cle] = valeur;
+      ajoutes += 1;
+    } else if (
+      actuel !== null && typeof actuel === "object" && !Array.isArray(actuel) &&
+      valeur !== null && typeof valeur === "object" && !Array.isArray(valeur)
+    ) {
+      ajoutes += completer(actuel as Record<string, unknown>, valeur as Record<string, unknown>);
+    }
+  }
+  return ajoutes;
+}
+
 mkdirSync(dossier, { recursive: true });
 let crees = 0;
-let gardes = 0;
+let completes = 0;
+let intacts = 0;
 for (const { nom, contenu } of fichiers) {
   const chemin = resolve(dossier, `${nom}.json`);
-  if (existsSync(chemin) && !force) {
-    gardes += 1;
-    console.log(`  garde   src/donnees/${nom}.json (existe deja)`);
+  const ecrire = (donnees: unknown) => writeFileSync(chemin, JSON.stringify(donnees, null, 2) + "\n", "utf-8");
+  mkdirSync(dirname(chemin), { recursive: true });
+
+  if (!existsSync(chemin) || force) {
+    ecrire(contenu);
+    crees += 1;
+    console.log(`  ecrit    src/donnees/${nom}.json`);
     continue;
   }
-  mkdirSync(dirname(chemin), { recursive: true });
-  writeFileSync(chemin, JSON.stringify(contenu, null, 2) + "\n", "utf-8");
-  crees += 1;
-  console.log(`  ecrit   src/donnees/${nom}.json`);
+
+  let existant: Record<string, unknown>;
+  try {
+    existant = JSON.parse(readFileSync(chemin, "utf-8"));
+  } catch {
+    console.log(`  ignore   src/donnees/${nom}.json (illisible : corrigez-le ou relancez avec --force)`);
+    intacts += 1;
+    continue;
+  }
+  const ajoutes = completer(existant, contenu as Record<string, unknown>);
+  if (ajoutes === 0) {
+    intacts += 1;
+    console.log(`  garde    src/donnees/${nom}.json (rien a ajouter)`);
+  } else {
+    ecrire(existant);
+    completes += 1;
+    console.log(`  complete src/donnees/${nom}.json (+${ajoutes} champ(s) manquant(s))`);
+  }
 }
-console.log(`\n${crees} fichier(s) ecrit(s), ${gardes} garde(s).`);
+console.log(`\n${crees} fichier(s) ecrit(s), ${completes} complete(s), ${intacts} intact(s).`);

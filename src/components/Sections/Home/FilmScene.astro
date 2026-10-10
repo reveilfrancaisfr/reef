@@ -78,6 +78,7 @@ import { Icon } from "@components/svg/icons";
 import { Button } from "@components/ui/button";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
+import { accueilKeystatic, adresseDeLAccueil } from "@moteur/accueil-keystatic";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { imageDe, lienDe } from "@moteur/cadre";
 import Pastilles from "@moteur/Pastilles.astro";
@@ -102,33 +103,38 @@ interface Props {
 const affichePaysage = await getImage({ src: filmPoster, width: 1920, height: 1080, format: "webp" });
 const affichePortrait = await getImage({ src: filmPoster, width: 608, height: 1080, fit: "cover", position: "center", format: "webp" });
 
+// Les textes, adresses et medias saisis dans Keystatic (src/keystatic/accueil.ts) passent devant
+// ceux du theme ; vides, tout retombe sur le theme.
+// La video et l'affiche passent par le meme chemin : celles de Keystatic d'abord.
+const { t, ks } = await accueilKeystatic(useTranslations(Astro), getLocale(Astro));
+
 // Moteur allume : la video et son affiche choisies dans le back office (entree
 // "studio", champs video et video_poster) passent avant celles du theme ; une
 // seule adresse sert alors les trois formats.
 const VIDEO_DU_THEME = "https://videos.pexels.com/video-files/4863640/4863640-hd_1920_1080_24fps.mp4";
-const videoChoisie = lienDe(Astro, "studio", "video");
+const videoChoisie = adresseDeLAccueil(ks.studio?.video) ?? lienDe(Astro, "studio", "video");
+const afficheKeystatic = adresseDeLAccueil(ks.studio?.affiche);
 const afficheChoisie = imageDe(Astro, "studio", "video_poster");
 
 const {
   src = videoChoisie ?? VIDEO_DU_THEME,
   srcHd = videoChoisie ?? VIDEO_DU_THEME,
   srcPortrait = videoChoisie ?? VIDEO_DU_THEME,
-  poster = afficheChoisie?.src ?? affichePaysage.src,
-  posterPortrait = afficheChoisie?.src ?? affichePortrait.src,
+  poster = afficheKeystatic ?? afficheChoisie?.src ?? affichePaysage.src,
+  posterPortrait = afficheKeystatic ?? afficheChoisie?.src ?? affichePortrait.src,
   from = 0,
   to = 12,
 }: Props = Astro.props;
 
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
 // Moteur allume, en mode edition : la section "studio" ; le surtitre est celui
 // de la page a propos, et s'edite donc sur son entree.
 const ed = annotationsDe(Astro, "studio");
 const routes = getSiteRoutes(locale);
 // Les adresses des deux boutons : celles que l'editeur a saisies (entree
 // "studio"), sinon les pages prevues par le theme.
-const lienPrincipal = lienDe(Astro, "studio", "cta_link") ?? routes.about;
-const lienSecondaire = lienDe(Astro, "studio", "cta_secondary_link") ?? routes.contact;
+const lienPrincipal = adresseDeLAccueil(ks.studio?.lien) ?? lienDe(Astro, "studio", "cta_link") ?? routes.about;
+const lienSecondaire = adresseDeLAccueil(ks.studio?.lienContact) ?? lienDe(Astro, "studio", "cta_secondary_link") ?? routes.contact;
 
 const title = t.home.aboutTitle;
 const accent = t.home.aboutAccent;

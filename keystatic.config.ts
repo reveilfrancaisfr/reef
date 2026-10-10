@@ -1,5 +1,6 @@
 import { config, fields, collection } from '@keystatic/core';
 import { accueilEn, accueilFr, dispositionAccueil } from './src/keystatic/accueil';
+import { pagesLibres } from './src/keystatic/pages-libres';
 import {
   aProposEn,
   aProposFr,
@@ -15,14 +16,21 @@ import {
   siteFr,
 } from './src/keystatic/pages';
 
+// Stockage : fichiers locaux avec `pnpm dev`, GitHub en ligne (chaque Save
+// devient un commit sur main, et Vercel reconstruit le site).
+// PUBLIC_KEYSTATIC_MODE=github force le mode GitHub en local : a n'utiliser
+// qu'une fois, pour creer la GitHub App (voir l'etape 4).
+const MODE_GITHUB = import.meta.env.PROD || import.meta.env.PUBLIC_KEYSTATIC_MODE === 'github';
+
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: MODE_GITHUB
+    ? { kind: 'github', repo: 'reveilfrancaisfr/reef' }
+    : { kind: 'local' },
   // Le menu de gauche de l'interface, range par theme.
   ui: {
     navigation: {
       Articles: ['posts'],
+      'Pages libres': ['pagesLibres'],
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
       'Navigation et pied de page': ['siteFr', 'siteEn'],
       Pages: ['aProposFr', 'aProposEn', 'contactFr', 'contactEn'],
@@ -37,6 +45,7 @@ export default config({
     },
   },
   collections: {
+    pagesLibres,
     posts: collection({
       label: 'Articles',
       slugField: 'title',

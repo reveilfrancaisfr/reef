@@ -67,3 +67,32 @@ export function liensKeystatic(liste?: readonly LienKeystatic[] | null): { text:
     .filter((lien) => lien.texte.trim() && lien.lien.trim())
     .map((lien) => ({ text: lien.texte.trim(), href: lien.lien.trim(), ...(lien.nouvelOnglet ? { target: "_blank" } : {}) }));
 }
+
+/* ---------------------------------------------------------------- Pages libres (blocs) */
+
+export interface PageLibre {
+  /** La fin de l'adresse : la page est sur /p/<slug>/ (et /fr/p/<slug>/ en francais). */
+  slug: string;
+  titre: string;
+  langue: "fr" | "en";
+  description: string;
+  blocs: { discriminant: string; value: Record<string, any> }[];
+}
+
+/** Les pages libres publiees (la case "Publier cette page" cochee), toutes langues. */
+export async function lirePagesLibres(): Promise<PageLibre[]> {
+  try {
+    const toutes = await reader.collections.pagesLibres.all();
+    return toutes
+      .filter(({ entry }) => entry.publiee)
+      .map(({ slug, entry }) => ({
+        slug,
+        titre: entry.titre || slug,
+        langue: entry.langue === "en" ? ("en" as const) : ("fr" as const),
+        description: entry.description ?? "",
+        blocs: entry.blocs as unknown as PageLibre["blocs"],
+      }));
+  } catch {
+    return [];
+  }
+}

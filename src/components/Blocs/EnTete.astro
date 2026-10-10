@@ -1,0 +1,24 @@
+---
+// Bloc "En-tete de page" : le PageHero du theme, avec les textes saisis dans Keystatic.
+import PageHero from "@components/Sections/Global/PageHero.astro";
+import Bloc from "./Bloc.astro";
+
+interface Props {
+  donnees: Record<string, any>;
+  titrePage?: string;
+}
+
+const { donnees: d, titrePage = "" } = Astro.props;
+const titre = (d.titre || titrePage).trim();
+---
+
+<Bloc apparence={d.apparence} nu>
+  <PageHero
+    eyebrow={d.accroche || undefined}
+    title={titre}
+    accentWord={d.motAccentue || undefined}
+    lede={d.introduction || undefined}
+    align={d.alignement === "centre" ? "center" : "left"}
+    crumbs={d.filAriane ? [{ label: titrePage || titre }] : []}
+  />
+</Bloc>

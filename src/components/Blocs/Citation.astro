@@ -1,0 +1,31 @@
+---
+// Bloc "Citation" : une citation, son auteur, son role et un portrait facultatif.
+import Bloc from "./Bloc.astro";
+import { urlImage } from "./apparence";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const portrait = urlImage(d.portrait);
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    d.texte && (
+      <figure class="bl-citation" data-taille={d.taille ?? "grande"} style="margin:0">
+        <blockquote>{d.texte}</blockquote>
+        {(d.auteur || d.role) && (
+          <figcaption>
+            {portrait && <img class="bl-citation__portrait" src={portrait} alt="" loading="lazy" decoding="async" />}
+            <span>
+              {d.auteur && <strong>{d.auteur}</strong>}
+              {d.role && <span class="bl-citation__role">{d.role}</span>}
+            </span>
+          </figcaption>
+        )}
+      </figure>
+    )
+  }
+</Bloc>
