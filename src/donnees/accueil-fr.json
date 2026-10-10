@@ -10,8 +10,8 @@
   "boutonSecondaire": "Notre candidate",
   "lienSecondaire": "/fr/about/",
   "compteurs": [
-    "notes publiées",
-    "fils",
+    "articles",
+    "sections",
     "langues"
   ],
   "imageFond": "/medias/pexels-leonardo-delsabio-2150529415-32388389.jpg",
@@ -30,12 +30,13 @@
     "lien": "/fr/portrait/",
     "contact": "Ses réseaux",
     "lienContact": "/fr/reseaux/",
-    "video": "medias/Présentation%20vidéo%20candidate.mp4"
+    "video": "/medias/Présentation%20vidéo%20candidate.mp4",
+    "affiche": "/medias/pexels-jean-philippe-canto-410167111-20770157.jpg"
   },
   "dernieresNotes": {
-    "title": "Dernières notes",
-    "accent": "Dernières",
-    "lede": "Les entrées les plus récentes, de la plus fraîche à la plus ancienne. Le reste attend dans les archives.",
+    "title": "Articles récents",
+    "accent": "Articles",
+    "lede": "Les déclarations les plus récentes, de la plus jeune à la plus ancienne. Le reste attend dans les archives.",
     "cta": "Voir tous les articles",
     "lien": "/fr/blog/"
   },
