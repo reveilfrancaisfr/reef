@@ -4,6 +4,37 @@
   "publiee": true,
   "blocs": [
     {
+      "discriminant": "entete",
+      "value": {
+        "accroche": "Une femme du monde du travail qui veut redonner à la France ses couleurs",
+        "titre": "Notre Candidate",
+        "motAccentue": "Candidate",
+        "introduction": "Réveil Français a été créé par Alix LACROIX, notre candidate naturelle à l'élection présidentiel et qui remettra la France sur le droit chemin. ",
+        "alignement": "gauche",
+        "filAriane": true,
+        "apparence": {
+          "fond": {
+            "discriminant": "theme"
+          },
+          "texte": {
+            "discriminant": "auto"
+          },
+          "accent": {
+            "discriminant": "theme"
+          },
+          "police": "theme",
+          "largeur": "large",
+          "coins": "arrondis",
+          "separateurHaut": "aucun",
+          "separateurBas": "aucun",
+          "espacement": "normal",
+          "alignement": "gauche",
+          "animation": "monter",
+          "delai": "0"
+        }
+      }
+    },
+    {
       "discriminant": "imageSeule",
       "value": {
         "taille": "large",
