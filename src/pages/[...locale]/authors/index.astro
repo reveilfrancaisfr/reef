@@ -13,6 +13,8 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { imageDePartage } from "@moteur/cadre";
 import { annotationsDe } from "@moteur/annotations";
 import { propsDeLaPage } from "@moteur/chemins";
+import { surcharger } from "@moteur/contenu-keystatic";
+import { lireAuteurs } from "@moteur/pages-restantes-keystatic";
 import { textesDeLaPage } from "@moteur/textes";
 
 export const getStaticPaths = localePaths;
@@ -25,7 +27,10 @@ if (demande instanceof Response) return demande;
 const locale = getLocale(Astro);
 // Les textes rediges de la page : ceux de la base moteur allume (docs/moteur.md),
 // poses sur la requete pour ses composants.
-const t = await textesDeLaPage(Astro);
+// Les textes saisis dans Keystatic (src/keystatic/pages-restantes.ts) passent devant ceux du
+// theme ; vides, tout retombe sur le theme.
+const ks = await lireAuteurs(locale);
+const t = surcharger(await textesDeLaPage(Astro), { authors: ks });
 const routes = getSiteRoutes(locale);
 
 const authors = await getSortedAuthors(locale);

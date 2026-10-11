@@ -1,0 +1,9 @@
+{
+  "metaTitle": "Search",
+  "metaDescription": "Search every post on Reef Notes by title, summary, topic or tag. It runs in your browser: nothing is sent to a server and nothing is logged.",
+  "crumb": "Search",
+  "eyebrow": "Search",
+  "title": "Find it again",
+  "accent": "again",
+  "lede": "Search covers titles, summaries, topics and tags. It runs in your browser, so nothing leaves the page and it keeps working offline once loaded."
+}

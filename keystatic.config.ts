@@ -16,6 +16,14 @@ import {
   siteEn,
   siteFr,
 } from './src/keystatic/pages';
+import {
+  auteursEn,
+  auteursFr,
+  rechercheEn,
+  rechercheFr,
+  sujetsEn,
+  sujetsFr,
+} from './src/keystatic/pages-restantes';
 
 // Stockage : fichiers locaux avec `pnpm dev`, GitHub en ligne (chaque Save
 // devient un commit sur main, et Vercel reconstruit le site).
@@ -35,7 +43,18 @@ export default config({
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
       'Apparence du site': ['apparenceSite'],
       'Navigation et pied de page': ['siteFr', 'siteEn'],
-      Pages: ['aProposFr', 'aProposEn', 'contactFr', 'contactEn'],
+      Pages: [
+        'aProposFr',
+        'aProposEn',
+        'contactFr',
+        'contactEn',
+        'sujetsFr',
+        'sujetsEn',
+        'auteursFr',
+        'auteursEn',
+        'rechercheFr',
+        'rechercheEn',
+      ],
       'Pages juridiques': [
         'mentionsFr',
         'mentionsEn',
@@ -74,6 +93,12 @@ export default config({
     aProposEn,
     contactFr,
     contactEn,
+    sujetsFr,
+    sujetsEn,
+    auteursFr,
+    auteursEn,
+    rechercheFr,
+    rechercheEn,
     mentionsFr,
     mentionsEn,
     confidentialiteFr,
