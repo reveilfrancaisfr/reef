@@ -1,0 +1,19 @@
+{
+  "activer": true,
+  "polices": {
+    "titres": "theme",
+    "texte": "theme"
+  },
+  "clair": {
+    "fond": "#FFFFFF",
+    "texte": "#0146C3",
+    "principale": "#1701AC",
+    "accent": "#FF3325"
+  },
+  "sombre": {
+    "fond": "#0a0f17",
+    "texte": "#fbfcfe",
+    "principale": "#3fc0e0",
+    "accent": "#ff7a59"
+  }
+}
