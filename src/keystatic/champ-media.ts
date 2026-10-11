@@ -1,14 +1,19 @@
 // src/keystatic/champ-media.ts - le champ "Choisir dans la mediatheque" : un selecteur de vignettes, avec televersement, pour toute image ou video d'un formulaire Keystatic.
 //
-// Il lit la mediatheque (scripts/mediatheque.mjs) : en developpement, il montre
-// toutes les images et videos de public/medias/ et en televerse de nouvelles.
-// Hors developpement (Keystatic en ligne), la mediatheque n'existe pas : le champ
-// n'appelle plus son API, reste un champ texte ou l'on colle l'adresse d'un
-// fichier (/medias/photo.jpg), et renvoie vers le depot GitHub pour ajouter le fichier.
-// La valeur enregistree est toujours cette adresse, en simple texte.
+// En developpement (pnpm dev), il lit la mediatheque (scripts/mediatheque.mjs) : il
+// montre toutes les images et videos de public/medias/ et en televerse de nouvelles.
+//
+// Keystatic en ligne (mode GitHub) : la mediatheque n'existe pas. Un champ "image"
+// devient alors le champ image natif de Keystatic, qui televerse le fichier et le
+// commite dans public/medias/ au moment du Save. Un champ "video" ou "image ou
+// video" reste un champ texte ou l'on colle l'adresse d'un fichier (/medias/clip.mp4),
+// avec un lien vers le depot GitHub pour l'ajouter.
+//
+// Dans tous les cas, la valeur enregistree est une adresse en simple texte (/medias/photo.jpg).
 //
 // Ecrit sans JSX (createElement) pour fonctionner quel que soit le reglage JSX du projet.
-import type { BasicFormField, FormFieldInputProps } from "@keystatic/core";
+import { fields } from "@keystatic/core";
+import type { BasicFormField, ComponentSchema, FormFieldInputProps } from "@keystatic/core";
 import { createElement as h, useEffect, useRef, useState } from "react";
 
 export type GenreDeMedia = "image" | "video" | "tous";
@@ -33,7 +38,10 @@ const TEXTE = "#ececec";
 const ACCENT = "#4c8dff";
 const EXTENSIONS_VIDEO = /\.(mp4|webm|mov)(\?.*)?$/i;
 
-/** La page GitHub qui televerse un fichier dans public/medias (Keystatic en ligne, sans mediatheque). */
+/** Vrai quand Keystatic ecrit sur GitHub (en ligne, ou en local avec PUBLIC_KEYSTATIC_MODE=github) : meme regle que keystatic.config.ts. */
+const EN_LIGNE = import.meta.env.PROD || import.meta.env.PUBLIC_KEYSTATIC_MODE === "github";
+
+/** La page GitHub qui televerse un fichier dans public/medias (pour les videos, en ligne). */
 const DEPOT_MEDIAS = "https://github.com/reveilfrancaisfr/reef/upload/main/public/medias";
 
 const estVideo = (adresse: string) => EXTENSIONS_VIDEO.test(adresse);
@@ -189,7 +197,7 @@ function Entree(props: FormFieldInputProps<string> & Options) {
   const { value, onChange, label, description, genre = "image" } = props;
   const [ouvert, setOuvert] = useState(false);
   // La mediatheque n'existe qu'avec `pnpm dev` : en ligne, on ne l'appelle pas.
-  const enDeveloppement = import.meta.env.DEV;
+  const avecMediatheque = !EN_LIGNE;
   return h(
     "div",
     { style: { display: "grid", gap: 6, margin: "4px 0" } },
@@ -207,21 +215,21 @@ function Entree(props: FormFieldInputProps<string> & Options) {
         onChange: (e: { target: { value: string } }) => onChange(e.target.value),
         style: { flex: "1 1 14rem", background: "transparent", color: "inherit", border: `1px solid ${BORD}`, borderRadius: 8, padding: "6px 10px" },
       }),
-      enDeveloppement
+      avecMediatheque
         ? h("button", { type: "button", onClick: () => setOuvert(true), style: bouton() }, value ? "Changer" : "Choisir dans la médiathèque")
         : null,
       value ? h("button", { type: "button", onClick: () => onChange(""), style: bouton({ color: "#ff8a8a" }) }, "Retirer") : null,
     ),
-    enDeveloppement
+    avecMediatheque
       ? null
       : h(
           "div",
           { style: { opacity: 0.7, fontSize: 12 } },
-          "La médiathèque n'existe pas en ligne. Pour une nouvelle image ou vidéo : ",
+          "La médiathèque n'existe pas en ligne. Pour une nouvelle vidéo : ",
           h("a", { href: DEPOT_MEDIAS, target: "_blank", rel: "noopener", style: { color: ACCENT } }, "ajoutez le fichier dans public/medias sur GitHub"),
-          ", puis collez ici son adresse (/medias/nom-du-fichier.jpg).",
+          ", puis collez ici son adresse (/medias/nom-du-fichier.mp4).",
         ),
-    ouvert && enDeveloppement
+    ouvert && avecMediatheque
       ? h(Selecteur, {
           genre,
           valeur: value,
@@ -235,10 +243,24 @@ function Entree(props: FormFieldInputProps<string> & Options) {
   );
 }
 
-/** Un champ Keystatic qui choisit une image ou une video dans la mediatheque. La valeur est son adresse (/medias/…). */
-export function media(options: Options): BasicFormField<string> {
+/**
+ * Un champ Keystatic qui choisit une image ou une video. La valeur est son adresse (/medias/…).
+ * En ligne, un champ "image" devient le champ image natif de Keystatic (televersement vers GitHub).
+ */
+export function media(options: Options): ComponentSchema {
+  const genre = options.genre ?? "image";
+
+  if (EN_LIGNE && genre === "image") {
+    return fields.image({
+      label: options.label,
+      description: options.description,
+      directory: "public/medias",
+      publicPath: "/medias/",
+    });
+  }
+
   const lire = (v: unknown): string => (typeof v === "string" ? v : "");
-  return {
+  const champ: BasicFormField<string> = {
     kind: "form",
     label: options.label,
     Input: (props) => h(Entree, { ...props, ...options }),
@@ -248,4 +270,5 @@ export function media(options: Options): BasicFormField<string> {
     validate: (valeur) => valeur,
     reader: { parse: lire },
   };
+  return champ;
 }

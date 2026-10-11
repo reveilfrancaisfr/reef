@@ -1,5 +1,6 @@
 import { config, fields, collection } from '@keystatic/core';
 import { accueilEn, accueilFr, dispositionAccueil } from './src/keystatic/accueil';
+import { apparenceSite } from './src/keystatic/apparence-site';
 import { pagesLibres } from './src/keystatic/pages-libres';
 import {
   aProposEn,
@@ -19,7 +20,7 @@ import {
 // Stockage : fichiers locaux avec `pnpm dev`, GitHub en ligne (chaque Save
 // devient un commit sur main, et Vercel reconstruit le site).
 // PUBLIC_KEYSTATIC_MODE=github force le mode GitHub en local : a n'utiliser
-// qu'une fois, pour creer la GitHub App (voir l'etape 4).
+// qu'une fois, pour creer la GitHub App.
 const MODE_GITHUB = import.meta.env.PROD || import.meta.env.PUBLIC_KEYSTATIC_MODE === 'github';
 
 export default config({
@@ -32,6 +33,7 @@ export default config({
       Articles: ['posts'],
       'Pages libres': ['pagesLibres'],
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
+      'Apparence du site': ['apparenceSite'],
       'Navigation et pied de page': ['siteFr', 'siteEn'],
       Pages: ['aProposFr', 'aProposEn', 'contactFr', 'contactEn'],
       'Pages juridiques': [
@@ -65,6 +67,7 @@ export default config({
     accueilFr,
     accueilEn,
     dispositionAccueil,
+    apparenceSite,
     siteFr,
     siteEn,
     aProposFr,

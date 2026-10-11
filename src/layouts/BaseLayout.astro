@@ -7,6 +7,7 @@ import { ThemeInit } from "@components/ui/theme-toggle";
 import { getLocale, localeMeta } from "@i18n";
 import BaseHead from "@layouts/BaseHead.astro";
 import "@styles/global.css";
+import { cssApparenceDuSite } from "@moteur/apparence-keystatic";
 import CadreDuSite from "@moteur/CadreDuSite.astro";
 
 export interface Props {
@@ -28,6 +29,10 @@ const { title, description, image, type, noindex, introuvable, canonical } = Ast
 // et qu'une future langue RTL n'obligera a rouvrir aucun layout.
 const locale = getLocale(Astro);
 const meta = localeMeta[locale];
+
+// Les couleurs et les polices saisies dans Keystatic ("Apparence du site") ;
+// vide tant que l'editeur n'a rien active, le theme garde alors la main.
+const apparence = await cssApparenceDuSite();
 ---
 
 <!doctype html>
@@ -37,6 +42,7 @@ const meta = localeMeta[locale];
       <slot name="head" />
     </BaseHead>
     <ThemeInit />
+    {apparence && <style is:inline set:html={apparence} />}
   </head>
   <body>
     <slot />
