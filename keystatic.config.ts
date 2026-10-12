@@ -19,6 +19,8 @@ import {
 import {
   auteursEn,
   auteursFr,
+  introuvableEn,
+  introuvableFr,
   rechercheEn,
   rechercheFr,
   sujetsEn,
@@ -54,6 +56,8 @@ export default config({
         'auteursEn',
         'rechercheFr',
         'rechercheEn',
+        'introuvableFr',
+        'introuvableEn',
       ],
       'Pages juridiques': [
         'mentionsFr',
@@ -99,6 +103,8 @@ export default config({
     auteursEn,
     rechercheFr,
     rechercheEn,
+    introuvableFr,
+    introuvableEn,
     mentionsFr,
     mentionsEn,
     confidentialiteFr,

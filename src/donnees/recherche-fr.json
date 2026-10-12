@@ -5,5 +5,17 @@
   "eyebrow": "Recherche",
   "title": "Retrouver un article",
   "accent": "Retrouver",
-  "lede": "La recherche couvre les titres, les résumés, les sujets et les étiquettes. Elle tourne dans votre navigateur : rien ne quitte la page, et elle fonctionne encore hors ligne une fois chargée."
+  "lede": "La recherche couvre les titres, les résumés, les sujets et les étiquettes. Elle tourne dans votre navigateur : rien ne quitte la page, et elle fonctionne encore hors ligne une fois chargée.",
+  "placeholder": "Chercher un article, un sujet, une étiquette",
+  "label": "Rechercher dans le blog",
+  "shortcut": "Appuyez sur / pour chercher",
+  "clear": "Effacer la recherche",
+  "prompt": "Commencez à taper pour chercher parmi {count} articles.",
+  "resultsLabel": "Résultats de recherche",
+  "countLabel": "{count} résultats",
+  "countOne": "1 résultat",
+  "inTopic": "dans {topic}",
+  "noResultsTitle": "Rien ne correspond à {query}",
+  "noResultsLede": "Essayez un mot plus court, ou prenez le chemin long et parcourez les sujets.",
+  "noResultsCta": "Parcourir les sujets"
 }

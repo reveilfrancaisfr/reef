@@ -5,5 +5,17 @@
   "eyebrow": "Search",
   "title": "Find it again",
   "accent": "again",
-  "lede": "Search covers titles, summaries, topics and tags. It runs in your browser, so nothing leaves the page and it keeps working offline once loaded."
+  "lede": "Search covers titles, summaries, topics and tags. It runs in your browser, so nothing leaves the page and it keeps working offline once loaded.",
+  "placeholder": "Search posts, topics and tags",
+  "label": "Search the blog",
+  "shortcut": "Press / to search",
+  "clear": "Clear search",
+  "prompt": "Start typing to search {count} posts.",
+  "resultsLabel": "Search results",
+  "countLabel": "{count} results",
+  "countOne": "1 result",
+  "inTopic": "in {topic}",
+  "noResultsTitle": "Nothing matches {query}",
+  "noResultsLede": "Try a shorter word, or take the long way round and browse by topic.",
+  "noResultsCta": "Browse topics"
 }

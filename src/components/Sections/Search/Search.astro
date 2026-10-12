@@ -22,6 +22,8 @@ import { EmptyState } from "@components/ui/empty-state";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { fmt, getLocale, useTranslations } from "@i18n";
 import type { ResolvedPost } from "@js/posts";
+import { surcharger } from "@moteur/contenu-keystatic";
+import { lireRecherche } from "@moteur/pages-restantes-keystatic";
 import { annotation } from "@moteur/source";
 import { marqueInterface } from "@moteur/cadre";
 
@@ -31,7 +33,10 @@ type Props = {
 
 const { posts } = Astro.props;
 const locale = getLocale(Astro);
-const t = useTranslations(locale);
+// Les textes saisis dans Keystatic (src/keystatic/pages-restantes.ts) passent devant ceux du
+// theme ; vides, tout retombe sur le theme.
+const ks = await lireRecherche(locale);
+const t = surcharger(useTranslations(locale), { search: ks });
 const routes = getSiteRoutes(locale);
 
 // L'index : un enregistrement par billet, uniquement les champs cherchables.
@@ -173,7 +178,7 @@ const promptLabel = fmt(t.search.prompt, { count: posts.length });
   function fold(value: string): string {
     return value
       .normalize("NFKD")
-      .replace(/[̀-ͯ]/g, "")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
   }
 

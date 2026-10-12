@@ -1,0 +1,11 @@
+{
+  "metaTitle": "Page not found",
+  "metaDescription": "There is nothing at this address. The archive and the search box both still work.",
+  "code": "404",
+  "title": "Nothing at this address",
+  "accent": "Nothing",
+  "lede": "The link is wrong, or the post moved and we failed to leave a redirect. Neither is your problem. Three ways back, below.",
+  "homeCta": "Back to the home page",
+  "postsCta": "Browse all posts",
+  "searchCta": "Search the blog"
+}

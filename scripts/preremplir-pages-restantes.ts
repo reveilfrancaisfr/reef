@@ -1,4 +1,4 @@
-// scripts/preremplir-pages-restantes.ts - ecrit dans src/donnees/ les fichiers des pages Sujets, Auteurs et Recherche, remplis avec les textes ACTUELS du theme.
+// scripts/preremplir-pages-restantes.ts - ecrit dans src/donnees/ les fichiers des pages Sujets, Auteurs, Recherche et Page introuvable, remplis avec les textes ACTUELS du theme.
 //
 //   npx tsx scripts/preremplir-pages-restantes.ts            cree les fichiers absents et COMPLETE les existants :
 //                                                            seuls les champs qui manquent sont ajoutes, jamais une
@@ -20,23 +20,40 @@ const dossier = resolve(dirname(fileURLToPath(import.meta.url)), "..", "src", "d
 const dictionnaires = { fr, en } as const;
 type Langue = keyof typeof dictionnaires;
 
-/** Les sept champs que les formulaires proposent, lus dans la tranche du dictionnaire de la page. */
-const entete = (page: { metaTitle: string; metaDescription: string; crumb: string; eyebrow: string; title: string; accent: string; lede: string }) => ({
-  metaTitle: page.metaTitle,
-  metaDescription: page.metaDescription,
-  crumb: page.crumb,
-  eyebrow: page.eyebrow,
-  title: page.title,
-  accent: page.accent,
-  lede: page.lede,
-});
+const EN_TETE = ["metaTitle", "metaDescription", "crumb", "eyebrow", "title", "accent", "lede"];
+
+/** Les champs de chaque formulaire : les memes que ceux de src/keystatic/pages-restantes.ts. */
+const CHAMPS: Record<string, string[]> = {
+  sujets: EN_TETE,
+  auteurs: EN_TETE,
+  recherche: [
+    ...EN_TETE,
+    "placeholder",
+    "label",
+    "shortcut",
+    "clear",
+    "prompt",
+    "resultsLabel",
+    "countLabel",
+    "countOne",
+    "inTopic",
+    "noResultsTitle",
+    "noResultsLede",
+    "noResultsCta",
+  ],
+  introuvable: ["metaTitle", "metaDescription", "code", "title", "accent", "lede", "homeCta", "postsCta", "searchCta"],
+};
 
 const fichiers: { nom: string; contenu: Record<string, unknown> }[] = [];
 for (const langue of Object.keys(dictionnaires) as Langue[]) {
   const d = dictionnaires[langue];
-  fichiers.push({ nom: `sujets-${langue}`, contenu: entete(d.topics) });
-  fichiers.push({ nom: `auteurs-${langue}`, contenu: entete(d.authors) });
-  fichiers.push({ nom: `recherche-${langue}`, contenu: entete(d.search) });
+  const tranches: Record<string, object> = { sujets: d.topics, auteurs: d.authors, recherche: d.search, introuvable: d.notFound };
+  for (const [page, champs] of Object.entries(CHAMPS)) {
+    const tranche = tranches[page] as Record<string, unknown>;
+    const contenu: Record<string, unknown> = {};
+    for (const champ of champs) if (tranche[champ] !== undefined) contenu[champ] = tranche[champ];
+    fichiers.push({ nom: `${page}-${langue}`, contenu });
+  }
 }
 
 mkdirSync(dossier, { recursive: true });

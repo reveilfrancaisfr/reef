@@ -1,4 +1,4 @@
-// src/moteur/pages-restantes-keystatic.ts - lit les formulaires Keystatic des pages Sujets, Auteurs et Recherche (src/keystatic/pages-restantes.ts).
+// src/moteur/pages-restantes-keystatic.ts - lit les formulaires Keystatic des pages Sujets, Auteurs, Recherche et Page introuvable (src/keystatic/pages-restantes.ts).
 //
 // Rien n'est jamais bloquant : si un fichier n'existe pas encore ou est illisible,
 // on rend null et la page garde les textes d'origine du theme (voir surcharger).
@@ -21,3 +21,5 @@ export const lireAuteurs = (locale: string) =>
   lire(() => (locale === "fr" ? reader.singletons.auteursFr.read() : reader.singletons.auteursEn.read()));
 export const lireRecherche = (locale: string) =>
   lire(() => (locale === "fr" ? reader.singletons.rechercheFr.read() : reader.singletons.rechercheEn.read()));
+export const lireIntrouvable = (locale: string) =>
+  lire(() => (locale === "fr" ? reader.singletons.introuvableFr.read() : reader.singletons.introuvableEn.read()));

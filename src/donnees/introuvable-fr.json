@@ -1,0 +1,11 @@
+{
+  "metaTitle": "Page introuvable",
+  "metaDescription": "Il n'y a rien à cette adresse. Les archives et la recherche fonctionnent toujours.",
+  "code": "404",
+  "title": "Rien à cette adresse",
+  "accent": "Rien",
+  "lede": "Le lien est faux, ou l'article a déménagé sans que nous ayons laissé de redirection. Ni l'un ni l'autre n'est votre problème. Trois chemins de retour, ci-dessous.",
+  "homeCta": "Retour à l'accueil",
+  "postsCta": "Voir tous les articles",
+  "searchCta": "Rechercher dans le blog"
+}

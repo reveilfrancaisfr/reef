@@ -18,6 +18,8 @@ import { getLocale, isLocale, localeMeta, localePrefix, locales, useTranslations
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { annotationsDe, styleDuBloc } from "@moteur/annotations";
 import { argumentDe, lienDe } from "@moteur/cadre";
+import { surcharger } from "@moteur/contenu-keystatic";
+import { lireIntrouvable } from "@moteur/pages-restantes-keystatic";
 import Pastilles from "@moteur/Pastilles.astro";
 import { textesDeLaPage } from "@moteur/textes";
 
@@ -30,7 +32,10 @@ const locale: Locale = isLocale(tete) ? tete : getLocale(Astro);
 // Moteur allume, les textes viennent de l'entree "introuvable" (collection des
 // textes des pages) ; moteur eteint, des fichiers, comme avant.
 await textesDeLaPage(Astro, locale);
-const t = useTranslations(Astro);
+// Les textes saisis dans Keystatic (src/keystatic/pages-restantes.ts) passent devant ceux du
+// theme ; vides, tout retombe sur le theme.
+const ks = await lireIntrouvable(locale);
+const t = surcharger(useTranslations(Astro), { notFound: ks });
 const page = annotationsDe(Astro, "introuvable");
 const title = t.notFound.metaTitle;
 const description = t.notFound.metaDescription;
