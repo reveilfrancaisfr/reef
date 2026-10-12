@@ -1,48 +1,47 @@
 {
-  "metaTitre": "Reef Notes, a working notebook from an independent web studio",
-  "metaDescription": "Build logs, load times, typography and the business of running a small web studio. Written in English and French, a few notes a month, by the three people doing the work.",
-  "accroche": "Reef Notes",
-  "titre": "Notes from a small web studio",
-  "motAccentue": "small",
-  "chapeau": "What we learn building sites, written down as we go. The notebook, not the portfolio.",
-  "boutonPrincipal": "Start reading",
+  "metaTitre": "Réveil Français",
+  "metaDescription": "Réveil Français is a political party with one objective, restore greatness of France.",
+  "accroche": "Réveil Français",
+  "titre": "France First",
+  "motAccentue": "First",
+  "chapeau": "Join us and get a better future",
+  "boutonPrincipal": "Discover our party",
   "lienPrincipal": "/blog/",
-  "boutonSecondaire": "About the studio",
+  "boutonSecondaire": "Our candidate",
   "lienSecondaire": "/about/",
   "compteurs": [
     "notes published",
     "threads",
     "languages"
   ],
-  "imageFond": "",
   "bande": {
     "label": "All topics"
   },
   "aLaUne": {
-    "eyebrow": "Pick of the month"
+    "eyebrow": "Pick of the day"
   },
   "studio": {
     "eyebrow": "About",
-    "title": "The studio behind the notes",
-    "accent": "studio",
-    "lede": "One builds, one measures, one designs, and all three write. Three or four projects a year, and everything we learn on them ends up here.",
-    "cta": "How we work",
+    "title": "Alix LACROIX, the only one who can pick France up. ",
+    "accent": "France",
+    "lede": "Entering politics to stand for France's working class and overtaxed citizens.",
+    "cta": "His portrait",
     "lien": "/about/",
-    "contact": "Contact",
+    "contact": "Social Medias",
     "lienContact": "/contact/",
-    "video": "",
-    "affiche": ""
+    "video": "/medias/lv_0_20261010133839.mp4",
+    "affiche": "/medias/studio/affiche.jpg"
   },
   "dernieresNotes": {
     "title": "Latest notes",
     "accent": "Latest",
-    "lede": "The most recent entries, newest first. Everything older waits in the archive.",
+    "lede": "The most recent statements, from newest to oldest. The rest is waiting in the archives.",
     "cta": "Browse all posts",
     "lien": "/blog/"
   },
   "sujets": {
-    "title": "Five threads we keep pulling",
-    "accent": "threads",
+    "title": "Five of our core beliefs that we will implement within the first 50 days.",
+    "accent": "50 days",
     "lede": "Every post belongs to exactly one topic, so a thread can be read end to end without wading through the rest.",
     "cta": "See all topics",
     "lien": "/topics/"
@@ -50,12 +49,12 @@
   "signatures": {
     "title": "Who writes here",
     "accent": "writes",
-    "lede": "Everyone here still ships client work. Each byline leads to everything that person has published, oldest note included.",
+    "lede": "Here, everybody contributes, everybody shares, and together we shape a shared vision.",
     "cta": "Meet the writers",
     "lien": "/authors/"
   },
   "lettre": {
-    "image": "",
+    "image": "/medias/lettre/image.jpg",
     "lienFlux": "/rss.xml"
   }
 }
