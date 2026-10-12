@@ -10,6 +10,7 @@ import {
   ficheSujetFr,
 } from './src/keystatic/articles';
 import { identiteSite } from './src/keystatic/identite-site';
+import { pagesArticles } from './src/keystatic/pages-articles';
 import { pagesLibres } from './src/keystatic/pages-libres';
 import {
   aProposEn,
@@ -51,6 +52,8 @@ export default config({
     navigation: {
       Articles: ['articlesFr', 'articlesEn'],
       'Auteurs et sujets': ['ficheAuteurFr', 'ficheAuteurEn', 'ficheSujetFr', 'ficheSujetEn'],
+      // Les formulaires de src/keystatic/pages-articles.ts : un nouveau formulaire s'y ajoute sans rouvrir ce fichier.
+      'Pages des articles': Object.keys(pagesArticles) as (keyof typeof pagesArticles)[],
       'Pages libres': ['pagesLibres'],
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
       'Identité du site': ['identiteSite'],
@@ -95,6 +98,7 @@ export default config({
     dispositionAccueil,
     identiteSite,
     apparenceSite,
+    ...pagesArticles,
     siteFr,
     siteEn,
     aProposFr,

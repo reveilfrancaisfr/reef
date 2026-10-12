@@ -22,6 +22,8 @@ import type { ResolvedPost } from "@js/posts";
 import { breadcrumbList } from "@js/schema";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { imageDePartage } from "@moteur/cadre";
+import { surcharger } from "@moteur/contenu-keystatic";
+import { lireArchive } from "@moteur/pages-articles-keystatic";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -33,7 +35,21 @@ interface Props {
 const { page, topics } = Astro.props;
 const locale = getLocale(Astro);
 // Les textes rediges de la page, poses sur la requete par la page qui rend l'archive.
-const t = useTranslations(Astro);
+// Ceux saisis dans Keystatic (formulaire "Page Articles", src/keystatic/pages-articles.ts)
+// passent devant ; vides, tout retombe sur le theme.
+const ks = await lireArchive(locale);
+const t = surcharger(useTranslations(Astro), {
+  archive: {
+    metaTitle: ks?.metaTitle,
+    metaDescription: ks?.metaDescription,
+    crumb: ks?.crumb,
+    eyebrow: ks?.eyebrow,
+    title: ks?.title,
+    accent: ks?.accent,
+    lede: ks?.lede,
+    pageSuffix: ks?.pageSuffix,
+  },
+});
 
 const title =
   page.currentPage > 1
