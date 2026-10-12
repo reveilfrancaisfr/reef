@@ -9,6 +9,7 @@ import { getLocale, localeMeta, localePaths, localizePath } from "@i18n";
 import { getResolvedPosts } from "@js/posts";
 import { propsDeLaPage } from "@moteur/chemins";
 import { lireLaPage } from "@moteur/source";
+import { repliDuSite } from "@moteur/theme";
 import type { APIRoute } from "astro";
 
 export const getStaticPaths = localePaths;
@@ -33,9 +34,17 @@ export const GET: APIRoute = async ({ site, url, currentLocale, params, props })
   const locale = getLocale({ currentLocale });
   // La description du flux est celle de l'archive : moteur allume, celle que la base publie.
   const { textes: t, cadre } = await lireLaPage(locale);
-  // Le titre du flux : celui de l'entree "site" de la langue, sinon siteData.
+  // Le titre du flux, par ordre de priorite : celui de l'entree "site" de la langue ;
+  // le nom saisi dans Keystatic (formulaire "Identite du site") des qu'il differe de celui
+  // du theme ; sinon le titre du theme (siteData).
   const titreSaisi = (cadre.site as { feed_title?: unknown } | undefined)?.feed_title;
-  const titre = typeof titreSaisi === "string" && titreSaisi.trim() !== "" ? titreSaisi.trim() : siteData.title[locale];
+  const nomDuSite = repliDuSite(locale).nom;
+  const titre =
+    typeof titreSaisi === "string" && titreSaisi.trim() !== ""
+      ? titreSaisi.trim()
+      : nomDuSite !== siteData.name
+        ? nomDuSite
+        : siteData.title[locale];
 
   // getResolvedPosts ecarte deja les brouillons et trie du plus recent au plus
   // ancien : le flux ne peut donc pas diverger des listes du site.

@@ -1,4 +1,4 @@
-// src/moteur/identite-keystatic.ts - lit le formulaire Keystatic "Identité du site" (nom, logo, logo du mode sombre) de façon SYNCHRONE.
+// src/moteur/identite-keystatic.ts - lit le formulaire Keystatic "Identité du site" (nom, logos, description, image de partage, e-mail, compte X, éditeur) de façon SYNCHRONE.
 //
 // Pourquoi synchrone : identiteDuSite() (src/moteur/theme.ts) est appelée sans await par une
 // dizaine de composants. createReader de Keystatic est asynchrone, il ne peut donc pas servir ici :
@@ -18,11 +18,32 @@ export interface LogoSaisi {
   height?: number;
 }
 
+/** Un texte saisi dans chaque langue du site ; une langue laissée vide vaut null. */
+export interface PaireDeLangues {
+  fr: string | null;
+  en: string | null;
+}
+
 /** Ce que le formulaire "Identité du site" apporte ; chaque champ vide vaut null et laisse le thème tranquille. */
 export interface IdentiteSaisie {
   nom: string | null;
   logo: LogoSaisi | null;
   logoSombre: LogoSaisi | null;
+  description: PaireDeLangues;
+  /** L'adresse de l'image de partage choisie ("/medias/photo.jpg"), ou null : la photo du thème. */
+  imagePartage: string | null;
+  /** Le texte alternatif de l'image de partage, par langue. */
+  texteImage: PaireDeLangues;
+  email: string | null;
+  /** Le compte X tel que saisi ("monsite", "@monsite" ou son adresse). */
+  compteX: string | null;
+  /** Le nom de l'éditeur (le crédit du pied de page). */
+  editeur: string | null;
+}
+
+/** Le texte d'une langue, sinon celui de l'autre ; null si les deux sont vides. */
+export function dansLaLangue(paire: PaireDeLangues, locale: "en" | "fr"): string | null {
+  return paire[locale] ?? paire[locale === "fr" ? "en" : "fr"];
 }
 
 const FICHIER = "src/donnees/identite-site.json";
@@ -121,7 +142,7 @@ export function tailleDeLImage(contenu: Buffer, extension: string): Taille | nul
 
 const texte = (valeur: unknown): string | null => (typeof valeur === "string" && valeur.trim() !== "" ? valeur.trim() : null);
 
-/** L'adresse publique d'un logo saisi : "/medias/logo.png" tel quel, un nom seul est cherché dans /medias/. */
+/** L'adresse publique d'une image saisie (logo, image de partage) : "/medias/logo.png" tel quel, un nom seul est cherché dans /medias/. */
 function adresseDuLogo(saisi: unknown): string | null {
   const valeur = texte(saisi);
   if (!valeur) return null;
@@ -156,19 +177,36 @@ function logo(saisi: unknown, nom: string | null): LogoSaisi | null {
   return resultat;
 }
 
+const objet = (valeur: unknown): Record<string, unknown> =>
+  valeur && typeof valeur === "object" ? (valeur as Record<string, unknown>) : {};
+
+const paire = (valeur: unknown): PaireDeLangues => {
+  const o = objet(valeur);
+  return { fr: texte(o.fr), en: texte(o.en) };
+};
+
 /** L'identité saisie dans Keystatic, ou null tant que le formulaire n'a rien enregistré. Synchrone. */
 export function lireIdentiteKeystatic(): IdentiteSaisie | null {
   try {
     const chemin = join(process.cwd(), FICHIER);
     if (!existsSync(chemin)) return null;
-    const donnees = JSON.parse(readFileSync(chemin, "utf8")) as Record<string, unknown> | null;
-    const nom = texte(donnees?.nom);
+    const donnees = objet(JSON.parse(readFileSync(chemin, "utf8")));
+    const nom = texte(donnees.nom);
     const saisie: IdentiteSaisie = {
       nom,
-      logo: logo(donnees?.logo, nom),
-      logoSombre: logo(donnees?.logoSombre, nom),
+      logo: logo(donnees.logo, nom),
+      logoSombre: logo(donnees.logoSombre, nom),
+      description: paire(donnees.description),
+      imagePartage: adresseDuLogo(donnees.imagePartage),
+      texteImage: paire(donnees.texteImage),
+      email: texte(donnees.email),
+      compteX: texte(donnees.compteX),
+      editeur: texte(donnees.editeur),
     };
-    return saisie.nom || saisie.logo || saisie.logoSombre ? saisie : null;
+    const rienDeSaisi =
+      !saisie.nom && !saisie.logo && !saisie.logoSombre && !saisie.description.fr && !saisie.description.en &&
+      !saisie.imagePartage && !saisie.texteImage.fr && !saisie.texteImage.en && !saisie.email && !saisie.compteX && !saisie.editeur;
+    return rienDeSaisi ? null : saisie;
   } catch {
     return null;
   }

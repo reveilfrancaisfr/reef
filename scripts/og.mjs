@@ -24,6 +24,12 @@
  * fichier qu'il n'a pas fabrique (les anciennes cartes .png des versions
  * precedentes, par exemple).
  *
+ * LA PHOTO CHOISIE DANS KEYSTATIC : le formulaire "Identite du site" (champ
+ * "Image de partage", src/keystatic/identite-site.ts) range la photo dans
+ * public/medias et note son adresse dans src/donnees/identite-site.json. Si
+ * elle y est, la carte "default" en est le recadrage ; sinon, c'est la photo du
+ * theme. N'importe quelle taille convient : le recadrage fait le reste.
+ *
  * Le recadrage est celui du site de l'agence : sharp, 1200x630, fit "cover",
  * position "attention" (la zone la plus contrastee et la plus saturee reste
  * dans le cadre), JPEG qualite 86, mozjpeg, sans sous-echantillonnage des
@@ -34,7 +40,7 @@
  * Une carte que plus aucune page ne cite se retire de CARTES.
  */
 
-import { existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
@@ -42,20 +48,35 @@ import sharp from "sharp";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ASSETS = join(ROOT, "src/assets");
 const OUT = join(ROOT, "public/og");
+const IDENTITE = join(ROOT, "src/donnees/identite-site.json");
 const LARGEUR = 1200;
 const HAUTEUR = 630;
+
+/** La photo choisie dans le formulaire "Identite du site" (chemin du fichier), ou null : la photo du theme. */
+export function photoDuFormulaire(fichier = IDENTITE, racine = ROOT) {
+  try {
+    const donnees = JSON.parse(readFileSync(fichier, "utf8"));
+    const valeur = typeof donnees?.imagePartage === "string" ? donnees.imagePartage.trim() : "";
+    if (!valeur) return null;
+    const chemin = join(racine, "public", valeur.startsWith("/") ? valeur : `medias/${valeur}`);
+    return existsSync(chemin) ? chemin : null;
+  } catch {
+    return null;
+  }
+}
 
 // Une ligne par carte REELLEMENT citee par une page. Aujourd'hui une seule :
 // siteData.defaultImage, que toutes les pages utilisent, sauf un billet qui a
 // une couverture (ArticlePage prend alors la couverture elle-meme). La photo
-// est celle du premier ecran de l'accueil, la vague de Hawaii.
+// est celle du premier ecran de l'accueil, la vague de Hawaii, sauf si une
+// image de partage est choisie dans Keystatic (source).
 const CARTES = [
-  { slug: "default", photo: "reef-hero-vague.webp" },
+  { slug: "default", photo: "reef-hero-vague.webp", source: photoDuFormulaire() ?? undefined },
 ];
 
-/** Recadre une photo du theme en carte 1200x630 et verifie le resultat. */
-export async function fabriquerCarte({ slug, photo }, sortie = OUT) {
-  const source = join(ASSETS, photo);
+/** Recadre une photo en carte 1200x630 et verifie le resultat. `source` (chemin complet) passe devant `photo` (src/assets). */
+export async function fabriquerCarte({ slug, photo, source: choisie }, sortie = OUT) {
+  const source = choisie ?? join(ASSETS, photo);
   if (!existsSync(source)) {
     throw new Error(
       `og: la photo src/assets/${photo} manque pour la carte "${slug}". ` +
@@ -85,5 +106,8 @@ const retires = readdirSync(OUT).filter((nom) => !attendus.has(nom));
 for (const nom of retires) rmSync(join(OUT, nom), { recursive: true, force: true });
 
 console.log(`${fabriquees.length} carte(s) de partage fabriquee(s) dans public/og/ :`);
-CARTES.forEach((c, i) => console.log(`  ${fabriquees[i].replace(ROOT + "/", "")} <- src/assets/${c.photo}`));
+CARTES.forEach((c, i) => {
+  const origine = c.source ? c.source.replace(ROOT + "/", "") : `src/assets/${c.photo}`;
+  console.log(`  ${fabriquees[i].replace(ROOT + "/", "")} <- ${origine}`);
+});
 if (retires.length) console.log(`  retire(s), plus cite(s) par aucune page : ${retires.join(", ")}`);

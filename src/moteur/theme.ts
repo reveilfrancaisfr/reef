@@ -27,9 +27,11 @@
 //     rejoue (essai-administrer.mjs ; forme : essai.ts).
 //
 // L'IDENTITE SAISIE DANS KEYSTATIC (formulaire "Identite du site", src/keystatic/identite-site.ts) :
-// son nom, son logo et son logo du mode sombre passent devant ceux de siteData ; vides, tout
-// retombe sur le theme (la vague et "Reef"). Lecture SYNCHRONE (identite-keystatic.ts), parce
-// que identiteDuSite() est appelee sans await par une dizaine de composants.
+// son nom, ses logos, sa description, son texte d'image de partage, son e-mail, son compte X et
+// son editeur passent devant ceux de siteData ; vides, tout retombe sur le theme (la vague et
+// "Reef"). Lecture SYNCHRONE (identite-keystatic.ts), parce que identiteDuSite() est appelee sans
+// await par une dizaine de composants. La photo de partage elle-meme est recadree au build par
+// scripts/og.mjs, qui la depose a l'adresse de siteData.defaultImage.src.
 import type { IconName } from "@components/svg/icons";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import siteData from "@config/siteData.json";
@@ -37,7 +39,7 @@ import type { Locale } from "@i18n";
 import { ACTIONS, type MenuDuSite, PRINCIPAL, TIROIR } from "./menus.ts";
 import { identite, type Identite, type RepliDuSite } from "./cadre.ts";
 import type { ParametresDeLEssai } from "./essai.ts";
-import { lireIdentiteKeystatic } from "./identite-keystatic.ts";
+import { dansLaLangue, lireIdentiteKeystatic } from "./identite-keystatic.ts";
 import { garantirLeContraste, type RegleDeContraste } from "./palette.ts";
 import type { VariablesDePolice } from "./typographie.ts";
 
@@ -106,15 +108,21 @@ export function routesDesMenus(locale: Locale): Record<string, string> {
   return { ...(getSiteRoutes(locale) as unknown as Record<string, string>), newsletter: "#newsletter" };
 }
 
-/** L'identite livree de Reef dans une langue : siteData, ce que la page montre quand les reglages sont vides (le nom saisi dans Keystatic passe devant celui de siteData). */
+/** L'identite livree de Reef dans une langue : siteData, ce que la page montre quand les reglages sont vides (ce qui est saisi dans Keystatic passe devant). */
 export function repliDuSite(locale: "en" | "fr"): RepliDuSite {
+  const saisie = lireIdentiteKeystatic();
   return {
-    nom: lireIdentiteKeystatic()?.nom ?? siteData.name,
-    description: siteData.description,
-    image: { src: siteData.defaultImage.src, alt: siteData.defaultImage.alt[locale] },
-    email: siteData.author.email,
-    credit: siteData.author.name,
-    twitter: siteData.author.twitter ?? "",
+    nom: saisie?.nom ?? siteData.name,
+    description: (saisie ? dansLaLangue(saisie.description, locale) : null) ?? siteData.description,
+    // L'adresse de la carte reste celle du theme : scripts/og.mjs y depose la photo choisie, recadree.
+    // Le texte alternatif saisi ne vaut que pour la photo choisie : celui du theme decrit SA photo.
+    image: {
+      src: siteData.defaultImage.src,
+      alt: saisie?.imagePartage ? (dansLaLangue(saisie.texteImage, locale) ?? "") : siteData.defaultImage.alt[locale],
+    },
+    email: saisie?.email ?? siteData.author.email,
+    credit: saisie?.editeur ?? siteData.author.name,
+    twitter: saisie?.compteX ?? siteData.author.twitter ?? "",
   };
 }
 
