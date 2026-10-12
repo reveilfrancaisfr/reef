@@ -7,12 +7,12 @@
         "nouvelOnglet": false
       },
       {
-        "texte": "Topics",
+        "texte": "The political party",
         "lien": "/topics/",
         "nouvelOnglet": false
       },
       {
-        "texte": "About",
+        "texte": "Our candidate",
         "lien": "/about/",
         "nouvelOnglet": false
       },
@@ -95,19 +95,19 @@
     }
   ],
   "footer": {
-    "tagline": "Reef Notes is the working notebook of a three-person web studio. Build logs, load times, type specimens, and the parts of freelancing nobody puts on a landing page.",
+    "tagline": "Réveil Français",
     "rights": "All rights reserved.",
-    "builtWith": "Built with Astro, set in Space Grotesk and Instrument Sans.",
-    "themeBy": "Reef theme by",
+    "builtWith": "Built with GitHub and Vercel",
+    "themeBy": "Réveil Français",
     "backToTop": "Back to top"
   },
   "newsletter": {
-    "title": "One email, once a month",
+    "title": "One email, once a week",
     "accent": "once",
     "lede": "A short digest of what we published and what we got wrong. No tracking pixel, no drip sequence, one click to leave for good.",
-    "placeholder": "you@example.com",
-    "submit": "Subscribe",
-    "note": "One email a month. Unsubscribe from any of them.",
+    "placeholder": "reveil.francais.fr@example.com",
+    "submit": "Join our fight !",
+    "note": "One email a week. Unsubscribe from any of them.",
     "rssTitle": "Prefer a feed?",
     "rssLede": "The whole blog is in the RSS feed, full text, no signup.",
     "rssCta": "RSS feed"
