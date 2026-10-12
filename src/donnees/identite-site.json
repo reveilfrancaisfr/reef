@@ -1,5 +1,10 @@
 {
   "nom": "Réveil Français",
   "logo": "/medias/logo.png",
-  "logoSombre": "/medias/logoSombre.png"
+  "logoSombre": "/medias/logoSombre.png",
+  "description": {},
+  "texteImage": {},
+  "email": "reveil.francais.fr@gmail.com",
+  "compteX": "@reveilfrancaisf",
+  "editeur": "Réveil Français"
 }
