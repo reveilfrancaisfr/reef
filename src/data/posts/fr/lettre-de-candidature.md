@@ -1,6 +1,11 @@
 ---
 title: Lettre de candidature
-description: 'Alix LACROIX se présente à l''élection présidentielle. '
+description: >-
+  À l’approche de l’élection présidentielle de 2027, Alix Lacroix s’adresse aux
+  Français et partage sa vision, son parcours et les raisons de son engagement.
+
+
+  Découvrez sa lettre au peuple de France.
 pubDate: 2026-10-12
 author: fr/alix-lacroix
 topic: fr/la-candidate
