@@ -25,6 +25,11 @@
 //     parcourt (un exemplaire de chaque gabarit, dans les deux langues) ;
 //   - ESSAI_DE_L_ADMINISTRATION : les parametres des gestes communs du guide
 //     rejoue (essai-administrer.mjs ; forme : essai.ts).
+//
+// L'IDENTITE SAISIE DANS KEYSTATIC (formulaire "Identite du site", src/keystatic/identite-site.ts) :
+// son nom, son logo et son logo du mode sombre passent devant ceux de siteData ; vides, tout
+// retombe sur le theme (la vague et "Reef"). Lecture SYNCHRONE (identite-keystatic.ts), parce
+// que identiteDuSite() est appelee sans await par une dizaine de composants.
 import type { IconName } from "@components/svg/icons";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import siteData from "@config/siteData.json";
@@ -32,6 +37,7 @@ import type { Locale } from "@i18n";
 import { ACTIONS, type MenuDuSite, PRINCIPAL, TIROIR } from "./menus.ts";
 import { identite, type Identite, type RepliDuSite } from "./cadre.ts";
 import type { ParametresDeLEssai } from "./essai.ts";
+import { lireIdentiteKeystatic } from "./identite-keystatic.ts";
 import { garantirLeContraste, type RegleDeContraste } from "./palette.ts";
 import type { VariablesDePolice } from "./typographie.ts";
 
@@ -100,10 +106,10 @@ export function routesDesMenus(locale: Locale): Record<string, string> {
   return { ...(getSiteRoutes(locale) as unknown as Record<string, string>), newsletter: "#newsletter" };
 }
 
-/** L'identite livree de Reef dans une langue : siteData, ce que la page montre quand les reglages sont vides. */
+/** L'identite livree de Reef dans une langue : siteData, ce que la page montre quand les reglages sont vides (le nom saisi dans Keystatic passe devant celui de siteData). */
 export function repliDuSite(locale: "en" | "fr"): RepliDuSite {
   return {
-    nom: siteData.name,
+    nom: lireIdentiteKeystatic()?.nom ?? siteData.name,
     description: siteData.description,
     image: { src: siteData.defaultImage.src, alt: siteData.defaultImage.alt[locale] },
     email: siteData.author.email,
@@ -112,9 +118,16 @@ export function repliDuSite(locale: "en" | "fr"): RepliDuSite {
   };
 }
 
-/** L'identite du site pour la page en cours (reglages, entree "site", sinon siteData). */
+/**
+ * L'identite du site pour la page en cours (reglages, entree "site", sinon siteData).
+ * Les logos saisis dans Keystatic passent devant ; sans logo du mode sombre, le logo
+ * principal sert aussi sur fond sombre (la barre ne montre alors qu'une image).
+ */
 export function identiteDuSite(page: Parameters<typeof identite>[0], locale: "en" | "fr"): Identite {
-  return identite(page, repliDuSite(locale));
+  const base = identite(page, repliDuSite(locale));
+  const saisie = lireIdentiteKeystatic();
+  if (!saisie) return base;
+  return { ...base, logo: saisie.logo ?? base.logo, logoSombre: saisie.logoSombre ?? base.logoSombre };
 }
 
 /** Les jetons de police de Reef (tokens.css) : Instrument Sans pour le texte, Space Grotesk pour les titres. */

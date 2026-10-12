@@ -9,6 +9,7 @@ import {
   ficheSujetEn,
   ficheSujetFr,
 } from './src/keystatic/articles';
+import { identiteSite } from './src/keystatic/identite-site';
 import { pagesLibres } from './src/keystatic/pages-libres';
 import {
   aProposEn,
@@ -52,6 +53,7 @@ export default config({
       'Auteurs et sujets': ['ficheAuteurFr', 'ficheAuteurEn', 'ficheSujetFr', 'ficheSujetEn'],
       'Pages libres': ['pagesLibres'],
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
+      'Identité du site': ['identiteSite'],
       'Apparence du site': ['apparenceSite'],
       'Navigation et pied de page': ['siteFr', 'siteEn'],
       Pages: [
@@ -91,6 +93,7 @@ export default config({
     accueilFr,
     accueilEn,
     dispositionAccueil,
+    identiteSite,
     apparenceSite,
     siteFr,
     siteEn,
