@@ -14,7 +14,7 @@
     "sections",
     "langues"
   ],
-  "imageFond": "/medias/pexels-leonardo-delsabio-2150529415-32388389.jpg",
+  "imageFond": "/medias/imageFond.jpg",
   "bande": {
     "label": "Tous les sujets"
   },
@@ -26,12 +26,12 @@
     "title": "Alix LACROIX, la seule à pouvoir relever la France ",
     "accent": "France",
     "lede": "S'engager en politique pour représenter la France des travailleurs et des surtaxés.",
-    "cta": "Son portrait",
+    "cta": "Son portrait. ",
     "lien": "/fr/portrait/",
     "contact": "Ses réseaux",
     "lienContact": "/fr/reseaux/",
     "video": "/medias/lv_0_20261010133839.mp4",
-    "affiche": "/medias/pexels-jean-philippe-canto-410167111-20770157.jpg"
+    "affiche": "/medias/studio/affiche.jpg"
   },
   "dernieresNotes": {
     "title": "Articles récents",
@@ -50,11 +50,12 @@
   "signatures": {
     "title": "Qui écrit ici",
     "accent": "écrit",
-    "lede": "Ici, tout le monde livre encore des projets clients. Chaque signature mène à tout ce que son auteur a publié, première note comprise.",
+    "lede": "Ici, tout le monde écrit, tout le monde partage et nous formons ensemble un projet commun.",
     "cta": "Voir les auteurs",
     "lien": "/fr/authors/"
   },
   "lettre": {
+    "image": "/medias/lettre/image.jpg",
     "lienFlux": "/fr/rss.xml"
   }
 }
