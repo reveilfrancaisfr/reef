@@ -5,5 +5,8 @@
   "eyebrow": "Auteurs",
   "title": "Qui écrit ici",
   "accent": "écrit",
-  "lede": "Trois personnes partagent ce carnet. Chaque article porte une signature, et chaque signature mène à tout ce que son auteur a écrit."
+  "lede": "Trois personnes partagent ce carnet. Chaque article porte une signature, et chaque signature mène à tout ce que son auteur a écrit.",
+  "countLabel": "{count} articles",
+  "countOne": "1 article",
+  "linksLabel": "Ailleurs"
 }

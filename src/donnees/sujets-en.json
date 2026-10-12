@@ -5,5 +5,8 @@
   "eyebrow": "Topics",
   "title": "Five threads we keep pulling",
   "accent": "threads",
-  "lede": "Every post belongs to exactly one topic. Pick a thread and read it end to end, oldest first if you want the argument in order."
+  "lede": "Every post belongs to exactly one topic. Pick a thread and read it end to end, oldest first if you want the argument in order.",
+  "countLabel": "{count} posts",
+  "countOne": "1 post",
+  "readTopic": "Read this topic"
 }

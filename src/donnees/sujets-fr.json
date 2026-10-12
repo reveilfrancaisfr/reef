@@ -5,5 +5,8 @@
   "eyebrow": "Sujets",
   "title": "Cinq fils que nous tirons sans cesse",
   "accent": "fils",
-  "lede": "Chaque article appartient à un seul sujet. Choisissez un fil et lisez-le d'un bout à l'autre, du plus ancien au plus récent si vous voulez l'argument dans l'ordre."
+  "lede": "Chaque article appartient à un seul sujet. Choisissez un fil et lisez-le d'un bout à l'autre, du plus ancien au plus récent si vous voulez l'argument dans l'ordre.",
+  "countLabel": "{count} articles",
+  "countOne": "1 article",
+  "readTopic": "Lire ce sujet"
 }

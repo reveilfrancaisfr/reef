@@ -6,8 +6,9 @@
 // le texte du theme ; scripts/preremplir-pages-restantes.ts ecrit les fichiers deja remplis
 // avec les textes actuels.
 //
-// Seuls les textes que ces pages affichent elles-memes sont ici : les textes des cartes de
-// sujets et d'auteurs vivent dans leurs composants.
+// Les formulaires Sujets et Auteurs portent aussi les textes des CARTES (TopicCard.astro,
+// AuthorCard.astro), qui sont les memes sur toutes les pages qui les montrent : accueil,
+// archives, page Sujets, page Auteurs.
 import { fields, singleton } from "@keystatic/core";
 
 const VIDE = "Laisser vide pour garder le texte d'origine du thème.";
@@ -27,6 +28,20 @@ const enTeteDePage = () => ({
   title: texte("Titre", true),
   accent: texte("Mot mis en valeur dans le titre", false, `Il doit apparaître tel quel dans le titre. ${VIDE}`),
   lede: texte("Introduction (sous le titre)", true),
+});
+
+/** Les textes de la carte d'un sujet (TopicCard.astro), partout ou elle apparait. */
+const carteDeSujet = () => ({
+  countLabel: avecJeton("Carte d'un sujet : nombre d'articles (plusieurs)", "{count}", "il est remplacé par le nombre d'articles du sujet."),
+  countOne: texte("Carte d'un sujet : nombre d'articles (un seul)"),
+  readTopic: texte("Carte d'un sujet : lien en bas de la carte"),
+});
+
+/** Les textes de la carte d'un auteur (AuthorCard.astro), partout ou elle apparait. */
+const carteDAuteur = () => ({
+  countLabel: avecJeton("Carte d'un auteur : nombre d'articles (plusieurs)", "{count}", "il est remplacé par le nombre d'articles de l'auteur."),
+  countOne: texte("Carte d'un auteur : nombre d'articles (un seul)"),
+  linksLabel: texte("Carte d'un auteur : liste de ses liens, nom pour les lecteurs d'écran"),
 });
 
 /** Le champ de recherche, le compteur et le message "aucun resultat" (composant Search.astro). */
@@ -68,10 +83,13 @@ const pageDe = <S extends Record<string, ReturnType<typeof texte>>>(nom: Nom, la
     schema,
   });
 
-export const sujetsFr = pageDe("sujets", "fr", "Page Sujets (français)", enTeteDePage());
-export const sujetsEn = pageDe("sujets", "en", "Page Sujets (anglais)", enTeteDePage());
-export const auteursFr = pageDe("auteurs", "fr", "Page Auteurs (français)", enTeteDePage());
-export const auteursEn = pageDe("auteurs", "en", "Page Auteurs (anglais)", enTeteDePage());
+const sujets = () => ({ ...enTeteDePage(), ...carteDeSujet() });
+const auteurs = () => ({ ...enTeteDePage(), ...carteDAuteur() });
+
+export const sujetsFr = pageDe("sujets", "fr", "Page Sujets (français)", sujets());
+export const sujetsEn = pageDe("sujets", "en", "Page Sujets (anglais)", sujets());
+export const auteursFr = pageDe("auteurs", "fr", "Page Auteurs (français)", auteurs());
+export const auteursEn = pageDe("auteurs", "en", "Page Auteurs (anglais)", auteurs());
 export const rechercheFr = pageDe("recherche", "fr", "Page Recherche (français)", { ...enTeteDePage(), ...rechercheEnPlus() });
 export const rechercheEn = pageDe("recherche", "en", "Page Recherche (anglais)", { ...enTeteDePage(), ...rechercheEnPlus() });
 export const introuvableFr = pageDe("introuvable", "fr", "Page introuvable, 404 (français)", introuvable());

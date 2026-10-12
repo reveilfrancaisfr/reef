@@ -5,5 +5,8 @@
   "eyebrow": "Authors",
   "title": "Who writes here",
   "accent": "writes",
-  "lede": "Three people share this notebook. Every post carries a byline, and every byline leads to everything that person has written."
+  "lede": "Three people share this notebook. Every post carries a byline, and every byline leads to everything that person has written.",
+  "countLabel": "{count} posts",
+  "countOne": "1 post",
+  "linksLabel": "Elsewhere"
 }

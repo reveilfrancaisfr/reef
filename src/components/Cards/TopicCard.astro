@@ -47,6 +47,8 @@ import { Icon } from "@components/svg/icons";
 import { fmt, useTranslations, type Locale } from "@i18n";
 import { annotationsDeLaFiche } from "@moteur/listes";
 import { marqueInterface } from "@moteur/cadre";
+import { surcharger } from "@moteur/contenu-keystatic";
+import { lireSujets } from "@moteur/pages-restantes-keystatic";
 import type { CollectionEntry } from "astro:content";
 import { topicTone } from "./topicTone";
 
@@ -66,7 +68,12 @@ type Props = {
 };
 
 const { topic, href, count, locale, as: Tag = "h3", class: className }: Props = Astro.props;
-const t = useTranslations(locale);
+// Les textes de la carte saisis dans Keystatic (formulaire de la page Sujets, src/keystatic/pages-restantes.ts)
+// passent devant ceux du theme ; vides, tout retombe sur le theme.
+const ks = await lireSujets(locale);
+const t = surcharger(useTranslations(locale), {
+  topics: { countOne: ks?.countOne, countLabel: ks?.countLabel, readTopic: ks?.readTopic },
+});
 const tone = topicTone[topic.data.accent];
 const countLabel = count === 1 ? t.topics.countOne : fmt(t.topics.countLabel, { count });
 // Moteur allume, en mode edition : la fiche du sujet (collection "sujets").

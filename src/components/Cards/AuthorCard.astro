@@ -10,6 +10,8 @@ import { Avatar } from "@components/ui/avatar";
 import { fmt, useTranslations, type Locale } from "@i18n";
 import { annotationsDeLaFiche } from "@moteur/listes";
 import { marqueInterface } from "@moteur/cadre";
+import { surcharger } from "@moteur/contenu-keystatic";
+import { lireAuteurs } from "@moteur/pages-restantes-keystatic";
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
@@ -39,7 +41,12 @@ const {
   class: className,
 }: Props = Astro.props;
 
-const t = useTranslations(locale);
+// Les textes de la carte saisis dans Keystatic (formulaire de la page Auteurs, src/keystatic/pages-restantes.ts)
+// passent devant ceux du theme ; vides, tout retombe sur le theme.
+const ks = await lireAuteurs(locale);
+const t = surcharger(useTranslations(locale), {
+  authors: { countOne: ks?.countOne, countLabel: ks?.countLabel, linksLabel: ks?.linksLabel },
+});
 const countLabel = count === 1 ? t.authors.countOne : fmt(t.authors.countLabel, { count });
 const links = author.data.links;
 // Moteur allume, en mode edition : la fiche de l'auteur (collection "auteurs").
