@@ -1,6 +1,14 @@
-import { config, fields, collection } from '@keystatic/core';
+import { config } from '@keystatic/core';
 import { accueilEn, accueilFr, dispositionAccueil } from './src/keystatic/accueil';
 import { apparenceSite } from './src/keystatic/apparence-site';
+import {
+  articlesEn,
+  articlesFr,
+  ficheAuteurEn,
+  ficheAuteurFr,
+  ficheSujetEn,
+  ficheSujetFr,
+} from './src/keystatic/articles';
 import { pagesLibres } from './src/keystatic/pages-libres';
 import {
   aProposEn,
@@ -40,7 +48,8 @@ export default config({
   // Le menu de gauche de l'interface, range par theme.
   ui: {
     navigation: {
-      Articles: ['posts'],
+      Articles: ['articlesFr', 'articlesEn'],
+      'Auteurs et sujets': ['ficheAuteurFr', 'ficheAuteurEn', 'ficheSujetFr', 'ficheSujetEn'],
       'Pages libres': ['pagesLibres'],
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
       'Apparence du site': ['apparenceSite'],
@@ -71,20 +80,12 @@ export default config({
   },
   collections: {
     pagesLibres,
-    posts: collection({
-      label: 'Articles',
-      slugField: 'title',
-      path: 'src/content/blog/*',
-      format: { contentField: 'content' },
-      schema: {
-        title: fields.slug({ name: { label: 'Titre' } }),
-        publishedDate: fields.date({ label: 'Date de publication' }),
-        description: fields.text({ label: 'Description', multiline: true }),
-        content: fields.markdoc({
-          label: 'Contenu de l’article',
-        }),
-      },
-    }),
+    articlesFr,
+    articlesEn,
+    ficheAuteurFr,
+    ficheAuteurEn,
+    ficheSujetFr,
+    ficheSujetEn,
   },
   singletons: {
     accueilFr,
