@@ -15,6 +15,7 @@ import { Button } from "@components/ui/button";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, useTranslations } from "@i18n";
 import { annotationsDe } from "@moteur/annotations";
+import { avecTextesDesArticles } from "@moteur/textes-articles-keystatic";
 import { getResolvedPosts } from "@js/posts";
 import type { CollectionEntry } from "astro:content";
 
@@ -27,7 +28,9 @@ type Props = {
 const { post, class: className } = Astro.props;
 
 const locale = getLocale(Astro);
-const t = useTranslations(Astro);
+// Les textes saisis dans Keystatic (formulaire "Page d'un article", src/keystatic/pages-articles.ts)
+// passent devant ceux du theme ; vides, tout retombe sur le theme.
+const t = await avecTextesDesArticles(useTranslations(Astro), locale);
 const ed = annotationsDe(Astro, "a-lire-ensuite");
 const routes = getSiteRoutes(locale);
 

@@ -20,6 +20,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { carteDuBillet, corpsDuBillet } from "@moteur/source";
 import TexteRiche from "@moteur/TexteRiche.astro";
 import { type PanneauSeo, seoDe } from "@moteur/listes";
+import { avecTextesDesArticles } from "@moteur/textes-articles-keystatic";
 import { identiteDuSite } from "@moteur/theme";
 import type { CollectionEntry } from "astro:content";
 
@@ -36,7 +37,9 @@ const { Content, blocs, headings } = await corpsDuBillet(post);
 
 const locale = getLocale(Astro);
 // Les textes rediges de la page, poses sur la requete par la page (src/pages/[...locale]/blog/[id].astro).
-const t = useTranslations(Astro);
+// Ceux saisis dans Keystatic (pages "Articles" et "Page d'un article") passent devant : ici, le nom de l'archive
+// dans le fil d'Ariane ; vides, tout retombe sur le theme.
+const t = await avecTextesDesArticles(useTranslations(Astro), locale);
 const routes = getSiteRoutes(locale);
 
 // Toutes les URLs passent par la table des routes, donc par localizePath : un

@@ -19,6 +19,7 @@
 //    valeurs doivent rester d'accord : c'est la seule chose a verifier ici.
 import { Icon } from "@components/svg/icons";
 import { getLocale, useTranslations } from "@i18n";
+import { avecTextesDesArticles } from "@moteur/textes-articles-keystatic";
 import type { MarkdownHeading } from "astro";
 
 type Props = {
@@ -32,7 +33,9 @@ type Props = {
 const { headings, min = 3, class: className } = Astro.props;
 
 const locale = getLocale(Astro);
-const t = useTranslations(locale);
+// Les textes saisis dans Keystatic (formulaire "Page d'un article", src/keystatic/pages-articles.ts)
+// passent devant ceux du theme ; vides, tout retombe sur le theme.
+const t = await avecTextesDesArticles(useTranslations(locale), locale);
 
 // h2 et h3 seulement. Le h1 est le titre de la page, il n'est pas une etape ;
 // le h4 est un aparte, et un sommaire qui le liste cesse d'etre une carte.

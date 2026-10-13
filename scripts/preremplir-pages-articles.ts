@@ -1,4 +1,4 @@
-// scripts/preremplir-pages-articles.ts - ecrit dans src/donnees/ les fichiers des pages qui montrent les articles (l'archive du blog), remplis avec les textes ACTUELS du theme.
+// scripts/preremplir-pages-articles.ts - ecrit dans src/donnees/ les fichiers des pages qui montrent les articles (l'archive du blog et la page d'un article), remplis avec les textes ACTUELS du theme.
 //
 //   npx tsx scripts/preremplir-pages-articles.ts            cree les fichiers absents et COMPLETE les existants :
 //                                                           seuls les champs qui manquent sont ajoutes, jamais une
@@ -22,13 +22,56 @@ type Langue = keyof typeof dictionnaires;
 
 /** Les champs de chaque formulaire : les memes que ceux de src/keystatic/pages-articles.ts. */
 const CHAMPS: Record<string, string[]> = {
-  archive: ["metaTitle", "metaDescription", "crumb", "eyebrow", "title", "accent", "lede", "pageSuffix"],
+  archive: [
+    "metaTitle",
+    "metaDescription",
+    "crumb",
+    "eyebrow",
+    "title",
+    "accent",
+    "lede",
+    "pageSuffix",
+    "countLabel",
+    "countOne",
+    "listLabel",
+    "paginationLabel",
+    "emptyTitle",
+    "emptyLede",
+  ],
+  article: [
+    "published",
+    "updated",
+    "updatedNote",
+    "writtenBy",
+    "topicLabel",
+    "minRead",
+    "minReadOne",
+    "draft",
+    "draftNote",
+    "toc",
+    "tocLabel",
+    "tagsLabel",
+    "share",
+    "shareOn",
+    "networkEmail",
+    "networkX",
+    "aboutAuthor",
+    "moreFromAuthor",
+    "navLabel",
+    "previousPost",
+    "nextPost",
+    "backToPosts",
+    "keepReading",
+    "keepReadingAccent",
+    "keepReadingLede",
+    "keepReadingCta",
+  ],
 };
 
 const fichiers: { nom: string; contenu: Record<string, unknown> }[] = [];
 for (const langue of Object.keys(dictionnaires) as Langue[]) {
   const d = dictionnaires[langue];
-  const tranches: Record<string, object> = { archive: d.archive };
+  const tranches: Record<string, object> = { archive: d.archive, article: d.post };
   for (const [page, champs] of Object.entries(CHAMPS)) {
     const tranche = tranches[page] as Record<string, unknown>;
     const contenu: Record<string, unknown> = {};

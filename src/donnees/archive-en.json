@@ -6,5 +6,11 @@
   "title": "Everything we have written",
   "accent": "Everything",
   "lede": "The full archive, newest first. Thirty seconds of scrolling beats a search box when you do not yet know what you are looking for.",
-  "pageSuffix": "page {n}"
+  "pageSuffix": "page {n}",
+  "countLabel": "{count} posts",
+  "countOne": "1 post",
+  "listLabel": "Post list",
+  "paginationLabel": "Post pagination",
+  "emptyTitle": "Nothing here yet",
+  "emptyLede": "No post matches this page. The archive fills up every couple of weeks, and the RSS feed will tell you when it does."
 }

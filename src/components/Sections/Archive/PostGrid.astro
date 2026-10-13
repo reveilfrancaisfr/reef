@@ -12,6 +12,7 @@ import { Pagination } from "@components/ui/pagination";
 import { fmt, useTranslations, type Locale } from "@i18n";
 import { buildPageHref } from "@js/pagination";
 import type { ResolvedPost } from "@js/posts";
+import { avecTextesDesArticles } from "@moteur/textes-articles-keystatic";
 import EmptyState from "./EmptyState.astro";
 
 type Props = {
@@ -50,7 +51,9 @@ const {
   class: className,
 } = Astro.props;
 
-const t = useTranslations(locale);
+// Les textes de la liste saisis dans Keystatic (formulaire "Page Articles", src/keystatic/pages-articles.ts)
+// passent devant ceux du theme ; vides, tout retombe sur le theme.
+const t = await avecTextesDesArticles(useTranslations(locale), locale);
 const countLabel =
   total === undefined
     ? undefined

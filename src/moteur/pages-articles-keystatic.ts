@@ -17,3 +17,5 @@ const lire = async <T>(lecture: () => Promise<T | null>): Promise<T | null> => {
 
 export const lireArchive = (locale: string) =>
   lire(() => (locale === "fr" ? reader.singletons.archiveFr.read() : reader.singletons.archiveEn.read()));
+export const lireArticle = (locale: string) =>
+  lire(() => (locale === "fr" ? reader.singletons.articleFr.read() : reader.singletons.articleEn.read()));

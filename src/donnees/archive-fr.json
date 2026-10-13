@@ -6,5 +6,11 @@
   "title": "Tout ce que nous avons écrit",
   "accent": "Tout",
   "lede": "Les archives complètes, du plus récent au plus ancien. Trente secondes de défilement valent mieux qu'un champ de recherche quand on ne sait pas encore ce que l'on cherche.",
-  "pageSuffix": "page {n}"
+  "pageSuffix": "page {n}",
+  "countLabel": "{count} articles",
+  "countOne": "1 article",
+  "listLabel": "Liste des articles",
+  "paginationLabel": "Pagination des articles",
+  "emptyTitle": "Rien ici pour l'instant",
+  "emptyLede": "Aucun article ne correspond à cette page. Les archives se remplissent toutes les deux semaines environ, et le flux RSS vous préviendra."
 }

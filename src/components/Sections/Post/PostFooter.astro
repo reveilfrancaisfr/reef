@@ -16,6 +16,7 @@ import { etiquettesDe, getResolvedPosts } from "@js/posts";
 import { annotationsDeLaFiche } from "@moteur/listes";
 import { annotation } from "@moteur/source";
 import { marqueInterface } from "@moteur/cadre";
+import { avecTextesDesArticles } from "@moteur/textes-articles-keystatic";
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
@@ -29,7 +30,9 @@ type Props = {
 const { post, author, url, class: className } = Astro.props;
 
 const locale = getLocale(Astro);
-const t = useTranslations(locale);
+// Les textes saisis dans Keystatic (formulaire "Page d'un article", src/keystatic/pages-articles.ts)
+// passent devant ceux du theme ; vides, tout retombe sur le theme.
+const t = await avecTextesDesArticles(useTranslations(locale), locale);
 const routes = getSiteRoutes(locale);
 
 const authorHref = `${routes.authors}${entrySlug(author.id)}/`;
