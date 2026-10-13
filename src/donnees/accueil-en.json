@@ -6,9 +6,9 @@
   "motAccentue": "Réveil Français",
   "chapeau": "Join us and get a better future !",
   "boutonPrincipal": "Discover our party",
-  "lienPrincipal": "/blog/",
+  "lienPrincipal": "/topics/",
   "boutonSecondaire": "Our candidate",
-  "lienSecondaire": "/about/",
+  "lienSecondaire": "/fr/p/presentation-candidate/",
   "compteurs": [
     "notes published",
     "threads",
