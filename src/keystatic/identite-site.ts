@@ -6,6 +6,9 @@
 // principal sert aussi sur fond sombre.
 // Lecture : src/moteur/identite-keystatic.ts (synchrone, branchée dans src/moteur/theme.ts) ; l'image de partage est
 // recadrée en carte 1200x630 au build par scripts/og.mjs.
+// Les deux adresses d'envoi (contact, lettre d'information) sont vides : tant qu'elles le sont, ces formulaires
+// n'envoient rien, comme avant. Remplies, les formulaires du site (ContactForm.astro, NewsletterInvite.astro, pied
+// de page) postent vers ce service.
 import { fields, singleton } from "@keystatic/core";
 import siteData from "../config/siteData.json";
 
@@ -92,6 +95,22 @@ export const identiteSite = singleton({
       label: "Nom de l'éditeur",
       description: "Le nom qui signe le crédit du pied de page. Le thème met un nom d'exemple.",
       defaultValue: siteData.author.name,
+    }),
+    envoiContact: fields.text({
+      label: "Formulaire de contact : adresse du service qui reçoit les messages",
+      description:
+        "L'adresse d'envoi que votre service de formulaires donne pour un formulaire HTML (par exemple https://formspree.io/f/xxxxxxx). Le nom, l'e-mail et le message du visiteur partent vers ce service, qui vous les transmet. Vide : le formulaire n'envoie rien. N'indiquez qu'un service de confiance, car il reçoit les données de vos visiteurs.",
+      validation: {
+        pattern: { regex: /^$|^https:\/\/\S+$/, message: "Une adresse qui commence par https://" },
+      },
+    }),
+    envoiNewsletter: fields.text({
+      label: "Lettre d'information : adresse du service qui reçoit les inscriptions",
+      description:
+        "L'adresse d'envoi que votre service de lettre d'information donne pour un formulaire d'inscription HTML. L'adresse e-mail du visiteur part vers ce service. Vide : les formulaires d'inscription n'envoient rien. N'indiquez qu'un service de confiance.",
+      validation: {
+        pattern: { regex: /^$|^https:\/\/\S+$/, message: "Une adresse qui commence par https://" },
+      },
     }),
   },
 });

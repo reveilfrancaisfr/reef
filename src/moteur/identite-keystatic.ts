@@ -1,4 +1,4 @@
-// src/moteur/identite-keystatic.ts - lit le formulaire Keystatic "Identité du site" (nom, logos, description, image de partage, e-mail, compte X, éditeur) de façon SYNCHRONE.
+// src/moteur/identite-keystatic.ts - lit le formulaire Keystatic "Identité du site" (nom, logos, description, image de partage, e-mail, compte X, éditeur, adresses d'envoi des formulaires) de façon SYNCHRONE.
 //
 // Pourquoi synchrone : identiteDuSite() (src/moteur/theme.ts) est appelée sans await par une
 // dizaine de composants. createReader de Keystatic est asynchrone, il ne peut donc pas servir ici :
@@ -39,6 +39,10 @@ export interface IdentiteSaisie {
   compteX: string | null;
   /** Le nom de l'éditeur (le crédit du pied de page). */
   editeur: string | null;
+  /** L'adresse du service qui reçoit les messages du formulaire de contact (https), ou null : le formulaire n'envoie rien. */
+  envoiContact: string | null;
+  /** L'adresse du service qui reçoit les inscriptions à la lettre d'information (https), ou null. */
+  envoiNewsletter: string | null;
 }
 
 /** Le texte d'une langue, sinon celui de l'autre ; null si les deux sont vides. */
@@ -177,6 +181,12 @@ function logo(saisi: unknown, nom: string | null): LogoSaisi | null {
   return resultat;
 }
 
+/** Une adresse de service d'envoi : seulement https, sans espace ; tout autre texte est ignore (le formulaire n'envoie alors rien). */
+const adresseHttps = (valeur: unknown): string | null => {
+  const t = texte(valeur);
+  return t && /^https:\/\/\S+$/.test(t) ? t : null;
+};
+
 const objet = (valeur: unknown): Record<string, unknown> =>
   valeur && typeof valeur === "object" ? (valeur as Record<string, unknown>) : {};
 
@@ -202,10 +212,13 @@ export function lireIdentiteKeystatic(): IdentiteSaisie | null {
       email: texte(donnees.email),
       compteX: texte(donnees.compteX),
       editeur: texte(donnees.editeur),
+      envoiContact: adresseHttps(donnees.envoiContact),
+      envoiNewsletter: adresseHttps(donnees.envoiNewsletter),
     };
     const rienDeSaisi =
       !saisie.nom && !saisie.logo && !saisie.logoSombre && !saisie.description.fr && !saisie.description.en &&
-      !saisie.imagePartage && !saisie.texteImage.fr && !saisie.texteImage.en && !saisie.email && !saisie.compteX && !saisie.editeur;
+      !saisie.imagePartage && !saisie.texteImage.fr && !saisie.texteImage.en && !saisie.email && !saisie.compteX && !saisie.editeur &&
+      !saisie.envoiContact && !saisie.envoiNewsletter;
     return rienDeSaisi ? null : saisie;
   } catch {
     return null;

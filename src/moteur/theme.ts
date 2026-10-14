@@ -29,7 +29,8 @@
 // L'IDENTITE SAISIE DANS KEYSTATIC (formulaire "Identite du site", src/keystatic/identite-site.ts) :
 // son nom, ses logos, sa description, son texte d'image de partage, son e-mail, son compte X et
 // son editeur passent devant ceux de siteData ; vides, tout retombe sur le theme (la vague et
-// "Reef"). Lecture SYNCHRONE (identite-keystatic.ts), parce que identiteDuSite() est appelee sans
+// "Reef"). Les adresses d'envoi des formulaires (contact, lettre d'information) y sont aussi : vides,
+// ces formulaires n'envoient rien, comme dans le theme livre. Lecture SYNCHRONE (identite-keystatic.ts), parce que identiteDuSite() est appelee sans
 // await par une dizaine de composants. La photo de partage elle-meme est recadree au build par
 // scripts/og.mjs, qui la depose a l'adresse de siteData.defaultImage.src.
 import type { IconName } from "@components/svg/icons";
@@ -130,12 +131,22 @@ export function repliDuSite(locale: "en" | "fr"): RepliDuSite {
  * L'identite du site pour la page en cours (reglages, entree "site", sinon siteData).
  * Les logos saisis dans Keystatic passent devant ; sans logo du mode sombre, le logo
  * principal sert aussi sur fond sombre (la barre ne montre alors qu'une image).
+ * Les adresses d'envoi saisies (contact, lettre) sont lues par ContactForm, NewsletterInvite
+ * et le pied de page dans identite.formulaires.
  */
 export function identiteDuSite(page: Parameters<typeof identite>[0], locale: "en" | "fr"): Identite {
   const base = identite(page, repliDuSite(locale));
   const saisie = lireIdentiteKeystatic();
   if (!saisie) return base;
-  return { ...base, logo: saisie.logo ?? base.logo, logoSombre: saisie.logoSombre ?? base.logoSombre };
+  return {
+    ...base,
+    logo: saisie.logo ?? base.logo,
+    logoSombre: saisie.logoSombre ?? base.logoSombre,
+    formulaires: {
+      newsletter: saisie.envoiNewsletter ?? base.formulaires.newsletter,
+      contact: saisie.envoiContact ?? base.formulaires.contact,
+    },
+  };
 }
 
 /** Les jetons de police de Reef (tokens.css) : Instrument Sans pour le texte, Space Grotesk pour les titres. */
