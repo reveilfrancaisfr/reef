@@ -17,6 +17,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { annotationsDe } from "@moteur/annotations";
 import { annotationsDeLaFiche, type PanneauSeo, seoDe } from "@moteur/listes";
 import { propsDeLaPage } from "@moteur/chemins";
+import { avecTextesDesArticles } from "@moteur/textes-articles-keystatic";
 import { textesDeLaPage } from "@moteur/textes";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
@@ -35,8 +36,9 @@ if (props instanceof Response) return props;
 const { page, topic, topics } = props;
 const locale = getLocale(Astro);
 // Les textes rediges de la page : ceux de la base moteur allume (docs/moteur.md),
-// poses sur la requete pour ses composants.
-const t = await textesDeLaPage(Astro);
+// poses sur la requete pour ses composants. Ceux saisis dans Keystatic (pages "Sujets"
+// et "Articles") passent devant ; vides, tout retombe sur le theme.
+const t = await avecTextesDesArticles(await textesDeLaPage(Astro), locale);
 // Moteur allume, en mode edition : la fiche du sujet (collection "sujets")
 // porte l'entree de la page, son nom (le mot en couleur du titre, et le fil
 // d'Ariane) et sa description ; l'entree "sujet" porte le surtitre et le

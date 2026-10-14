@@ -12,5 +12,8 @@
   "listLabel": "Liste des articles",
   "paginationLabel": "Pagination des articles",
   "emptyTitle": "Rien ici pour l'instant",
-  "emptyLede": "Aucun article ne correspond à cette page. Les archives se remplissent toutes les deux semaines environ, et le flux RSS vous préviendra."
+  "emptyLede": "Aucun article ne correspond à cette page. Les archives se remplissent toutes les deux semaines environ, et le flux RSS vous préviendra.",
+  "emptyCta": "Retour aux articles",
+  "topicTitle": "Articles classés dans {topic}",
+  "tagTitle": "Articles étiquetés {tag}"
 }

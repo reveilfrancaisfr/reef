@@ -37,6 +37,9 @@ const CHAMPS: Record<string, string[]> = {
     "paginationLabel",
     "emptyTitle",
     "emptyLede",
+    "emptyCta",
+    "topicTitle",
+    "tagTitle",
   ],
   article: [
     "published",

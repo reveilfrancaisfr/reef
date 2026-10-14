@@ -21,7 +21,7 @@ const avecJeton = (label: string, jeton: string, explication: string, multiline 
 /**
  * L'archive du blog (ArchivePage.astro) : ce que Google lit, le fil d'Ariane, le titre, son introduction,
  * le suffixe des pages suivantes ; puis les textes de la LISTE d'articles (PostGrid.astro), les memes sur
- * l'archive, les pages de sujet, d'auteur et d'etiquette.
+ * l'archive, les pages de sujet, d'auteur et d'etiquette ; puis le titre de la page d'un sujet et d'une etiquette.
  */
 const archive = () => ({
   metaTitle: texte("Titre de la page (onglet du navigateur et Google)"),
@@ -42,6 +42,9 @@ const archive = () => ({
   paginationLabel: texte("Pagination : nom pour les lecteurs d'écran"),
   emptyTitle: texte("Liste vide : titre"),
   emptyLede: texte("Liste vide : explication", true),
+  emptyCta: texte("Liste vide : bouton (archive, pages d'un sujet, d'un auteur et d'une étiquette)"),
+  topicTitle: avecJeton("Page d'un sujet : titre", "{topic}", "il est remplacé par le nom du sujet."),
+  tagTitle: avecJeton("Page d'une étiquette : titre", "{tag}", "il est remplacé par le nom de l'étiquette."),
 });
 
 /** La page d'un article : l'en-tete (PostHero), le sommaire, le pied (PostFooter) et les lectures suivantes (RelatedPosts). */

@@ -8,5 +8,8 @@
   "lede": "Every post belongs to exactly one topic. Pick a thread and read it end to end, oldest first if you want the argument in order.",
   "countLabel": "{count} posts",
   "countOne": "1 post",
-  "readTopic": "Read this topic"
+  "readTopic": "Read this topic",
+  "pageEyebrow": "Topics",
+  "emptyTitle": "Nothing filed here yet",
+  "emptyLede": "The topic is open and the first post is still a draft. The RSS feed will say when it lands."
 }

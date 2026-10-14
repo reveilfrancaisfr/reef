@@ -8,5 +8,8 @@
   "lede": "Chaque article appartient à un seul sujet. Choisissez un fil et lisez-le d'un bout à l'autre, du plus ancien au plus récent si vous voulez l'argument dans l'ordre.",
   "countLabel": "{count} articles",
   "countOne": "1 article",
-  "readTopic": "Lire ce sujet"
+  "readTopic": "Lire ce sujet",
+  "pageEyebrow": "Sujets",
+  "emptyTitle": "Rien de classé ici pour l'instant",
+  "emptyLede": "Le sujet est ouvert et le premier article est encore un brouillon. Le flux RSS préviendra quand il sortira."
 }

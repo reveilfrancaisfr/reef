@@ -8,5 +8,9 @@
   "lede": "Trois personnes partagent ce carnet. Chaque article porte une signature, et chaque signature mène à tout ce que son auteur a écrit.",
   "countLabel": "{count} articles",
   "countOne": "1 article",
-  "linksLabel": "Ailleurs"
+  "linksLabel": "Ailleurs",
+  "postsBy": "Articles de {name}",
+  "roleLabel": "Rôle",
+  "emptyTitle": "Aucun article sous cette signature",
+  "emptyLede": "Une page d'auteur vide veut dire qu'un premier brouillon est ouvert quelque part. Cela arrive."
 }

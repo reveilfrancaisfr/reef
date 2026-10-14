@@ -8,5 +8,9 @@
   "lede": "Three people share this notebook. Every post carries a byline, and every byline leads to everything that person has written.",
   "countLabel": "{count} posts",
   "countOne": "1 post",
-  "linksLabel": "Elsewhere"
+  "linksLabel": "Elsewhere",
+  "postsBy": "Posts by {name}",
+  "roleLabel": "Role",
+  "emptyTitle": "No posts under this byline yet",
+  "emptyLede": "An author page with nothing on it means a first draft is open somewhere. It happens."
 }

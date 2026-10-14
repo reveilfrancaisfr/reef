@@ -8,7 +8,9 @@
 //
 // Les formulaires Sujets et Auteurs portent aussi les textes des CARTES (TopicCard.astro,
 // AuthorCard.astro), qui sont les memes sur toutes les pages qui les montrent : accueil,
-// archives, page Sujets, page Auteurs.
+// archives, page Sujets, page Auteurs ; et ceux de la page d'UN sujet (topics/[topic]) et
+// d'UN auteur (authors/[author]), qui les lisent par avecTextesDesArticles
+// (src/moteur/textes-articles-keystatic.ts).
 import { fields, singleton } from "@keystatic/core";
 
 const VIDE = "Laisser vide pour garder le texte d'origine du thème.";
@@ -42,6 +44,21 @@ const carteDAuteur = () => ({
   countLabel: avecJeton("Carte d'un auteur : nombre d'articles (plusieurs)", "{count}", "il est remplacé par le nombre d'articles de l'auteur."),
   countOne: texte("Carte d'un auteur : nombre d'articles (un seul)"),
   linksLabel: texte("Carte d'un auteur : liste de ses liens, nom pour les lecteurs d'écran"),
+});
+
+/** Les textes de la page d'UN sujet (topics/[topic]/[...page].astro), que le nom du sujet ne fournit pas. */
+const pageDUnSujet = () => ({
+  pageEyebrow: texte("Page d'un sujet : surtitre au-dessus du titre"),
+  emptyTitle: texte("Page d'un sujet sans article : titre"),
+  emptyLede: texte("Page d'un sujet sans article : explication", true),
+});
+
+/** Les textes de la page d'UN auteur (authors/[author].astro), que la fiche de l'auteur ne fournit pas. */
+const pageDUnAuteur = () => ({
+  postsBy: avecJeton("Page d'un auteur : titre de l'onglet du navigateur et Google", "{name}", "il est remplacé par le nom de l'auteur."),
+  roleLabel: texte("Page d'un auteur : surtitre au-dessus du nom"),
+  emptyTitle: texte("Page d'un auteur sans article : titre"),
+  emptyLede: texte("Page d'un auteur sans article : explication", true),
 });
 
 /** Le champ de recherche, le compteur et le message "aucun resultat" (composant Search.astro). */
@@ -83,8 +100,8 @@ const pageDe = <S extends Record<string, ReturnType<typeof texte>>>(nom: Nom, la
     schema,
   });
 
-const sujets = () => ({ ...enTeteDePage(), ...carteDeSujet() });
-const auteurs = () => ({ ...enTeteDePage(), ...carteDAuteur() });
+const sujets = () => ({ ...enTeteDePage(), ...carteDeSujet(), ...pageDUnSujet() });
+const auteurs = () => ({ ...enTeteDePage(), ...carteDAuteur(), ...pageDUnAuteur() });
 
 export const sujetsFr = pageDe("sujets", "fr", "Page Sujets (français)", sujets());
 export const sujetsEn = pageDe("sujets", "en", "Page Sujets (anglais)", sujets());

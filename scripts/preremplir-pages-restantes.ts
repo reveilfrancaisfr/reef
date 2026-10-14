@@ -24,10 +24,10 @@ const EN_TETE = ["metaTitle", "metaDescription", "crumb", "eyebrow", "title", "a
 
 /** Les champs de chaque formulaire : les memes que ceux de src/keystatic/pages-restantes.ts. */
 const CHAMPS: Record<string, string[]> = {
-  // Les trois derniers : les textes de la carte d'un sujet (TopicCard.astro).
-  sujets: [...EN_TETE, "countLabel", "countOne", "readTopic"],
-  // Les trois derniers : les textes de la carte d'un auteur (AuthorCard.astro).
-  auteurs: [...EN_TETE, "countLabel", "countOne", "linksLabel"],
+  // Les trois suivants : les textes de la carte d'un sujet (TopicCard.astro) ; les trois derniers : ceux de la page d'un sujet.
+  sujets: [...EN_TETE, "countLabel", "countOne", "readTopic", "pageEyebrow", "emptyTitle", "emptyLede"],
+  // Les trois suivants : les textes de la carte d'un auteur (AuthorCard.astro) ; les quatre derniers : ceux de la page d'un auteur.
+  auteurs: [...EN_TETE, "countLabel", "countOne", "linksLabel", "postsBy", "roleLabel", "emptyTitle", "emptyLede"],
   recherche: [
     ...EN_TETE,
     "placeholder",

@@ -12,5 +12,8 @@
   "listLabel": "Post list",
   "paginationLabel": "Post pagination",
   "emptyTitle": "Nothing here yet",
-  "emptyLede": "No post matches this page. The archive fills up every couple of weeks, and the RSS feed will tell you when it does."
+  "emptyLede": "No post matches this page. The archive fills up every couple of weeks, and the RSS feed will tell you when it does.",
+  "emptyCta": "Back to all posts",
+  "topicTitle": "Posts filed under {topic}",
+  "tagTitle": "Posts tagged {tag}"
 }
