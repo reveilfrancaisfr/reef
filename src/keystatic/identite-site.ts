@@ -1,11 +1,12 @@
-// src/keystatic/identite-site.ts - le formulaire Keystatic "Identité du site" : nom, logos, description, image de partage, e-mail, compte X, éditeur.
+// src/keystatic/identite-site.ts - le formulaire Keystatic "Identité du site" : nom, logos, logo de l'onglet, description, image de partage, e-mail, compte X, éditeur.
 //
 // Tout est pré-rempli avec les valeurs ACTUELLES du thème (src/config/siteData.json.ts), pour voir ce qui est où.
-// Les deux logos et l'image de partage sont vides : sans logo, la barre, le tiroir mobile et le pied de page gardent
+// Les deux logos, le logo de l'onglet et l'image de partage sont vides : sans logo, la barre, le tiroir mobile et le pied de page gardent
 // la vague du thème ; sans image de partage, la carte reste la photo du thème. Sans logo du mode sombre, le logo
-// principal sert aussi sur fond sombre.
+// principal sert aussi sur fond sombre. Sans logo de l'onglet, le favicon reste le dessin actuel (l'ancre).
 // Lecture : src/moteur/identite-keystatic.ts (synchrone, branchée dans src/moteur/theme.ts) ; l'image de partage est
-// recadrée en carte 1200x630 au build par scripts/og.mjs.
+// recadrée en carte 1200x630 au build par scripts/og.mjs ; le logo de l'onglet est lu directement dans
+// src/donnees/identite-site.json par scripts/favicon.mjs, qui en fabrique les fichiers de favicon au build.
 // Les deux adresses d'envoi (contact, lettre d'information) sont vides : tant qu'elles le sont, ces formulaires
 // n'envoient rien, comme avant. Remplies, les formulaires du site (ContactForm.astro, NewsletterInvite.astro, pied
 // de page) postent vers ce service.
@@ -37,6 +38,13 @@ export const identiteSite = singleton({
       label: "Logo du mode sombre",
       description:
         "Facultatif : la version du logo lisible sur fond sombre (par exemple en blanc). Vide : le logo ci-dessus sert aussi en mode sombre.",
+      directory: "public/medias",
+      publicPath: "/medias/",
+    }),
+    logoOnglet: fields.image({
+      label: "Logo de l'onglet du navigateur (favicon)",
+      description:
+        "La petite icône qui s'affiche dans l'onglet du navigateur, dans les favoris, sur l'écran d'accueil d'un téléphone et dans les résultats de Google. Un PNG, WebP ou SVG, de préférence carré, d'au moins 180 × 180 pixels ; une image qui n'est pas carrée est centrée sur fond transparent. Les fichiers de favicon sont refabriqués à chaque publication : le changement apparaît après la reconstruction du site (et le navigateur peut garder l'ancienne icône quelque temps). Vide : le dessin actuel du thème (l'ancre).",
       directory: "public/medias",
       publicPath: "/medias/",
     }),
