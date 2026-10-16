@@ -3,8 +3,20 @@
   "logo": "/medias/logo.png",
   "logoSombre": "/medias/logoSombre.png",
   "description": {},
+  "imagePartage": "/medias/imagePartage.png",
   "texteImage": {},
   "email": "reveil.francais.fr@gmail.com",
   "compteX": "@reveilfrancaisf",
-  "editeur": "Réveil Français"
+  "editeur": "Réveil Français",
+  "traductionAuto": {
+    "activer": false,
+    "fr": {
+      "avertissement": "Votre page est en français.",
+      "original": "Retour"
+    },
+    "en": {
+      "avertissement": "Votre page est en anglais. ",
+      "original": "Retour"
+    }
+  }
 }
