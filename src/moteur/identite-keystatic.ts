@@ -9,6 +9,7 @@
 // et le site garde le nom et la vague du thème.
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
+import { TEXTES_PAR_DEFAUT, type TextesDuBandeau } from "./traduction-auto-textes.ts";
 
 /** Un logo prêt à poser dans un <img> : même forme que MediaDesReglages (src/moteur/cadre.ts). */
 export interface LogoSaisi {
@@ -43,6 +44,8 @@ export interface IdentiteSaisie {
   envoiContact: string | null;
   /** L'adresse du service qui reçoit les inscriptions à la lettre d'information (https), ou null. */
   envoiNewsletter: string | null;
+  /** La traduction automatique des pages sans jumelle : cochée ou non, et les textes du bandeau par langue vers laquelle on traduit. */
+  traductionAuto: { activer: boolean; textes: Record<"fr" | "en", TextesDuBandeau> };
 }
 
 /** Le texte d'une langue, sinon celui de l'autre ; null si les deux sont vides. */
@@ -190,6 +193,15 @@ const adresseHttps = (valeur: unknown): string | null => {
 const objet = (valeur: unknown): Record<string, unknown> =>
   valeur && typeof valeur === "object" ? (valeur as Record<string, unknown>) : {};
 
+/** Le texte du bandeau d'une langue : celui saisi, sinon celui par defaut. */
+const bandeau = (valeur: unknown, langue: "fr" | "en"): TextesDuBandeau => {
+  const o = objet(valeur);
+  return {
+    avertissement: texte(o.avertissement) ?? TEXTES_PAR_DEFAUT[langue].avertissement,
+    original: texte(o.original) ?? TEXTES_PAR_DEFAUT[langue].original,
+  };
+};
+
 const paire = (valeur: unknown): PaireDeLangues => {
   const o = objet(valeur);
   return { fr: texte(o.fr), en: texte(o.en) };
@@ -214,11 +226,15 @@ export function lireIdentiteKeystatic(): IdentiteSaisie | null {
       editeur: texte(donnees.editeur),
       envoiContact: adresseHttps(donnees.envoiContact),
       envoiNewsletter: adresseHttps(donnees.envoiNewsletter),
+      traductionAuto: {
+        activer: objet(donnees.traductionAuto).activer === true,
+        textes: { fr: bandeau(objet(donnees.traductionAuto).fr, "fr"), en: bandeau(objet(donnees.traductionAuto).en, "en") },
+      },
     };
     const rienDeSaisi =
       !saisie.nom && !saisie.logo && !saisie.logoSombre && !saisie.description.fr && !saisie.description.en &&
       !saisie.imagePartage && !saisie.texteImage.fr && !saisie.texteImage.en && !saisie.email && !saisie.compteX && !saisie.editeur &&
-      !saisie.envoiContact && !saisie.envoiNewsletter;
+      !saisie.envoiContact && !saisie.envoiNewsletter && !saisie.traductionAuto.activer;
     return rienDeSaisi ? null : saisie;
   } catch {
     return null;

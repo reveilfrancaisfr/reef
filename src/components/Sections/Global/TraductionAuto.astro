@@ -1,0 +1,52 @@
+---
+// src/components/Sections/Global/TraductionAuto.astro - la traduction automatique des pages sans jumelle : le bandeau, la zone du widget et sa configuration.
+//
+// Le reglage vit dans Keystatic ("Identite du site", bloc "Traduction automatique") et est DECOCHE par defaut : decoche, ce
+// composant ne rend rien et le site se comporte comme avant. Coche, il pose :
+//   - le bandeau "page traduite automatiquement" (cache, montre par le script),
+//   - une zone hors ecran ou GTranslate range son selecteur (on ne s'en sert pas : c'est ton selecteur de langue qui commande),
+//   - la configuration (les textes du bandeau) en JSON.
+// Toute la logique est dans ./_traduction.ts : elle n'agit que si l'autre langue n'existe pas pour la page, et ne charge le
+// widget de GTranslate que dans ce cas. Decoche, le composant ne rend RIEN, script compris.
+import { lireIdentiteKeystatic } from "@moteur/identite-keystatic";
+
+const reglage = lireIdentiteKeystatic()?.traductionAuto;
+const actif = reglage?.activer === true;
+// "<" echappe : un texte saisi ne peut pas fermer la balise <script> qui le porte.
+const config = actif ? JSON.stringify({ textes: reglage.textes }).replace(/</g, "\\u003c") : "";
+---
+
+{
+  actif && (
+    <Fragment>
+      {/* Le bandeau : en bas de l'ecran, hors de la barre fixee en haut. Cache tant qu'aucune traduction n'est en cours.
+          translate="no" : le widget ne doit pas traduire SON PROPRE avertissement, qui est deja dans la bonne langue. */}
+      <div
+        class="notranslate fixed inset-x-0 bottom-4 z-[70] px-4 pb-[env(safe-area-inset-bottom,0px)]"
+        data-traduction-bandeau
+        translate="no"
+        role="status"
+        hidden
+      >
+        <div class="bg-card border-border text-foreground rounded-pill shadow-float mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-1 border px-5 py-2.5 font-sans text-sm">
+          <span data-traduction-texte />
+          <button
+            type="button"
+            class="text-primary hover:decoration-primary min-h-11 font-medium underline decoration-transparent underline-offset-4 transition-colors duration-150"
+            data-traduction-original
+          />
+        </div>
+      </div>
+      {/* La zone du widget : hors ecran et cachee aux lecteurs d'ecran, jamais en display:none (certains widgets ne
+          s'initialisent pas dans un element non affiche). */}
+      <div id="traduction-auto-cache" class="notranslate absolute -left-[9999px] size-px overflow-hidden" aria-hidden="true" translate="no" />
+      <script type="application/json" id="traduction-auto-config" set:html={config} />
+      {/* Le script est DANS la condition : decoche, la page ne porte aucun octet de JavaScript de plus (mesure : 98 octets sans, 4,8 Ko avec). */}
+      <script>
+        import { demarrerDepuisLaPage } from "./_traduction";
+
+        demarrerDepuisLaPage();
+      </script>
+    </Fragment>
+  )
+}

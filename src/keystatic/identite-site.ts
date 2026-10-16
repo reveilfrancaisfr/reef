@@ -9,8 +9,11 @@
 // Les deux adresses d'envoi (contact, lettre d'information) sont vides : tant qu'elles le sont, ces formulaires
 // n'envoient rien, comme avant. Remplies, les formulaires du site (ContactForm.astro, NewsletterInvite.astro, pied
 // de page) postent vers ce service.
+// Le bloc "Traduction automatique" est decoche : tant qu'il l'est, le site se comporte comme avant, et aucun script
+// tiers n'est charge. Voir src/components/Sections/Global/TraductionAuto.astro.
 import { fields, singleton } from "@keystatic/core";
 import siteData from "../config/siteData.json";
+import { TEXTES_PAR_DEFAUT } from "../moteur/traduction-auto-textes";
 
 export const identiteSite = singleton({
   label: "Identité du site",
@@ -112,5 +115,34 @@ export const identiteSite = singleton({
         pattern: { regex: /^$|^https:\/\/\S+$/, message: "Une adresse qui commence par https://" },
       },
     }),
+    traductionAuto: fields.object(
+      {
+        activer: fields.checkbox({
+          label: "Traduire automatiquement les pages sans version dans l'autre langue",
+          description:
+            "Quand un visiteur clique sur l'autre langue, il va à la page jumelle si elle existe, comme aujourd'hui. Si elle n'existe pas, la page reste affichée et le widget GTranslate la traduit sur place. Le widget n'est chargé que dans ce cas. Décoché, le site ne change pas : le bouton de l'autre langue mène alors à une page introuvable quand la jumelle n'existe pas.",
+          defaultValue: false,
+        }),
+        fr: fields.object(
+          {
+            avertissement: fields.text({ label: "Phrase d'avertissement", multiline: true, defaultValue: TEXTES_PAR_DEFAUT.fr.avertissement }),
+            original: fields.text({ label: "Bouton pour revenir à la page d'origine", defaultValue: TEXTES_PAR_DEFAUT.fr.original }),
+          },
+          { label: "Bandeau quand la page est traduite en français" },
+        ),
+        en: fields.object(
+          {
+            avertissement: fields.text({ label: "Phrase d'avertissement", multiline: true, defaultValue: TEXTES_PAR_DEFAUT.en.avertissement }),
+            original: fields.text({ label: "Bouton pour revenir à la page d'origine", defaultValue: TEXTES_PAR_DEFAUT.en.original }),
+          },
+          { label: "Bandeau quand la page est traduite en anglais" },
+        ),
+      },
+      {
+        label: "Traduction automatique (GTranslate)",
+        description:
+          "Une traduction automatique peut contenir des erreurs, d'où le bandeau, écrit dans la langue vers laquelle la page est traduite. Le widget charge un script de GTranslate et retient la langue choisie : à mentionner dans la page de confidentialité.",
+      },
+    ),
   },
 });

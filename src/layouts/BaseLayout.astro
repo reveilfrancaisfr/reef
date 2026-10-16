@@ -3,6 +3,7 @@
 // La classe .dark de <html> est posee par ThemeInit avant le premier rendu et
 // reposee apres chaque view transition : jamais de flash de theme.
 // Les pages injectent leur JSON-LD via <Fragment slot="head">.
+import TraductionAuto from "@components/Sections/Global/TraductionAuto.astro";
 import { ThemeInit } from "@components/ui/theme-toggle";
 import { getLocale, localeMeta } from "@i18n";
 import BaseHead from "@layouts/BaseHead.astro";
@@ -46,6 +47,8 @@ const apparence = await cssApparenceDuSite();
   </head>
   <body>
     <slot />
+    {/* La traduction automatique des pages sans jumelle (reglage Keystatic "Identite du site", decoche par defaut) : rien tant qu'il l'est. */}
+    <TraductionAuto />
     {/* En mode edition seulement, le panneau des liens vers ce que la barre ne touche pas (menus, reglages). Sinon, rien. */}
     <CadreDuSite />
   </body>
