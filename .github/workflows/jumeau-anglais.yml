@@ -1,7 +1,8 @@
 name: Version anglaise des articles
 
 # Se lance quand un article francais est enregistre (Keystatic fait un commit sur main).
-# Le script cree la copie anglaise si la case est cochee, puis l'action la commite.
+# Le script traduit l'article en anglais (DeepL API Free) si la case est cochee, puis l'action le commite.
+# Le secret DEEPL_API_KEY doit exister : Settings > Secrets and variables > Actions.
 on:
   push:
     branches: [main]
@@ -19,6 +20,7 @@ concurrency:
 jobs:
   jumeau:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -26,10 +28,17 @@ jobs:
         with:
           node-version: 22
 
-      - name: Creer les versions anglaises
+      - name: Installer l'outil YAML
+        run: npm install --prefix "$RUNNER_TEMP/outils" yaml@2
+
+      - name: Traduire et creer les versions anglaises
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          OUTILS_NODE: ${{ runner.temp }}/outils
         run: node scripts/jumeau-anglais.mjs
 
       - name: Enregistrer le resultat
+        if: always()
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
