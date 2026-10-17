@@ -13,6 +13,6 @@ tags: []
 cover: ../../../assets/covers/lettre-de-candidature/cover.png
 featured: true
 draft: false
-creerVersionAnglaise: true
+creerVersionAnglaise: false
 ---
 ![](/medias/articles/lettre-de-candidature/Lettre%20de%20candidature.png)
