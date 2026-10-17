@@ -5,6 +5,11 @@
 // les listes deroulantes sont donc construites depuis les fichiers de src/data/authors/<langue>/
 // et src/data/topics/<langue>/, et enregistrent l'identifiant que le site attend ("fr/mara-lindqvist").
 // Ajouter un auteur ou un sujet dans Keystatic suffit : la liste se remet a jour au rechargement.
+//
+// Les articles FRANCAIS ont une case a cocher "Creer aussi la version anglaise" : a l'enregistrement,
+// l'action GitHub .github/workflows/jumeau-anglais.yml lance scripts/jumeau-anglais.mjs, qui cree la copie
+// anglaise (en brouillon, a traduire) puis decoche la case. Le site ignore cette cle (le schema de
+// src/content.config.ts n'en veut pas et la laisse de cote).
 import { collection, fields } from "@keystatic/core";
 
 type Langue = "fr" | "en";
@@ -76,6 +81,17 @@ const articlesDe = (langue: Langue, label: string) =>
         description: "Un brouillon sort des listes, du flux RSS, du plan du site et de la recherche.",
         defaultValue: false,
       }),
+      // Seulement dans les articles francais : la case qui declenche la copie anglaise.
+      ...(langue === "fr"
+        ? {
+            creerVersionAnglaise: fields.checkbox({
+              label: "Créer aussi la version anglaise",
+              description:
+                "Cochée, une copie de cet article est créée en anglais environ une minute après l'enregistrement, dans « Articles (anglais) ». C'est un brouillon : le texte reste en français, à traduire, et l'article n'apparaît pas sur le site tant que vous n'avez pas décoché « Brouillon ». L'auteur et le sujet anglais correspondants sont repris. Un article anglais déjà créé n'est jamais remplacé. La case se décoche toute seule.",
+              defaultValue: false,
+            }),
+          }
+        : {}),
       content: fields.markdoc({
         label: "Texte de l'article",
         extension: "md",
