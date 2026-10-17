@@ -12,7 +12,7 @@ tags: []
 cover: ../../../assets/covers/notre-charte-ethique/cover.png
 featured: false
 draft: false
-creerVersionAnglaise: true
+creerVersionAnglaise: false
 ---
 ![](/medias/articles/notre-charte-ethique/Charte%20Ethique%20R%C3%A9veil%20Fran%C3%A7ais%202.png)
 
