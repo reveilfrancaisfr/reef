@@ -28,6 +28,7 @@ import { ordreDesBlocs } from "@moteur/ordre-des-blocs";
 import { propsDeLaPage } from "@moteur/chemins";
 import { adresseDePageLibre } from "@moteur/pages";
 import { textesDeLaPage } from "@moteur/textes";
+import { donneesEditionAccueil } from "@moteur/edition-keystatic";
 import { identiteDuSite } from "@moteur/theme";
 import type { BlocAccueil } from "../../keystatic/accueil";
 
@@ -111,6 +112,13 @@ const blocs: readonly BlocAccueil[] = ordreKeystatic ?? blocsDuTheme;
 // Le premier bloc que le visiteur voit.
 const premier = blocs.find((bloc) => voir(bloc));
 
+// Les blocs reellement rendus, dans l'ordre : le mode edition Keystatic (?edition=1, public/edition-keystatic.js)
+// les associe aux enfants de <main>.
+const rendus = blocs.filter((bloc) =>
+  bloc === "a-la-une" ? Boolean(featured) && voir(bloc) : bloc === "dernieres-notes" ? latest.length > 0 && voir(bloc) : voir(bloc),
+);
+const donneesEdition = donneesEditionAccueil(rendus, locale);
+
 const title = ks.metaTitre || t.home.metaTitle;
 const description = ks.metaDescription || t.home.metaDescription;
 
@@ -130,6 +138,7 @@ const schemas = [
 
 <BaseLayout {title} {description} image={imageDePartage(Astro, "hero")}>
   <Fragment slot="head">
+    <script is:inline type="application/json" id="ks-edition-donnees" set:html={donneesEdition} />
     {
       schemas.map((node) => (
         <script is:inline type="application/ld+json" set:html={JSON.stringify(node)} />

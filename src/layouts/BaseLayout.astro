@@ -51,5 +51,20 @@ const apparence = await cssApparenceDuSite();
     <TraductionAuto />
     {/* En mode edition seulement, le panneau des liens vers ce que la barre ne touche pas (menus, reglages). Sinon, rien. */}
     <CadreDuSite />
+    {/* Mode edition Keystatic : ?edition=1 l'allume pour la session, ?edition=0 l'eteint. Eteint, ce petit script ne fait rien et rien n'est telecharge (voir public/edition-keystatic.js). */}
+    <script is:inline>
+      (function () {
+        try {
+          var q = location.search;
+          if (/[?&]edition=0(&|$)/.test(q)) sessionStorage.removeItem("ks-edition");
+          else if (/[?&]edition=1(&|$)/.test(q)) sessionStorage.setItem("ks-edition", "1");
+          if (sessionStorage.getItem("ks-edition") === "1") {
+            var s = document.createElement("script");
+            s.src = "/edition-keystatic.js";
+            document.body.appendChild(s);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </body>
 </html>
