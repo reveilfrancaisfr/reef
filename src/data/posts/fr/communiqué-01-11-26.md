@@ -6,9 +6,10 @@ pubDate: 2026-11-01
 author: fr/alix-lacroix
 topic: fr/actualite
 tags: []
+cover: ../../../assets/covers/communiqué-01-11-26/cover.jpg
 featured: false
-draft: true
-creerVersionAnglaise: false
+draft: false
+creerVersionAnglaise: true
 ---
 # **COMMUNIQUÉ DU 01/11/26**
 
