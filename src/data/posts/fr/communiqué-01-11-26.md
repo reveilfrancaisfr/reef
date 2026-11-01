@@ -9,7 +9,7 @@ tags: []
 cover: ../../../assets/covers/communiqué-01-11-26/cover.jpg
 featured: false
 draft: false
-creerVersionAnglaise: true
+creerVersionAnglaise: false
 ---
 # **COMMUNIQUÉ DU 01/11/26**
 
