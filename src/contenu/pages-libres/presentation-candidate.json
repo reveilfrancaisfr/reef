@@ -133,6 +133,45 @@
           "delai": "0"
         }
       }
+    },
+    {
+      "discriminant": "texteImage",
+      "value": {
+        "titre": "Une candidate, un réveil national",
+        "motAccentue": "Une candidate",
+        "paragraphes": [
+          "Calme, directe et très maîtrisée, Alix parle peu mais frappe juste. Sa force, c'est son authenticité : « elle s'est construite toute seule ». Ses adversaires diront qu'elle veut « diriger la France comme une entreprise » et qu'elle sous-estime la complexité du pouvoir. Elle répondra qu'elle connait les français sur le terrain et ne les observe pas depuis son bureau."
+        ],
+        "bouton": {
+          "style": "primary",
+          "taille": "md",
+          "nouvelOnglet": false
+        },
+        "image": "/medias/signature-alix-lacroix-noir-lettres-liees%20(1).png",
+        "position": "droite",
+        "forme": "coins",
+        "ratio": "4 / 3",
+        "apparence": {
+          "fond": {
+            "discriminant": "theme"
+          },
+          "texte": {
+            "discriminant": "auto"
+          },
+          "accent": {
+            "discriminant": "theme"
+          },
+          "police": "theme",
+          "largeur": "large",
+          "coins": "arrondis",
+          "separateurHaut": "aucun",
+          "separateurBas": "aucun",
+          "espacement": "normal",
+          "alignement": "gauche",
+          "animation": "monter",
+          "delai": "0"
+        }
+      }
     }
   ]
 }
