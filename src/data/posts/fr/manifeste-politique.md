@@ -10,7 +10,7 @@ tags: []
 cover: ../../../assets/covers/manifeste-politique/cover.png
 featured: false
 draft: false
-creerVersionAnglaise: true
+creerVersionAnglaise: false
 ---
 # *Manifeste*
 
