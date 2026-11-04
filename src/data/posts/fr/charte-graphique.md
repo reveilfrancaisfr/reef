@@ -7,7 +7,7 @@ topic: fr/documentation
 tags: []
 cover: ../../../assets/covers/charte-graphique/cover.jpg
 featured: false
-draft: true
+draft: false
 creerVersionAnglaise: true
 ---
 ![](/medias/articles/charte-graphique/2.jpg)![](/medias/articles/charte-graphique/3.jpg)![](/medias/articles/charte-graphique/4.jpg)![](/medias/articles/charte-graphique/5.jpg)
