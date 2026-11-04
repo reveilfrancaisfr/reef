@@ -8,6 +8,6 @@ tags: []
 cover: ../../../assets/covers/charte-graphique/cover.jpg
 featured: false
 draft: false
-creerVersionAnglaise: true
+creerVersionAnglaise: false
 ---
 ![](/medias/articles/charte-graphique/2.jpg)![](/medias/articles/charte-graphique/3.jpg)![](/medias/articles/charte-graphique/4.jpg)![](/medias/articles/charte-graphique/5.jpg)
