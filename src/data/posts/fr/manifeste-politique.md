@@ -5,7 +5,7 @@ description: >-
   engageons pour le futur des français. 
 pubDate: 2026-10-16
 author: fr/alix-lacroix
-topic: fr/actualite
+topic: fr/documentation
 tags: []
 cover: ../../../assets/covers/manifeste-politique/cover.png
 featured: false
