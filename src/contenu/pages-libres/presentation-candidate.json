@@ -35,12 +35,83 @@
       }
     },
     {
-      "discriminant": "imageSeule",
+      "discriminant": "texteImage",
       "value": {
+        "titre": "Alix Lacroix, la candidate du Réveil Français",
+        "motAccentue": "Alix Lacroix",
+        "introduction": "Une enfant de Clermont-Ferrand",
+        "paragraphes": [
+          "Alix Lacroix naît à Clermont-Ferrand, dans une famille où l'on travaille beaucoup et où rien n'est jamais acquis. Sa mère est secrétaire à l'hôpital public, son père jardinier-paysagiste à soncompte. \nEnfant, elle l'accompagne sur ses chantiers le samedi et apprend très tôt ce que valentun travail bien fait et une parole tenue.\nÉlève au lycée La Fayette, elle décroche une bourse qui lui ouvre les portes de l'école de commerce de Clermont (aujourd'hui Clermont School of Business). Elle n'a ni réseau ni héritage,seulement l'envie de réussir par elle-même."
+        ],
+        "bouton": {
+          "style": "primary",
+          "taille": "md",
+          "nouvelOnglet": false
+        },
         "image": "/medias/presentation-candidate/blocs/1/value/image.jpeg",
-        "taille": "large",
+        "position": "gauche",
         "forme": "coins",
-        "ratio": "auto",
+        "ratio": "4 / 3",
+        "apparence": {
+          "fond": {
+            "discriminant": "theme"
+          },
+          "texte": {
+            "discriminant": "auto"
+          },
+          "accent": {
+            "discriminant": "theme"
+          },
+          "police": "theme",
+          "largeur": "large",
+          "coins": "arrondis",
+          "separateurHaut": "aucun",
+          "separateurBas": "aucun",
+          "espacement": "normal",
+          "alignement": "gauche",
+          "animation": "monter",
+          "delai": "0"
+        }
+      }
+    },
+    {
+      "discriminant": "texte",
+      "value": {
+        "titre": "Construire dans le réel",
+        "motAccentue": "Construire",
+        "paragraphes": [
+          "À 35 ans, Alix dirige une PME du BTP de 32 salariés, qu'elle a bâtie pas à pas. Elle se verse 3 000 euros par mois : elle préfère investir dans ses équipes et son matériel. \nMariée à un cadre de l'informatique, mère de deux enfants, elle mène une vie ordinaire, sans fortune ni château.\n\nSur ses chantiers, elle voit ce que beaucoup de Français vivent : des normes qui s'empilent, des charges qui étouffent, un État qui exige tout et protège de moins en moins. Elle voit aussi des territoires qui décrochent, des industries qui ferment et un patrimoine qui se dégrade."
+        ],
+        "apparence": {
+          "fond": {
+            "discriminant": "theme"
+          },
+          "texte": {
+            "discriminant": "auto"
+          },
+          "accent": {
+            "discriminant": "theme"
+          },
+          "police": "theme",
+          "largeur": "large",
+          "coins": "arrondis",
+          "separateurHaut": "aucun",
+          "separateurBas": "aucun",
+          "espacement": "normal",
+          "alignement": "gauche",
+          "animation": "monter",
+          "delai": "0"
+        }
+      }
+    },
+    {
+      "discriminant": "texte",
+      "value": {
+        "titre": "Le Réveil Français",
+        "motAccentue": "Le Réveil Français",
+        "paragraphes": [
+          "Elle fonde le Réveil Français (RF), un mouvement patriote et assumé, qui défend :\n\n• des frontières maîtrisées et la lutte contre l'immigration clandestine;\n• l'autorité de l'État et l'ordre public;\n• la souveraineté et le retour du référendum;\n• la réindustrialisation et le soutien aux PME;\n• une laïcité qui reconnaît les racines chrétiennes de la France;\n• la sauvegarde du patrimoine : châteaux, églises, monuments.\n\nSes slogans : La France d'abord. Décidons pour nous-mêmes. Relevons la France."
+        ],
         "apparence": {
           "fond": {
             "discriminant": "theme"
