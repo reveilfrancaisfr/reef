@@ -38,6 +38,17 @@ const posts = defineCollection({
       // Un brouillon reste constructible en local mais sort des listes, du RSS,
       // du sitemap et du llms.txt, et part en noindex.
       draft: z.boolean().default(false),
+      // Documents joints (PDF, Word, Excel, images...) saisis dans Keystatic : le fichier est une adresse /documents/...
+      documents: z
+        .array(
+          z.object({
+            titre: z.string().nullish(),
+            fichier: z.string().nullish(),
+            description: z.string().nullish(),
+            integre: z.boolean().nullish(),
+          }),
+        )
+        .default([]),
     }),
 });
 

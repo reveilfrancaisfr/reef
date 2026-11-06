@@ -6,6 +6,7 @@
 // composant, rien d'autre.
 import { collection, fields } from "@keystatic/core";
 import { media } from "./champ-media";
+import { documentsChamp } from "./champ-documents";
 
 const ADRESSES =
   "Une page du site : /blog/ en anglais, /fr/blog/ en français. Une page libre : /p/son-adresse/. Un autre site : l'adresse complète, https://…";
@@ -520,6 +521,10 @@ export const BLOCS_LIBRES = {
       points: fields.checkbox({ label: "Afficher les points", defaultValue: true }),
       apparence: apparence(),
     }),
+  },
+  documents: {
+    label: "Documents (PDF, Word, Excel…)",
+    schema: fields.object({ ...enTeteDeSection(), documents: documentsChamp("Les documents"), apparence: apparence() }),
   },
   espace: {
     label: "Espace ou séparateur",

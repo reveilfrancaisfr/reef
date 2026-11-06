@@ -11,6 +11,7 @@ import PostFooter from "@components/Sections/Post/PostFooter.astro";
 import PostHero from "@components/Sections/Post/PostHero.astro";
 import ReadingProgress from "@components/Sections/Post/ReadingProgress.astro";
 import RelatedPosts from "@components/Sections/Post/RelatedPosts.astro";
+import ListeDocuments from "@components/Documents/ListeDocuments.astro";
 import TableOfContents from "@components/Sections/Post/TableOfContents.astro";
 import { getSiteRoutes } from "@config/navData.json.ts";
 import { getLocale, localizePath, useTranslations } from "@i18n";
@@ -36,6 +37,8 @@ const { post, author, topic } = Astro.props;
 const { Content, blocs, headings } = await corpsDuBillet(post);
 
 const locale = getLocale(Astro);
+// Les documents joints saisis dans Keystatic (PDF, Word, Excel...), affichés sous le texte.
+const documents = post.data.documents ?? [];
 // Les textes rediges de la page, poses sur la requete par la page (src/pages/[...locale]/blog/[id].astro).
 // Ceux saisis dans Keystatic (pages "Articles" et "Page d'un article") passent devant : ici, le nom de l'archive
 // dans le fil d'Ariane ; vides, tout retombe sur le theme.
@@ -113,6 +116,8 @@ const crumbSchema = breadcrumbList([
         <TableOfContents slot="toc" {headings} />
         {Content ? <Content /> : <TexteRiche blocs={blocs ?? []} />}
       </PostBody>
+
+      <ListeDocuments documents={documents} locale={locale} avecTitre variante="article" />
 
       <PostFooter {post} {author} {url} />
     </article>

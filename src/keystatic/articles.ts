@@ -11,6 +11,7 @@
 // anglaise (en brouillon, a traduire) puis decoche la case. Le site ignore cette cle (le schema de
 // src/content.config.ts n'en veut pas et la laisse de cote).
 import { collection, fields } from "@keystatic/core";
+import { documentsChamp } from "./champ-documents";
 
 type Langue = "fr" | "en";
 type Fiche = { name?: string };
@@ -81,6 +82,7 @@ const articlesDe = (langue: Langue, label: string) =>
         description: "Un brouillon sort des listes, du flux RSS, du plan du site et de la recherche.",
         defaultValue: false,
       }),
+      documents: documentsChamp("Documents joints (PDF, Word, Excel…)"),
       // Seulement dans les articles francais : la case qui declenche la copie anglaise.
       ...(langue === "fr"
         ? {

@@ -1,0 +1,78 @@
+---
+// Bloc "Documents" : une liste de fichiers (PDF, Word, Excel, PowerPoint, images…) à consulter dans la page, à ouvrir ou à télécharger.
+import { getLocale } from "@i18n";
+import ListeDocuments from "../Documents/ListeDocuments.astro";
+import Bloc from "./Bloc.astro";
+
+interface Props {
+  donnees: Record<string, any>;
+}
+
+const { donnees: d } = Astro.props;
+const locale = getLocale(Astro);
+const titre: string = typeof d.titre === "string" ? d.titre : "";
+const accent: string = typeof d.motAccentue === "string" ? d.motAccentue : "";
+const morceaux = titre && accent && titre.includes(accent) ? titre.split(accent) : null;
+const avecEnTete = Boolean(d.surtitre || titre || d.introduction);
+---
+
+<Bloc apparence={d.apparence}>
+  {
+    avecEnTete && (
+      <header class="docs-entete">
+        {d.surtitre && <p class="docs-surtitre">{d.surtitre}</p>}
+        {titre && (
+          <h2 class="docs-grand-titre">
+            {morceaux ? (
+              <>
+                {morceaux[0]}
+                <span class="docs-accent">{accent}</span>
+                {morceaux.slice(1).join(accent)}
+              </>
+            ) : (
+              titre
+            )}
+          </h2>
+        )}
+        {d.introduction && <p class="docs-intro">{d.introduction}</p>}
+      </header>
+    )
+  }
+  <ListeDocuments documents={d.documents} locale={locale} />
+</Bloc>
+
+<style>
+  .docs-entete {
+    margin-bottom: 2rem;
+  }
+  :global(.bloc[data-align="centre"]) .docs-entete {
+    text-align: center;
+  }
+  .docs-surtitre {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .docs-grand-titre {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .docs-accent {
+    color: var(--color-primary);
+  }
+  .docs-intro {
+    max-width: 42rem;
+    margin: 0.9rem 0 0;
+    color: var(--color-muted-foreground, inherit);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  :global(.bloc[data-align="centre"]) .docs-intro {
+    margin-inline: auto;
+  }
+</style>

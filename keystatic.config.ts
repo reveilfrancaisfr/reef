@@ -11,6 +11,7 @@ import {
 } from './src/keystatic/articles';
 import { identiteSite } from './src/keystatic/identite-site';
 import { pagesArticles } from './src/keystatic/pages-articles';
+import { textesDocumentsEn, textesDocumentsFr } from './src/keystatic/champ-documents';
 import { pagesLibres } from './src/keystatic/pages-libres';
 import {
   aProposEn,
@@ -55,6 +56,7 @@ export default config({
       // Les formulaires de src/keystatic/pages-articles.ts : un nouveau formulaire s'y ajoute sans rouvrir ce fichier.
       'Pages des articles': Object.keys(pagesArticles) as (keyof typeof pagesArticles)[],
       'Pages libres': ['pagesLibres'],
+      'Documents joints': ['textesDocumentsFr', 'textesDocumentsEn'],
       Accueil: ['accueilFr', 'accueilEn', 'dispositionAccueil'],
       'Identité du site': ['identiteSite'],
       'Apparence du site': ['apparenceSite'],
@@ -99,6 +101,8 @@ export default config({
     identiteSite,
     apparenceSite,
     ...pagesArticles,
+    textesDocumentsFr,
+    textesDocumentsEn,
     siteFr,
     siteEn,
     aProposFr,

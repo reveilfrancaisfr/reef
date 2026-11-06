@@ -1,0 +1,344 @@
+---
+// src/components/Documents/ListeDocuments.astro - la liste des documents joints (article ou bloc de page libre) : fiche, boutons et lecteur dans la page.
+//
+// - PDF : le lecteur du navigateur, dans la page. Sur téléphone et tablette (qui n'affichent pas un PDF dans un
+//   cadre), « Consulter » ouvre le fichier dans un nouvel onglet.
+// - Word, Excel, PowerPoint : le lecteur en ligne de Microsoft (il faut que le site soit publié).
+// - Images et fichiers .txt : affichés directement.
+// - Tout autre format : téléchargement seulement.
+// Les textes viennent de Keystatic (« Documents joints : textes »), sinon de src/components/Documents/textes.ts.
+import { lireTextesDocuments } from "./lire-textes";
+import { preparerDocuments } from "./documents";
+import { REPLI_DEVELOPPEMENT } from "./textes";
+
+interface Props {
+  documents: unknown;
+  locale: string;
+  /** Affiche le titre « Documents » au-dessus de la liste (page d'un article). */
+  avecTitre?: boolean;
+  variante?: "article" | "bloc";
+}
+
+const { documents, locale, avecTitre = false, variante = "bloc" } = Astro.props;
+const t = lireTextesDocuments(locale);
+const liste = preparerDocuments(documents, { site: Astro.site, locale });
+const langue = locale === "fr" ? "fr" : "en";
+---
+
+{
+  liste.length > 0 && (
+    <div class:list={["docs", `docs-${variante}`]}>
+      {avecTitre && <h2 class="docs-titre">{t.titreSection}</h2>}
+      <ul class="docs-liste">
+        {liste.map((d) => (
+          <li class="doc" data-genre={d.genre} data-integre={d.integre ? "" : undefined}>
+            <div class="doc-ligne">
+              <span class="doc-badge" aria-hidden="true">
+                {d.etiquette}
+              </span>
+              <div class="doc-texte">
+                <h3 class="doc-titre">{d.titre}</h3>
+                {d.description && <p class="doc-desc">{d.description}</p>}
+                <p class="doc-meta">{[d.etiquette, d.taille].filter(Boolean).join(" · ")}</p>
+              </div>
+              <div class="doc-actions">
+                {d.lecteur && (
+                  <a
+                    class="doc-btn doc-btn-principal"
+                    href={d.url}
+                    target="_blank"
+                    rel="noopener"
+                    data-doc-toggle
+                    data-consulter={t.consulter}
+                    data-masquer={t.masquer}
+                    aria-expanded={d.integre ? "true" : "false"}
+                  >
+                    {d.integre ? t.masquer : t.consulter}
+                  </a>
+                )}
+                {d.lecteur && d.genre !== "image" && (
+                  <button type="button" class="doc-btn" data-doc-plein hidden>
+                    {t.pleinEcran}
+                  </button>
+                )}
+                {d.lecteur && (
+                  <a class="doc-btn" href={d.url} target="_blank" rel="noopener">
+                    {t.ouvrir}
+                  </a>
+                )}
+                <a class:list={["doc-btn", !d.lecteur && "doc-btn-principal"]} href={d.url} download>
+                  {t.telecharger}
+                </a>
+              </div>
+            </div>
+            {d.lecteur && (
+              <div
+                class="doc-viewer"
+                data-genre={d.genre}
+                hidden={!d.integre}
+                data-repli={d.genre === "office" && import.meta.env.DEV ? REPLI_DEVELOPPEMENT[langue] : t.repli}
+              >
+                {d.genre === "image" ? (
+                  <img src={d.url} alt={d.titre} loading="lazy" decoding="async" />
+                ) : (
+                  <>
+                    <iframe title={d.titre} data-src={d.lecteur} loading="lazy" allowfullscreen />
+                    {d.integre && (
+                      <noscript>
+                        <iframe title={d.titre} src={d.lecteur} />
+                      </noscript>
+                    )}
+                  </>
+                )}
+                <p class="doc-repli" hidden />
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .docs-article {
+    max-width: 52rem;
+    margin: 3rem auto;
+    padding-inline: 1.25rem;
+  }
+  .docs-titre {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-foreground);
+  }
+  .docs-liste {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .doc {
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--color-border, rgb(128 128 128 / 0.3));
+    border-radius: calc(var(--bl-rayon, 1.25rem) * 0.7);
+    background: var(--color-surface, transparent);
+    color: var(--color-foreground, inherit);
+  }
+  .doc-ligne {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem 1rem;
+    align-items: start;
+  }
+  .doc-badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 3.25rem;
+    padding: 0.55rem 0.5rem;
+    border-radius: 0.6rem;
+    background: var(--color-primary, #1f9d8a);
+    color: var(--color-primary-foreground, #fff);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .doc-titre {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 650;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+  .doc-desc {
+    margin: 0.3rem 0 0;
+    color: var(--color-muted-foreground, inherit);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .doc-meta {
+    margin: 0.3rem 0 0;
+    color: var(--color-muted-foreground, inherit);
+    font-size: 0.8rem;
+  }
+  .doc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 0.5rem;
+  }
+  @media (min-width: 44rem) {
+    .doc-ligne {
+      grid-template-columns: auto 1fr auto;
+    }
+    .doc-actions {
+      grid-column: auto;
+      justify-content: flex-end;
+      max-width: 22rem;
+    }
+  }
+  .doc-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-border, rgb(128 128 128 / 0.4));
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .doc-btn:hover {
+    border-color: var(--color-primary, currentColor);
+  }
+  .doc-btn[hidden] {
+    display: none;
+  }
+  .doc-btn-principal {
+    border-color: transparent;
+    background: var(--color-primary, #1f9d8a);
+    color: var(--color-primary-foreground, #fff);
+  }
+  .doc-viewer {
+    margin-top: 1rem;
+  }
+  .doc-viewer[hidden] {
+    display: none;
+  }
+  .doc-viewer iframe {
+    display: block;
+    width: 100%;
+    height: min(78vh, 56rem);
+    min-height: 24rem;
+    border: 1px solid var(--color-border, rgb(128 128 128 / 0.3));
+    border-radius: calc(var(--bl-rayon, 1.25rem) * 0.5);
+    background: #fff;
+  }
+  .doc-viewer:fullscreen iframe {
+    height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+  .doc-viewer img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: calc(var(--bl-rayon, 1.25rem) * 0.5);
+  }
+  .doc-repli {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border: 1px dashed var(--color-border, rgb(128 128 128 / 0.4));
+    border-radius: calc(var(--bl-rayon, 1.25rem) * 0.5);
+    font-size: 0.9rem;
+  }
+  .doc-repli[hidden] {
+    display: none;
+  }
+  .doc-viewer.doc-repli-actif iframe {
+    display: none;
+  }
+</style>
+
+<script>
+  // Ouverture et fermeture du lecteur d'un document ; un seul jeu d'écouteurs pour toute la page.
+  const lecteurDansLaPage = (): boolean =>
+    (navigator as Navigator & { pdfViewerEnabled?: boolean }).pdfViewerEnabled !== false &&
+    !window.matchMedia("(pointer: coarse)").matches;
+
+  const sansCadrePdf = (viewer: HTMLElement): boolean => viewer.dataset.genre === "pdf" && !lecteurDansLaPage();
+
+  function charger(viewer: HTMLElement) {
+    if (sansCadrePdf(viewer)) {
+      const repli = viewer.querySelector<HTMLElement>(".doc-repli");
+      if (repli) {
+        repli.textContent = viewer.dataset.repli ?? "";
+        repli.hidden = false;
+      }
+      viewer.classList.add("doc-repli-actif");
+      // Ici le bouton ne déplie rien : il ouvre le fichier dans un nouvel onglet, il s'appelle donc « Consulter ».
+      const bouton = viewer.closest(".doc")?.querySelector<HTMLElement>("[data-doc-toggle]");
+      if (bouton) {
+        bouton.textContent = bouton.dataset.consulter ?? "";
+        bouton.setAttribute("aria-expanded", "false");
+      }
+      return;
+    }
+    const cadre = viewer.querySelector<HTMLIFrameElement>("iframe[data-src]");
+    if (cadre && !cadre.getAttribute("src")) cadre.setAttribute("src", cadre.dataset.src ?? "");
+  }
+
+  function basculer(doc: HTMLElement, ouvrir?: boolean) {
+    const viewer = doc.querySelector<HTMLElement>(".doc-viewer");
+    const bouton = doc.querySelector<HTMLElement>("[data-doc-toggle]");
+    if (!viewer || !bouton) return;
+    const etat = ouvrir ?? viewer.hidden;
+    viewer.hidden = !etat;
+    bouton.setAttribute("aria-expanded", String(etat));
+    bouton.textContent = (etat ? bouton.dataset.masquer : bouton.dataset.consulter) ?? "";
+    if (etat) charger(viewer);
+  }
+
+  function demarrer() {
+    // Les boutons ne sont que des liens tant que le script n'a pas tourné : on les rend « boutons ».
+    document.querySelectorAll<HTMLElement>("[data-doc-toggle]:not([role])").forEach((el) => el.setAttribute("role", "button"));
+    if (document.fullscreenEnabled) {
+      document.querySelectorAll<HTMLElement>("[data-doc-plein]").forEach((el) => (el.hidden = false));
+    }
+    const observateur =
+      "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            (entrees) => {
+              for (const entree of entrees) {
+                if (!entree.isIntersecting) continue;
+                charger(entree.target as HTMLElement);
+                observateur?.unobserve(entree.target);
+              }
+            },
+            { rootMargin: "400px 0px" },
+          )
+        : null;
+    document.querySelectorAll<HTMLElement>(".doc[data-integre] .doc-viewer:not([data-pret])").forEach((viewer) => {
+      viewer.setAttribute("data-pret", "");
+      if (observateur) observateur.observe(viewer);
+      else charger(viewer);
+    });
+  }
+
+  if (!(window as unknown as { __docsPrets?: boolean }).__docsPrets) {
+    (window as unknown as { __docsPrets?: boolean }).__docsPrets = true;
+    document.addEventListener("click", (e) => {
+      const cible = e.target as HTMLElement | null;
+      if (!cible) return;
+      const toggle = cible.closest<HTMLElement>("[data-doc-toggle]");
+      const doc = cible.closest<HTMLElement>(".doc");
+      if (toggle && doc) {
+        const viewer = doc.querySelector<HTMLElement>(".doc-viewer");
+        // Un PDF que l'appareil ne sait pas afficher dans la page : le lien s'ouvre dans un nouvel onglet.
+        if (viewer && sansCadrePdf(viewer)) return;
+        e.preventDefault();
+        basculer(doc);
+        return;
+      }
+      const plein = cible.closest<HTMLElement>("[data-doc-plein]");
+      if (plein && doc) {
+        const viewer = doc.querySelector<HTMLElement>(".doc-viewer");
+        if (!viewer) return;
+        if (sansCadrePdf(viewer)) {
+          window.open(doc.querySelector<HTMLAnchorElement>("[data-doc-toggle]")?.href ?? "", "_blank", "noopener");
+          return;
+        }
+        basculer(doc, true);
+        viewer.requestFullscreen?.().catch(() => {});
+      }
+    });
+    document.addEventListener("astro:page-load", demarrer);
+  }
+  demarrer();
+</script>
