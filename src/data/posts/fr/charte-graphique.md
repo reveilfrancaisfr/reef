@@ -12,5 +12,5 @@ documents:
   - titre: Charte Graphique
     fichier: /documents/charte-graphique/documents/0/fichier.pdf
     integre: true
-creerVersionAnglaise: true
+creerVersionAnglaise: false
 ---
